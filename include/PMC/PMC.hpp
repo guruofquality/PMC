@@ -25,6 +25,7 @@
 *
 * A PMC can contain any primitive or STL object - as long as that object fits.
 * PMC uses a fixed size buffer of PMC_FIXED_BUFF_SIZE bytes to hold the object.
+* A type contained in a PMC must have an overload for the equals comparable operator.
 */
 struct PMC : boost::intrusive_ptr<PMCImpl>
 {
@@ -90,6 +91,9 @@ struct PMCC : PMC
     template <typename ValueType>
     PMCC(const ValueType &value);
 };
+
+//! Comparison operator for two PMC objects
+bool operator==(const PMCC &lhs, const PMCC &rhs);
 
 #include <PMC/Detail/PMCImpl.hpp>
 
