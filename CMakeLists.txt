@@ -13,6 +13,12 @@ endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 
 ########################################################################
+# Component names for install rules
+########################################################################
+set(PMC_COMP_DEVEL "devel") #development
+set(PMC_COMP_RUNTIME "runtime") #runtime
+
+########################################################################
 # Setup Boost
 ########################################################################
 if(UNIX AND EXISTS "/usr/lib64")
@@ -29,3 +35,11 @@ set(Boost_ADDITIONAL_VERSIONS
     "1.65.0" "1.65" "1.66.0" "1.66" "1.67.0" "1.67" "1.68.0" "1.68" "1.69.0" "1.69"
 )
 find_package(Boost COMPONENTS)
+
+########################################################################
+# Setup cmake subdirs
+########################################################################
+include_directories(include)
+add_subdirectory(include/PMC)
+add_subdirectory(lib)
+add_subdirectory(tests)
