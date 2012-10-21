@@ -8,8 +8,8 @@
 #define INCLUDED_PMC_DETAIL_PMC_IMPL_HPP
 
 /***********************************************************************
-* Implementation details of the underlying PMCImpl structure
-**********************************************************************/
+ * Implementation details of the underlying PMCImpl structure
+ **********************************************************************/
 #include <boost/detail/atomic_count.hpp>
 #include <boost/format.hpp>
 #include <new> //in-place new
@@ -89,11 +89,11 @@ struct PMCImpl
 };
 
 /***********************************************************************
-* Implementation details of PMC constructors and methods
-**********************************************************************/
+ * Implementation details of PMC constructors and methods
+ **********************************************************************/
 PMC_INLINE void PMC_impl_assert_not_null(const PMC *p)
 {
-    if (not *p) throw std::runtime_error("Calling method on a null PMC object!");
+    if (not *p) throw std::invalid_argument("Calling method on a null PMC object!");
 }
 
 
@@ -116,21 +116,23 @@ PMC_INLINE PMC::PMC(void)
 }
 
 template <typename ValueType>
-PMC_INLINE PMC::PMC(const ValueType &value)
+PMC_INLINE PMC PMC::make(const ValueType &value)
 {
     if (sizeof(ValueType) > PMC_FIXED_BUFF_SIZE)
     {
-        throw std::runtime_error(str(boost::format(
+        throw std::invalid_argument(str(boost::format(
             "Object of type %s (%u bytes) is too large for PMC (max %u bytes)!"
         ) % typeid(ValueType).name() % sizeof(ValueType) % PMC_FIXED_BUFF_SIZE));
     }
-    this->reset(new PMCImpl());
-    void *buff = (void *)(*this)->buff;
-    (*this)->item = new (buff) PMCImpl::Container<ValueType>(value);
+    PMC p;
+    p.reset(new PMCImpl());
+    void *buff = (void *)p->buff;
+    p->item = new (buff) PMCImpl::Container<ValueType>(value);
+    return p;
 }
 
 template <typename ValueType>
-PMC_INLINE const ValueType &PMC::ccast(void) const
+PMC_INLINE const ValueType &PMC::cast(void) const
 {
     PMC_impl_assert_not_null(this);
     return (*this)->cast<ValueType>();
@@ -140,10 +142,6 @@ template <typename ValueType>
 PMC_INLINE ValueType &PMC::cast(void)
 {
     PMC_impl_assert_not_null(this);
-    if (dynamic_cast<PMCC *>(this))
-    {
-        throw std::runtime_error("PMC constness prevents cast to non-const reference!");
-    }
     return (*this)->cast<ValueType>();
 }
 
@@ -166,13 +164,36 @@ PMC_INLINE const std::type_info &PMC::type(void) const
 }
 
 template <typename ValueType>
-bool PMC::is_type(void) const
+PMC_INLINE bool PMC::is_type(void) const
 {
     if (not *this) return false;
     return this->type() == typeid(ValueType);
 }
 
-PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
+/***********************************************************************
+ * PMC const type
+ **********************************************************************/
+PMC_INLINE PMCC::PMCC(void)
+{
+    //NOP
+}
+
+PMC_INLINE PMCC::PMCC(const PMC &p)
+{
+    this->reset(p.get());
+}
+
+template <typename ValueType>
+PMC_INLINE const ValueType &PMCC::cast(void)
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->cast<ValueType>();
+}
+
+/***********************************************************************
+ * PMC Comparable stuff
+ **********************************************************************/
+PMC_INLINE bool PMCCompare(const PMCC &lhs, const PMCC &rhs)
 {
     //both null so its the same
     if (not lhs and not rhs) return true;
@@ -184,22 +205,24 @@ PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
     return false;
 }
 
-PMC_INLINE PMCC::PMCC(void):
-    PMC()
+PMC_INLINE bool operator==(const PMC &lhs, const PMC &rhs)
 {
-    //NOP
+    return PMCCompare(lhs, rhs);
 }
 
-PMC_INLINE PMCC::PMCC(const PMC &p)
+PMC_INLINE bool operator==(const PMC &lhs, const PMCC &rhs)
 {
-    this->reset(p.get());
+    return PMCCompare(lhs, rhs);
 }
 
-template <typename ValueType>
-PMC_INLINE PMCC::PMCC(const ValueType &value):
-    PMC(value)
+PMC_INLINE bool operator==(const PMCC &lhs, const PMC &rhs)
 {
-    //NOP
+    return PMCCompare(lhs, rhs);
+}
+
+PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
+{
+    return PMCCompare(lhs, rhs);
 }
 
 #endif /*INCLUDED_PMC_DETAIL_PMC_IMPL_HPP*/

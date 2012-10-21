@@ -3,9 +3,12 @@
 ########################################################################
 find_package(Boost COMPONENTS unit_test_framework)
 
+if (NOT Boost_FOUND)
+    return()
+endif()
+
 set(test_sources
-    build_test.cpp
-    serialize_test.cpp
+    basic_test.cpp
 )
 
 include_directories(${Boost_INCLUDE_DIRS})

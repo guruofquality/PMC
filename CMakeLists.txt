@@ -15,8 +15,12 @@ set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 ########################################################################
 # Component names for install rules
 ########################################################################
-set(PMC_COMP_DEVEL "devel") #development
-set(PMC_COMP_RUNTIME "runtime") #runtime
+if (NOT DEFINED PMC_COMP_DEVEL)
+    set(PMC_COMP_DEVEL "devel") #development
+endif()
+if (NOT DEFINED PMC_COMP_RUNTIME)
+    set(PMC_COMP_RUNTIME "runtime") #runtime
+endif()
 
 ########################################################################
 # Setup Boost
