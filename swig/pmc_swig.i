@@ -19,50 +19,46 @@ struct PMCC : PMC
 
 %pythoncode %{
 
-registry = list()
+_registry = list()
+
+def RegisterType(is_py, is_pmc, pmc2py, py2pmc):
+    _registry.append((is_py, is_pmc, pmc2py, py2pmc))
+
+def PMC2Py(p):
+    for is_py, is_pmc, pmc2py, py2pmc in _registry:
+        if is_pmc(p): return pmc2py(p)
+    raise TypeError, 'cannot convert %s to Python type'%str(p)
+
+def Py2PMC(p):
+    for is_py, is_pmc, pmc2py, py2pmc in _registry:
+        if is_py(p): return py2pmc(p)
+    raise TypeError, 'cannot convert %s to PMC type'%str(p)
 
 %}
 
-//registering a PMC to Python
-// - c++ is the PMC type <x>
-// - python is the python type <x>
-// - convert PMC to some type
-// - convert type to a PMC
 
-%define DECL_PMC_TYPE(type, name)
+%define DECL_PMC_SWIG_TYPE(type, name)
 %inline %{
 
-bool is_ ## name(const PMCC &p)
+bool pmc_is_ ## name(const PMCC &p)
 {
     return p.is_type<type>();
 }
 
-type to_ ## name(const PMCC &p)
+type pmc_to_ ## name(const PMCC &p)
 {
     return p.cast<type>();
 }
 
-PMC from_ ## name(const type &p)
+PMCC name ## _to_pmc(const type &p)
 {
     return PMC::make(p);
 }
 
 %}
 
-%pythoncode %{
-
-registry.append((name, is_ ## name, to_ ## name, from_ ## name))
-
-%}
-
 %enddef
 
-%include "std_map.i"
 
-%inline %{
-typedef std::map<PMCC, PMCC> PMCDict;
-%}
-
-%template (PMCDict) std::map<PMCC, PMCC>;
-
-DECL_PMC_TYPE(PMCDict, dict)
+%include "pmc_none.i"
+%include "pmc_dict.i"
