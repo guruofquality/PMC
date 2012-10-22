@@ -94,6 +94,14 @@ struct PMCC : PMC
      */
     template <typename ValueType>
     const ValueType &cast(void);
+
+    /*!
+     * Cast the item held by this object to an arbitrary type.
+     * This method will return a const reference to the object.
+     * Only call if this object is not empty.
+     */
+    template <typename ValueType>
+    const ValueType &cast(void) const;
 };
 
 /*!

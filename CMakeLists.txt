@@ -2,7 +2,7 @@
 # Project setup
 ########################################################################
 cmake_minimum_required(VERSION 2.6)
-project(PMC CXX)
+project(PMC CXX C)
 enable_testing()
 
 #select the release build type by default to get optimization flags
@@ -11,6 +11,9 @@ if(NOT CMAKE_BUILD_TYPE)
    message(STATUS "Build type not specified: defaulting to release.")
 endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
+
+#list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 ########################################################################
 # Component names for install rules
@@ -45,5 +48,6 @@ find_package(Boost COMPONENTS)
 ########################################################################
 include_directories(include)
 add_subdirectory(include/PMC)
-add_subdirectory(lib)
+#add_subdirectory(lib)
+add_subdirectory(swig)
 add_subdirectory(tests)

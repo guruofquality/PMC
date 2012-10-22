@@ -24,3 +24,12 @@ foreach(test_source ${test_sources})
     target_link_libraries(${test_name} ${Boost_LIBRARIES})
     add_test(${test_name} ${test_name})
 endforeach(test_source)
+
+########################################################################
+# Python unit tests
+########################################################################
+include(GrPython)
+include(GrTest)
+
+set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
+GR_ADD_TEST(swig_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/swig_test.py)

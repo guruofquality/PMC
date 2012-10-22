@@ -190,6 +190,13 @@ PMC_INLINE const ValueType &PMCC::cast(void)
     return (*this)->cast<ValueType>();
 }
 
+template <typename ValueType>
+PMC_INLINE const ValueType &PMCC::cast(void) const
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->cast<ValueType>();
+}
+
 /***********************************************************************
  * PMC Comparable stuff
  **********************************************************************/
