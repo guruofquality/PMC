@@ -1,4 +1,4 @@
-%module pmc_swig
+%module PMC
 
 %{
 
@@ -36,29 +36,6 @@ def Py2PMC(p):
 
 %}
 
-
-%define DECL_PMC_SWIG_TYPE(type, name)
-%inline %{
-
-bool pmc_is_ ## name(const PMCC &p)
-{
-    return p.is_type<type>();
-}
-
-type pmc_to_ ## name(const PMCC &p)
-{
-    return p.cast<type>();
-}
-
-PMCC name ## _to_pmc(const type &p)
-{
-    return PMC::make(p);
-}
-
-%}
-
-%enddef
-
-
-%include "pmc_none.i"
-%include "pmc_dict.i"
+#ifdef PMC_SWIG_BUILDING
+%include "pmc_default_types.i"
+#endif

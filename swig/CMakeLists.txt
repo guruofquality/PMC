@@ -11,4 +11,9 @@ include(GrPython)
 
 set(GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
-GR_SWIG_MAKE(pmc_swig pmc_swig.i)
+set(GR_SWIG_FLAGS -DPMC_SWIG_BUILDING)
+
+
+set(GR_SWIG_SOURCE_DEPS pmc_default_types.i pmc_utils.i pmc_none.i pmc_dict.i)
+
+GR_SWIG_MAKE(PMC pmc_swig.i)

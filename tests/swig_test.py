@@ -1,5 +1,5 @@
-import pmc_swig
-from pmc_swig import *
+#import pmc_swig
+from PMC import *
 
 #print dir(pmc_swig)
 #print pmc_swig.registry
@@ -11,13 +11,13 @@ from pmc_swig import *
 
 #print pmc_swig.from_dict({'foo': 'bar'})
 
-x_none = Py2PMC(None)
+#x_none = Py2PMC(None)
 
-y_none = PMC2Py(x_none)
+#y_none = PMC2Py(x_none)
 
-print x_none
-print pmc_is_none(x_none)
-print y_none
+#print x_none
+#print pmc_is_none(x_none)
+#print y_none
 
 d = {None:None}
 print Py2PMC(d)

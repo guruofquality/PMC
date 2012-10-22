@@ -1,3 +1,5 @@
+%include <pmc_utils.i>
+
 %inline %{
  
 bool pmc_is_none(const PMCC &p)
