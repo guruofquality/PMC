@@ -20,4 +20,5 @@ def Py2PMC(p):
 
 %include <PMC/None.i>
 %include <PMC/Bool.i>
+%include <PMC/Integers.i>
 %include <PMC/Dict.i>
