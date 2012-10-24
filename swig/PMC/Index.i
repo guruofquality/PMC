@@ -1,21 +1,3 @@
-%module PMC
-
-%{
-
-//#include <boost/intrusive_ptr.hpp>
-#include <PMC/PMC.hpp>
-
-%}
-
-struct PMC// : boost::intrusive_ptr<void>
-{
-
-};
-
-struct PMCC : PMC
-{
-
-};
 
 %pythoncode %{
 
@@ -36,6 +18,6 @@ def Py2PMC(p):
 
 %}
 
-#ifdef PMC_SWIG_BUILDING
-%include "pmc_default_types.i"
-#endif
+%include <PMC/None.i>
+%include <PMC/Bool.i>
+%include <PMC/Dict.i>

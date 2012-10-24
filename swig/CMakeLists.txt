@@ -14,6 +14,8 @@ set(GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 set(GR_SWIG_FLAGS -DPMC_SWIG_BUILDING)
 
 
-set(GR_SWIG_SOURCE_DEPS pmc_default_types.i pmc_utils.i pmc_none.i pmc_dict.i)
+file(GLOB swig_types_files "${CMAKE_CURRENT_SOURCE_DIR}/PMC/*.i")
 
-GR_SWIG_MAKE(PMC pmc_swig.i)
+set(GR_SWIG_SOURCE_DEPS ${swig_types_files})
+
+GR_SWIG_MAKE(PMC PMC.i)

@@ -1,6 +1,10 @@
-%include <pmc_utils.i>
+/***********************************************************************
+ * Support for the Python dict / std::map type
+ **********************************************************************/
 
-%include "std_map.i"
+%include <PMC.i>
+
+%include <std_map.i>
 
 %inline %{
 typedef std::map<PMCC, PMCC> PMCDict;
