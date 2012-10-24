@@ -18,4 +18,10 @@ RegisterPMC2Py(
     pmc2py = pmc_to_bool,
 )
 
+import ctypes
+RegisterPy2PMC(
+    is_py = lambda x: isinstance(x, ctypes.c_bool),
+    py2pmc = lambda x: bool_to_pmc(x.value),
+)
+
 %}

@@ -7,6 +7,10 @@ class TestTypes(unittest.TestCase):
     def loopback(self, x):
         y = PMC2Py(Py2PMC(x))
         print type(x), type(y)
+        #ctypes are not as smart as numpy,
+        #give the assert equal some help
+        if hasattr(x, 'value'): x = x.value
+        if hasattr(y, 'value'): y = y.value
         self.assertEqual(x, y)
 
     def test_none(self):
@@ -15,6 +19,11 @@ class TestTypes(unittest.TestCase):
     def test_bool(self):
         self.loopback(True)
         self.loopback(False)
+
+        #ctypes can be dense
+        import ctypes
+        self.loopback(ctypes.c_bool(True))
+        self.loopback(ctypes.c_bool(False))
 
     def test_ints(self):
         self.loopback(int(-420000))
@@ -34,7 +43,7 @@ class TestTypes(unittest.TestCase):
         self.loopback(4.2)
         import ctypes
         self.loopback(ctypes.c_float(4.2))
-        #FIXME fails round error? self.loopback(ctypes.c_double(4.2))
+        self.loopback(ctypes.c_double(4.2))
         try:
             import numpy
             self.loopback(numpy.float32(4.2))
