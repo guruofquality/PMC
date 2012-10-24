@@ -8,32 +8,28 @@
  * Treatment for python long and int native types
  **********************************************************************/
 
-DECL_PMC_SWIG_TYPE(long, long)
-DECL_PMC_SWIG_TYPE(int, int)
+%define DECL_PMC_SWIG_BUILTIN_INTEGER_TYPE(name)
+
+DECL_PMC_SWIG_TYPE(name, name)
 
 %pythoncode %{
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, int),
-    py2pmc = int_to_pmc,
+    is_py = lambda x: isinstance(x, name),
+    py2pmc = name ## _to_pmc,
 )
 
 RegisterPMC2Py(
-    is_pmc = pmc_is_int,
-    pmc2py = lambda x: int(pmc_to_int(x)),
-)
-
-RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, long),
-    py2pmc = long_to_pmc,
-)
-
-RegisterPMC2Py(
-    is_pmc = pmc_is_long,
-    pmc2py = lambda x: long(pmc_to_long(x)),
+    is_pmc = pmc_is_ ## name,
+    pmc2py = lambda x: name(pmc_to_ ## name(x)),
 )
 
 %}
+
+%enddef
+
+DECL_PMC_SWIG_BUILTIN_INTEGER_TYPE(int)
+DECL_PMC_SWIG_BUILTIN_INTEGER_TYPE(long)
 
 /***********************************************************************
  * Best effort for other fixed-width types

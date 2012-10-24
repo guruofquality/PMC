@@ -73,3 +73,14 @@ BOOST_AUTO_TEST_CASE(test_constness)
     BOOST_CHECK_EQUAL(x1.cast<int>(), 42);
     BOOST_CHECK_EQUAL(x0, x1);
 }
+
+BOOST_AUTO_TEST_CASE(test_floats)
+{
+    PMC f32 = PMC::make(float(4.2));
+    BOOST_CHECK(f32.is_type<float>());
+    BOOST_CHECK(not f32.is_type<double>());
+
+    PMC f64 = PMC::make(double(4.2));
+    BOOST_CHECK(not f64.is_type<float>());
+    BOOST_CHECK(f64.is_type<double>());
+}
