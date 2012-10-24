@@ -20,11 +20,14 @@ static PMCC pmc_make_none(void)
  
 %pythoncode %{
 
-PMCRegisterType(
+RegisterPy2PMC(
     is_py = lambda x: x is None,
+    py2pmc = lambda x: pmc_make_none(),
+)
+
+RegisterPMC2Py(
     is_pmc = pmc_is_none,
     pmc2py = lambda x: None,
-    py2pmc = lambda x: pmc_make_none(),
 )
 
 %}

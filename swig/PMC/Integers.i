@@ -13,16 +13,22 @@ DECL_PMC_SWIG_TYPE(int, int)
 
 %pythoncode %{
 
-PMCRegisterType(
+RegisterPy2PMC(
     is_py = lambda x: isinstance(x, int),
     py2pmc = int_to_pmc,
+)
+
+RegisterPMC2Py(
     is_pmc = pmc_is_int,
     pmc2py = lambda x: int(pmc_to_int(x)),
 )
 
-PMCRegisterType(
+RegisterPy2PMC(
     is_py = lambda x: isinstance(x, long),
     py2pmc = long_to_pmc,
+)
+
+RegisterPMC2Py(
     is_pmc = pmc_is_long,
     pmc2py = lambda x: long(pmc_to_long(x)),
 )
@@ -44,9 +50,12 @@ DECL_PMC_SWIG_TYPE(name ## _t, name)
 try:
     import numpy
 
-    PMCRegisterType(
+    RegisterPy2PMC(
         is_py = lambda x: isinstance(x, numpy. ## name),
         py2pmc = lambda x: name ## _to_pmc(long(x)),
+    )
+
+    RegisterPMC2Py(
         is_pmc = pmc_is_ ## name,
         pmc2py = lambda x: numpy. ## name(pmc_to_ ## name(x)),
     )
@@ -54,9 +63,11 @@ except ImportError: pass
 
 import ctypes
 
-PMCRegisterType(
+RegisterPy2PMC(
     is_py = lambda x: isinstance(x, ctypes.c_ ## name),
-    py2pmc = lambda x: name ## _to_pmc(x.value),
+    py2pmc = lambda x: name ## _to_pmc(x.value),)
+
+RegisterPMC2Py(
     is_pmc = pmc_is_ ## name,
     pmc2py = lambda x: ctypes.c_ ## name(pmc_to_ ## name(x)),
 )
