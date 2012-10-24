@@ -32,4 +32,4 @@ include(GrPython)
 include(GrTest)
 
 set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
-GR_ADD_TEST(swig_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/swig_test.py)
+GR_ADD_TEST(py_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/types_test.py)

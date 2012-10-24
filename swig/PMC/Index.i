@@ -3,7 +3,7 @@
 
 _registry = list()
 
-def RegisterType(is_py, is_pmc, pmc2py, py2pmc):
+def PMCRegisterType(is_py, is_pmc, pmc2py, py2pmc):
     _registry.append((is_py, is_pmc, pmc2py, py2pmc))
 
 def PMC2Py(p):

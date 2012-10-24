@@ -29,7 +29,7 @@ def py_dict_to_swig_dict(py_dict):
 
 %pythoncode %{
 
-RegisterType(
+PMCRegisterType(
     is_py = lambda x: isinstance(x, dict),
     is_pmc = pmc_is_swig_dict,
     pmc2py = lambda x: swig_dict_to_py_dict(pmc_to_swig_dict(x)),

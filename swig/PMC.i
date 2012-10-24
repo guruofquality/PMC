@@ -15,7 +15,13 @@
 
 struct PMC
 {
-
+    %extend
+    {
+        const char *__str__(void)
+        {
+            return $self->type().name();
+        }
+    }
 };
 
 struct PMCC : PMC
@@ -48,6 +54,10 @@ PMCC name ## _to_pmc(const type &p)
 
 #ifdef PMC_SWIG_BUILDING
 %include <PMC/Index.i>
+#else
+%pythoncode %{
+from PMC import *
+%}
 #endif
 
 #endif /*INCLUDED_PMC_I*/
