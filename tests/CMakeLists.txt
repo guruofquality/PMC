@@ -36,6 +36,7 @@ include(GrPython)
 
 set(GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
 GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
+GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
 
 ########################################################################
 # Swig custom type test

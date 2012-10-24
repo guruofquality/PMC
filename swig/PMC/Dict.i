@@ -1,5 +1,5 @@
 /***********************************************************************
- * Support for the Python dict / std::map type
+ * Support for the Python dict type
  **********************************************************************/
 
 %include <PMC.i>
@@ -24,10 +24,6 @@ def py_dict_to_swig_dict(py_dict):
     for key, value in py_dict.iteritems():
         d[Py2PMC(key)] = Py2PMC(value)
     return d
-
-%}
-
-%pythoncode %{
 
 RegisterPy2PMC(
     is_py = lambda x: isinstance(x, dict),
