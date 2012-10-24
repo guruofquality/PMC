@@ -1,3 +1,6 @@
+
+include(GrTest)
+
 ########################################################################
 # unit test suite
 ########################################################################
@@ -22,14 +25,35 @@ foreach(test_source ${test_sources})
     get_filename_component(test_name ${test_source} NAME_WE)
     add_executable(${test_name} ${test_source})
     target_link_libraries(${test_name} ${Boost_LIBRARIES})
-    add_test(${test_name} ${test_name})
+    set(GR_TEST_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
+    GR_ADD_TEST(${test_name} ${test_name})
 endforeach(test_source)
 
 ########################################################################
 # Python unit tests
 ########################################################################
 include(GrPython)
-include(GrTest)
 
-set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
-GR_ADD_TEST(py_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/types_test.py)
+set(GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
+GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
+
+########################################################################
+# Swig custom type test
+########################################################################
+find_package(SWIG)
+find_package(PythonLibs)
+if(NOT SWIG_FOUND OR NOT PYTHONLIBS_FOUND)
+    return()
+endif()
+include(GrSwig)
+include(GrPython)
+
+list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../swig)
+
+GR_SWIG_MAKE(foo_bar foo_bar.i)
+
+unset(GR_TEST_PYTHON_DIRS)
+list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
+list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR})
+GR_ADD_TEST(custom_type_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_type_test.py)

@@ -2,7 +2,7 @@
 import unittest
 from PMC import *
 
-class TestTypes(unittest.TestCase):
+class TestBasicTypes(unittest.TestCase):
 
     def loopback(self, x):
         y = PMC2Py(Py2PMC(x))
