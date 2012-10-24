@@ -50,5 +50,16 @@ class TestTypes(unittest.TestCase):
             self.loopback(numpy.float64(4.2))
         except ImportError: pass
 
+    def test_complex(self):
+        self.loopback(4+2j)
+        try:
+            import numpy
+            self.loopback(numpy.complex64(4-2j))
+            self.loopback(numpy.complex128(4-1j))
+        except ImportError: pass
+
+    def test_string(self):
+        self.loopback("hello world")
+
 if __name__ == '__main__':
     unittest.main()

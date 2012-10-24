@@ -26,4 +26,6 @@ def Py2PMC(p):
 %include <PMC/Bool.i>
 %include <PMC/Integers.i>
 %include <PMC/Floats.i>
+%include <PMC/Complex.i>
+%include <PMC/String.i>
 %include <PMC/Dict.i>
