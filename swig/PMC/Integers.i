@@ -50,8 +50,7 @@ try:
         is_pmc = pmc_is_ ## name,
         pmc2py = lambda x: numpy. ## name(pmc_to_ ## name(x)),
     )
-except ImportError:
-    pass
+except ImportError: pass
 
 import ctypes
 

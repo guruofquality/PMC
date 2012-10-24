@@ -30,5 +30,16 @@ class TestTypes(unittest.TestCase):
             self.loopback(numpy.int16(-4200))
         except ImportError: pass
 
+    def test_floats(self):
+        self.loopback(4.2)
+        import ctypes
+        self.loopback(ctypes.c_float(4.2))
+        self.loopback(ctypes.c_double(4.2))
+        try:
+            import numpy
+            self.loopback(numpy.float32(4.2))
+            self.loopback(numpy.float64(4.2))
+        except ImportError: pass
+
 if __name__ == '__main__':
     unittest.main()
