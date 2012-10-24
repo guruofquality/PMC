@@ -4,6 +4,7 @@
 install(FILES
     Config.hpp
     PMC.hpp
+    Containers.hpp
     DESTINATION include/PMC
     COMPONENT ${PMC_COMP_DEVEL}
 )

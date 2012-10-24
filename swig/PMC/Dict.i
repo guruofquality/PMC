@@ -4,11 +4,11 @@
 
 %include <PMC.i>
 
-%include <std_map.i>
-
-%inline %{
-typedef std::map<PMCC, PMCC> PMCDict;
+%{
+#include <PMC/Containers.hpp>
 %}
+
+%include <std_map.i>
 
 %template (PMCDict) std::map<PMCC, PMCC>;
 
