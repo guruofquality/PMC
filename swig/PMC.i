@@ -52,7 +52,7 @@ PMCC name ## _to_pmc(const type &p)
 
 %enddef
 
-#ifdef PMC_SWIG_BUILDING
+#ifdef PMC_SWIG_EXPORTS
 %include <PMC/Index.i>
 #else
 %pythoncode %{

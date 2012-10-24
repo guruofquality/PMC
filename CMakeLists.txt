@@ -19,10 +19,13 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 # Component names for install rules
 ########################################################################
 if (NOT DEFINED PMC_COMP_DEVEL)
-    set(PMC_COMP_DEVEL "devel") #development
+    set(PMC_COMP_DEVEL "devel")
 endif()
 if (NOT DEFINED PMC_COMP_RUNTIME)
-    set(PMC_COMP_RUNTIME "runtime") #runtime
+    set(PMC_COMP_RUNTIME "runtime")
+endif()
+if (NOT DEFINED PMC_COMP_PYTHON)
+    set(PMC_COMP_PYTHON "python")
 endif()
 
 ########################################################################
