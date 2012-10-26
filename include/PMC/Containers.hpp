@@ -23,20 +23,22 @@
  */
 
 /***********************************************************************
- * The PMC list is a fixed size array of PMC
+ * The PMC list is a fixed size array of PMCC
  **********************************************************************/
 #include <vector>
-typedef std::vector<PMC> PMCList;
+typedef std::vector<PMCC> PMCList;
 
 /***********************************************************************
- * The PMC tuple is a fixed size array of PMCC
- *
- * C++11 tuple not supported - so...
- * The thought is, tuples are supposed to be immutable,
- * so this should be an stl container of PMCC types.
+ * The PMC tuple is just a typedef for boost tuple!
+ * This could be swapped out for C++11 tuple in the future.
+ * Unlike the other containers, the template arguments
+ * need to be specified based on the tuple length.
+ * Example: PMCTuple<PMCC> or PMCTuple<PMCC, PMCC>
  **********************************************************************/
-#include <vector>
-typedef std::vector<PMCC> PMCTuple;
+#include <boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple_comparison.hpp>
+#define PMCTuple boost::tuple
+#define PMCTier boost::tie
 
 /***********************************************************************
  * The PMC set is a set of PMCC

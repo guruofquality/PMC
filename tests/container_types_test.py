@@ -25,5 +25,9 @@ class TestContainerTypes(unittest.TestCase):
         d0 = {'foo': 1, 'bar': 2}
         self.loopback(d0)
 
+    def test_nested_container(self):
+        x0 = {'foo': (1, 2, 3, 4), 'bar': [1, 2, 3, 4]}
+        self.loopback(x0)
+
 if __name__ == '__main__':
     unittest.main()
