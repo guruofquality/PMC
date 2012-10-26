@@ -12,7 +12,8 @@
 
 %template (PMCDict) std::map<PMCC, PMCC>;
 
-DECL_PMC_SWIG_TYPE(PMCDict, swig_dict)
+#define STD_MAP(type) std::map<type, type>
+DECL_PMC_SWIG_TYPE(STD_MAP(PMCC), swig_dict)
 
 %pythoncode %{
 

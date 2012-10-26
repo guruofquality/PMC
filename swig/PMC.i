@@ -43,7 +43,7 @@ type pmc_to_ ## name(const PMCC &p)
     return p.cast<type >();
 }
 
-PMCC name ## _to_pmc(const type &p)
+PMC name ## _to_pmc(const type &p)
 {
     return PMC::make(p);
 }
