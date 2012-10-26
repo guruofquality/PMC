@@ -13,7 +13,7 @@
 
 %}
 
-struct PMC
+struct PMCC
 {
     %extend
     {
@@ -24,7 +24,7 @@ struct PMC
     }
 };
 
-struct PMCC : PMC
+struct PMC : PMCC
 {
 
 };

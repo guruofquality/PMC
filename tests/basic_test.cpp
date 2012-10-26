@@ -61,8 +61,12 @@ BOOST_AUTO_TEST_CASE(test_constness_builds)
     const int &x2_const_ref = x2.cast<int>();
 
     int &x0_rw_ref = x0.cast<int>();
-    //int &x1_rw_ref = x1.cast<int>(); //should not compile
+    int &x1_rw_ref = x1.cast<int>();
     //int &x2_rw_ref = x2.cast<int>(); //should not compile
+
+    PMCC x3 = x0;
+    PMCC x4 = x2;
+    //PMC x5 = x2; //should not compile
 }
 
 BOOST_AUTO_TEST_CASE(test_constness)

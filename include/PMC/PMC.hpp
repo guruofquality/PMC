@@ -27,34 +27,13 @@
  * PMC uses a fixed size buffer of PMC_FIXED_BUFF_SIZE bytes to hold the object.
  * A type contained in a PMC must have an overload for the equals comparable operator.
  */
-struct PMC : boost::intrusive_ptr<PMCImpl>
+struct PMCC : boost::intrusive_ptr<PMCImpl>
 {
-    //! Make an empty container
-    PMC(void);
+    //! Create a null or empty PMCC
+    PMCC(void);
 
     //! empty virtual deconstructor
-    virtual ~PMC(void){}
-
-    //! Make a new container holding a copy of the given value
-    template <typename ValueType>
-    static PMC make(const ValueType &value);
-
-    /*!
-     * Cast the item held by this object to an arbitrary type.
-     * This method will return a reference to the object.
-     * Use this method to modify the contained value.
-     * Only call if this object is not empty.
-     */
-    template <typename ValueType>
-    ValueType &cast(void);
-
-    /*!
-     * Cast the item held by this object to an arbitrary type.
-     * This method will return a const reference to the object.
-     * Only call if this object is not empty.
-     */
-    template <typename ValueType>
-    const ValueType &cast(void) const;
+    virtual ~PMCC(void){}
 
     //! Unique if caller holds the only reference count
     bool unique(void) const;
@@ -71,29 +50,6 @@ struct PMC : boost::intrusive_ptr<PMCImpl>
     //! Check if the container type matches
     template <typename ValueType>
     bool is_type(void) const;
-};
-
-/*!
- * A readonly version of the PMC container. Only const references can be retrieved.
- * A PMCC can be created from a PMC, but the other way around is not possible.
- * All of the methods available to the PMC object are available to PMCC as well.
- * However, the non-const cast method will throw because of constness restrictions.
- */
-struct PMCC : PMC
-{
-    //! Create a null or empty PMCC
-    PMCC(void);
-
-    //! Create a PMCC from an existing PMC
-    PMCC(const PMC &p);
-
-    /*!
-     * Cast the item held by this object to an arbitrary type.
-     * This method will return a const reference to the object.
-     * Only call if this object is not empty.
-     */
-    template <typename ValueType>
-    const ValueType &cast(void);
 
     /*!
      * Cast the item held by this object to an arbitrary type.
@@ -102,6 +58,30 @@ struct PMCC : PMC
      */
     template <typename ValueType>
     const ValueType &cast(void) const;
+};
+
+/*!
+ * The read/write version of the PMC container.
+ * Non-const references can be retrieved.
+ * Use PMC::make(object) to create new PMCs.
+ */
+struct PMC : PMCC
+{
+    //! Make an empty container
+    PMC(void);
+
+    //! Make a new container holding a copy of the given value
+    template <typename ValueType>
+    static PMC make(const ValueType &value);
+
+    /*!
+     * Cast the item held by this object to an arbitrary type.
+     * This method will return a reference to the object.
+     * Use this method to read or write the contained value.
+     * Only call if this object is not empty.
+     */
+    template <typename ValueType>
+    ValueType &cast(void) const;
 };
 
 /*!

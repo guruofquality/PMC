@@ -91,11 +91,10 @@ struct PMCImpl
 /***********************************************************************
  * Implementation details of PMC constructors and methods
  **********************************************************************/
-PMC_INLINE void PMC_impl_assert_not_null(const PMC *p)
+PMC_INLINE void PMC_impl_assert_not_null(const PMCC *p)
 {
     if (not *p) throw std::invalid_argument("Calling method on a null PMC object!");
 }
-
 
 PMC_INLINE void intrusive_ptr_add_ref(PMCImpl *impl)
 {
@@ -110,6 +109,49 @@ PMC_INLINE void intrusive_ptr_release(PMCImpl *impl)
     }
 }
 
+/***********************************************************************
+ * PMCC base type
+ **********************************************************************/
+PMC_INLINE bool PMCC::unique(void) const
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->count == 1;
+}
+
+PMC_INLINE size_t PMCC::use_count(void) const
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->count;
+}
+
+PMC_INLINE const std::type_info &PMCC::type(void) const
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->item->type();
+}
+
+template <typename ValueType>
+PMC_INLINE bool PMCC::is_type(void) const
+{
+    if (not *this) return false;
+    return this->type() == typeid(ValueType);
+}
+
+PMC_INLINE PMCC::PMCC(void)
+{
+    //NOP
+}
+
+template <typename ValueType>
+PMC_INLINE const ValueType &PMCC::cast(void) const
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->cast<ValueType>();
+}
+
+/***********************************************************************
+ * PMC read/write type
+ **********************************************************************/
 PMC_INLINE PMC::PMC(void)
 {
     //NOP
@@ -132,66 +174,7 @@ PMC_INLINE PMC PMC::make(const ValueType &value)
 }
 
 template <typename ValueType>
-PMC_INLINE const ValueType &PMC::cast(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->cast<ValueType>();
-}
-
-template <typename ValueType>
-PMC_INLINE ValueType &PMC::cast(void)
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->cast<ValueType>();
-}
-
-PMC_INLINE bool PMC::unique(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->count == 1;
-}
-
-PMC_INLINE size_t PMC::use_count(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->count;
-}
-
-PMC_INLINE const std::type_info &PMC::type(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->item->type();
-}
-
-template <typename ValueType>
-PMC_INLINE bool PMC::is_type(void) const
-{
-    if (not *this) return false;
-    return this->type() == typeid(ValueType);
-}
-
-/***********************************************************************
- * PMC const type
- **********************************************************************/
-PMC_INLINE PMCC::PMCC(void)
-{
-    //NOP
-}
-
-PMC_INLINE PMCC::PMCC(const PMC &p)
-{
-    this->reset(p.get());
-}
-
-template <typename ValueType>
-PMC_INLINE const ValueType &PMCC::cast(void)
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->cast<ValueType>();
-}
-
-template <typename ValueType>
-PMC_INLINE const ValueType &PMCC::cast(void) const
+PMC_INLINE ValueType &PMC::cast(void) const
 {
     PMC_impl_assert_not_null(this);
     return (*this)->cast<ValueType>();
@@ -210,21 +193,6 @@ PMC_INLINE bool PMCCompare(const PMCC &lhs, const PMCC &rhs)
         return lhs->item->equal(rhs->item);
     }
     return false;
-}
-
-PMC_INLINE bool operator==(const PMC &lhs, const PMC &rhs)
-{
-    return PMCCompare(lhs, rhs);
-}
-
-PMC_INLINE bool operator==(const PMC &lhs, const PMCC &rhs)
-{
-    return PMCCompare(lhs, rhs);
-}
-
-PMC_INLINE bool operator==(const PMCC &lhs, const PMC &rhs)
-{
-    return PMCCompare(lhs, rhs);
 }
 
 PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)

@@ -13,9 +13,9 @@ class TestContainerTypes(unittest.TestCase):
         t0 = (1, 2, 3, 4)
         self.loopback(t0)
 
-    def test_list_container(self):
-        l0 = [1, 2, 3, 4]
-        self.loopback(l0)
+    #def test_list_container(self):
+    #    l0 = [1, 2, 3, 4]
+    #    self.loopback(l0)
 
     def test_set_container(self):
         s0 = set([1, 2, 3, 4])

@@ -18,7 +18,6 @@ def PMC2Py(p):
 def Py2PMC(p):
     for is_py, py2pmc in _py_to_pmc_registry:
         if is_py(p): return py2pmc(p)
-    if isinstance(p, PMC): return p
     if isinstance(p, PMCC): return p
     raise TypeError, 'cannot convert %s to PMC type'%str(p)
 
