@@ -10,8 +10,9 @@ class TestContainerTypes(unittest.TestCase):
         self.assertEqual(x, y)
 
     def test_tuple_container(self):
-        t0 = (1, 2, 3, 4)
-        self.loopback(t0)
+        for i in range(10):
+            t0 = tuple(range(i))
+            self.loopback(t0)
 
     def test_list_container(self):
         l0 = [1, 2, 3, 4]

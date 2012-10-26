@@ -8,64 +8,68 @@
 #include <PMC/Containers.hpp>
 %}
 
-/*
+%define DECL_PMC_TUPLE_TYPE(n)
 
 %inline %{
 
-typedef PMCTuple<PMCC,PMCC,PMCC> PMCTuple3;
-
-bool pmc_is_tuple3(const PMCC &p)
+bool pmc_is_tuple ## n(const PMCC &p)
 {
-    return p.is_type<PMCTuple3 >();
+    return p.is_type<PMCTuple(n) >();
 }
 
-boost::array<PMCC, 3> pmc_tuple3_get(const PMCC &p)
+const PMCC &pmc_tuple ## n ## _get(const PMCC &p, const size_t i)
 {
-    //PMCTier(x[0], x[1], x[2]) = p.cast<PMCTuple3 >();
+    return p.cast<PMCTuple(n) >()[i];
 }
 
-boost::array<PMCC, 3> pmc_tuple3_test(void){}
-
-PMC pmc_make_tuple(const PMCC &x0, const PMCC &x1, const PMCC &x2)
+void pmc_tuple ## n ## _set(const PMC &p, const size_t i, const PMCC &x)
 {
-    return PMC::make(PMCTuple3(x0, x1, x2));
+    p.cast<PMCTuple(n) >()[i] = x;
+}
+
+PMC pmc_make_tuple ## n(void)
+{
+    return PMC::make(PMCTuple(n)());
 }
 
 %}
 
 %pythoncode %{
 
-print pmc_tuple3_test()
-print dir(pmc_tuple3_test())
-
-%}
-
-*/
-/*
-%include <std_vector.i>
-
-%template (PMCTuple) std::vector<PMCC>;
-
-DECL_PMC_SWIG_TYPE(std::vector<PMCC>, swig_tuple)
-
-%pythoncode %{
-
-def py_set_to_swig_tuple(py_tuple):
-    t = PMCTuple()
-    for item in py_tuple:
-        t.push_back(Py2PMC(item))
+def pmc_make_swig_tuple ## n(elems):
+    t = pmc_make_tuple ## n()
+    for i, elem in enumerate(elems):
+        pmc_tuple ## n ## _set(t, i, Py2PMC(elem))
     return t
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, tuple),
-    py2pmc = lambda x: swig_tuple_to_pmc(py_set_to_swig_tuple(x)),
+    is_py = lambda x: isinstance(x, tuple) and len(x) == n,
+    py2pmc = pmc_make_swig_tuple ## n,
 )
 
+def pmc_make_py_tuple ## n(p):
+    l = []
+    for i in range(n):
+        elem = pmc_tuple ## n ## _get(p, i)
+        l.append(PMC2Py(elem))
+    return tuple(l)
+
 RegisterPMC2Py(
-    is_pmc = pmc_is_swig_tuple,
-    pmc2py = lambda x: tuple(map(PMC2Py, pmc_to_swig_tuple(x))),
+    is_pmc = pmc_is_tuple ## n,
+    pmc2py = pmc_make_py_tuple ## n,
 )
 
 %}
 
-*/
+%enddef
+
+DECL_PMC_TUPLE_TYPE(0)
+DECL_PMC_TUPLE_TYPE(1)
+DECL_PMC_TUPLE_TYPE(2)
+DECL_PMC_TUPLE_TYPE(3)
+DECL_PMC_TUPLE_TYPE(4)
+DECL_PMC_TUPLE_TYPE(5)
+DECL_PMC_TUPLE_TYPE(6)
+DECL_PMC_TUPLE_TYPE(7)
+DECL_PMC_TUPLE_TYPE(8)
+DECL_PMC_TUPLE_TYPE(9)

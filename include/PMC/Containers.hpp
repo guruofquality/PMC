@@ -29,16 +29,12 @@
 typedef std::vector<PMCC> PMCList;
 
 /***********************************************************************
- * The PMC tuple is just a typedef for boost tuple!
- * This could be swapped out for C++11 tuple in the future.
- * Unlike the other containers, the template arguments
- * need to be specified based on the tuple length.
- * Example: PMCTuple<PMCC> or PMCTuple<PMCC, PMCC>
+ * The PMC tuple is just a typedef for boost::array/std::array.
+ * This is an array and not tuple because array is homogeneous.
+ * Example: PMCTuple(3) for a tuple of 3 elements.
  **********************************************************************/
-#include <boost/tuple/tuple.hpp>
-#include <boost/tuple/tuple_comparison.hpp>
-#define PMCTuple boost::tuple
-#define PMCTier boost::tie
+#include <boost/array.hpp>
+#define PMCTuple(n) boost::array<PMCC, n>
 
 /***********************************************************************
  * The PMC set is a set of PMCC
