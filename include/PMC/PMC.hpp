@@ -23,7 +23,7 @@
  * Also, the contained object will not be deleted until all references are deleted.
  * TODO: create fixed size allocation pool for PMCImpl allocations/frees.
  *
- * A PMC can contain any primitive or STL object - as long as that object fits.
+ * A PMC can contain any primitive or STL object. For small objects/most objects,
  * PMC uses a fixed size buffer of PMC_FIXED_BUFF_SIZE bytes to hold the object.
  * A type contained in a PMC must have an overload for the equals comparable operator.
  */

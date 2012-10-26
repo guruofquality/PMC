@@ -19,7 +19,8 @@ struct PMCImpl
 {
     PMCImpl(void):
         count(0),
-        item(NULL)
+        item(NULL),
+        buff(buff_fixed)
     {
         //NOP
     }
@@ -27,6 +28,7 @@ struct PMCImpl
     ~PMCImpl(void)
     {
         if (item) item->reset();
+        if (buff != buff_fixed) delete buff;
     }
 
     boost::detail::atomic_count count;
@@ -34,7 +36,6 @@ struct PMCImpl
     struct Item
     {
         virtual void reset(void) = 0;
-        virtual Item *clone(void *) const = 0;
         virtual const std::type_info &type(void) const = 0;
         virtual bool equal(const Item *item) const = 0;
     } *item;
@@ -56,11 +57,6 @@ struct PMCImpl
         const std::type_info &type(void) const
         {
             return typeid(ValueType);
-        }
-
-        Item *clone(void *buff) const
-        {
-            return new (buff) Container<ValueType>(value);
         }
 
         bool equal(const Item *item) const
@@ -85,7 +81,14 @@ struct PMCImpl
     }
 
     //! The fixed size storage buffer
-    char buff[PMC_FIXED_BUFF_SIZE];
+    char buff_fixed[PMC_FIXED_BUFF_SIZE];
+    char *buff;
+
+    void *alloc(const size_t bytes)
+    {
+        if (bytes > PMC_FIXED_BUFF_SIZE) buff = new char[bytes];
+        return buff;
+    }
 };
 
 /***********************************************************************
@@ -160,15 +163,9 @@ PMC_INLINE PMC::PMC(void)
 template <typename ValueType>
 PMC_INLINE PMC PMC::make(const ValueType &value)
 {
-    if (sizeof(ValueType) > PMC_FIXED_BUFF_SIZE)
-    {
-        throw std::invalid_argument(str(boost::format(
-            "Object of type %s (%u bytes) is too large for PMC (max %u bytes)!"
-        ) % typeid(ValueType).name() % sizeof(ValueType) % PMC_FIXED_BUFF_SIZE));
-    }
     PMC p;
     p.reset(new PMCImpl());
-    void *buff = (void *)p->buff;
+    void *buff = p->alloc(sizeof(ValueType));
     p->item = new (buff) PMCImpl::Container<ValueType>(value);
     return p;
 }
