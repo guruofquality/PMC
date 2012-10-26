@@ -14,22 +14,22 @@
 
 bool pmc_is_tuple ## n(const PMCC &p)
 {
-    return p.is_type<PMCTuple(n) >();
+    return p.is_type<PMCTuple<n> >();
 }
 
 const PMCC &pmc_tuple ## n ## _get(const PMCC &p, const size_t i)
 {
-    return p.cast<PMCTuple(n) >()[i];
+    return p.cast<PMCTuple<n> >()[i];
 }
 
 void pmc_tuple ## n ## _set(const PMC &p, const size_t i, const PMCC &x)
 {
-    p.cast<PMCTuple(n) >()[i] = x;
+    p.cast<PMCTuple<n> >()[i] = x;
 }
 
 PMC pmc_make_tuple ## n(void)
 {
-    return PMC::make(PMCTuple(n)());
+    return PMC::make(PMCTuple<n>());
 }
 
 %}
@@ -73,3 +73,4 @@ DECL_PMC_TUPLE_TYPE(6)
 DECL_PMC_TUPLE_TYPE(7)
 DECL_PMC_TUPLE_TYPE(8)
 DECL_PMC_TUPLE_TYPE(9)
+DECL_PMC_TUPLE_TYPE(10)

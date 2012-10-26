@@ -34,7 +34,11 @@ typedef std::vector<PMCC> PMCList;
  * Example: PMCTuple(3) for a tuple of 3 elements.
  **********************************************************************/
 #include <boost/array.hpp>
-#define PMCTuple(n) boost::array<PMCC, n>
+template <size_t size>
+struct PMCTuple : boost::array<PMCC, size>
+{
+    //empty
+};
 
 /***********************************************************************
  * The PMC set is a set of PMCC
