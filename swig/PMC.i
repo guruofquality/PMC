@@ -21,6 +21,12 @@ struct PMCC
         {
             return $self->type().name();
         }
+
+        bool __eq__(const PMCC &rhs)
+        {
+            return *($self) == rhs;
+        }
+
     }
 };
 

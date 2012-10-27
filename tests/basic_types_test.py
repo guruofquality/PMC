@@ -20,7 +20,6 @@ class TestBasicTypes(unittest.TestCase):
         self.loopback(True)
         self.loopback(False)
 
-        #ctypes can be dense
         import ctypes
         self.loopback(ctypes.c_bool(True))
         self.loopback(ctypes.c_bool(False))
@@ -33,30 +32,27 @@ class TestBasicTypes(unittest.TestCase):
         self.loopback(ctypes.c_int8(-42))
         self.loopback(ctypes.c_uint16(4200))
         self.loopback(ctypes.c_int16(-4200))
-        try:
-            import numpy
-            self.loopback(numpy.uint16(4200))
-            self.loopback(numpy.int16(-4200))
-        except ImportError: pass
+        try: import numpy
+        except ImportError: return
+        self.loopback(numpy.uint16(4200))
+        self.loopback(numpy.int16(-4200))
 
     def test_floats(self):
         self.loopback(4.2)
         import ctypes
         self.loopback(ctypes.c_float(4.2))
         self.loopback(ctypes.c_double(4.2))
-        try:
-            import numpy
-            self.loopback(numpy.float32(4.2))
-            self.loopback(numpy.float64(4.2))
-        except ImportError: pass
+        try: import numpy
+        except ImportError: return
+        self.loopback(numpy.float32(4.2))
+        self.loopback(numpy.float64(4.2))
 
     def test_complex(self):
         self.loopback(4+2j)
-        try:
-            import numpy
-            self.loopback(numpy.complex64(4-2j))
-            self.loopback(numpy.complex128(4-1j))
-        except ImportError: pass
+        try: import numpy
+        except ImportError: return
+        self.loopback(numpy.complex64(4-2j))
+        self.loopback(numpy.complex128(4-1j))
 
     def test_string(self):
         self.loopback("hello world")
