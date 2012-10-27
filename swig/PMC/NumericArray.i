@@ -80,6 +80,7 @@ def pointer_to_ndarray(addr, dtype, nitems, readonly=False, container=None):
             'shape' : (nitems,) + dtype.shape,
             'strides' : None,
             'version' : 3,
+            'container' : container,
         }
     return numpy.asarray(array_like()).view(dtype.base)
 %}

@@ -20,7 +20,7 @@ struct FooBar
 
 bool operator==(const FooBar &lhs, const FooBar &rhs)
 {
-    return (lhs.foo() == rhs.foo()) and (lhs.bar() == rhs.bar());
+    return (lhs.foo() == rhs.foo()) && (lhs.bar() == rhs.bar());
 }
 
 %}

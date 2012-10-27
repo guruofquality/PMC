@@ -39,7 +39,7 @@ GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/ba
 GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
 GR_ADD_TEST(operator_overloads_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/operator_overloads_test.py)
 
-GR_PYTHON_CHECK_MODULE("Check for numpy support" numpy None HAVE_NUMPY)
+GR_PYTHON_CHECK_MODULE("numpy support" numpy None HAVE_NUMPY)
 if (HAVE_NUMPY)
     GR_ADD_TEST(numeric_array_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/numeric_array_test.py)
 endif()
@@ -57,10 +57,12 @@ include(GrPython)
 
 list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../swig)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 
 GR_SWIG_MAKE(foo_bar foo_bar.i)
 
 unset(GR_TEST_PYTHON_DIRS)
 list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
 list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR})
+list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 GR_ADD_TEST(custom_type_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_type_test.py)

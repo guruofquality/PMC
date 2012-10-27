@@ -12,7 +12,8 @@ include(GrPython)
 ########################################################################
 # setup SWIG build
 ########################################################################
-set(GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 set(GR_SWIG_FLAGS -DPMC_SWIG_EXPORTS) #build vs runtime rules
 file(GLOB GR_SWIG_SOURCE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/PMC/*.i")
 
