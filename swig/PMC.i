@@ -38,7 +38,7 @@ bool pmc_is_ ## name(const PMCC &p)
     return p.is_type<type >();
 }
 
-type pmc_to_ ## name(const PMCC &p)
+const type &pmc_to_ ## name(const PMCC &p)
 {
     return p.cast<type >();
 }

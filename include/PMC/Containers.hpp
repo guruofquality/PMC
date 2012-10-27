@@ -31,7 +31,7 @@ typedef std::vector<PMCC> PMCList;
 /***********************************************************************
  * The PMC tuple is just a typedef for boost::array/std::array.
  * This is an array and not tuple because array is homogeneous.
- * Example: PMCTuple(3) for a tuple of 3 elements.
+ * Example: PMCTuple<3> for a tuple of 3 elements.
  **********************************************************************/
 #include <boost/array.hpp>
 template <size_t size>

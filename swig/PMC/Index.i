@@ -33,3 +33,4 @@ def Py2PMC(p):
 %include <PMC/Set.i>
 %include <PMC/List.i>
 %include <PMC/Dict.i>
+%include <PMC/NumericArray.i>

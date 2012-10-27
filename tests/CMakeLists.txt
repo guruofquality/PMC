@@ -38,6 +38,11 @@ set(GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
 GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
 GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
 
+GR_PYTHON_CHECK_MODULE("Check for numpy support" numpy None HAVE_NUMPY)
+if (HAVE_NUMPY)
+    GR_ADD_TEST(numeric_array_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/numeric_array_test.py)
+endif()
+
 ########################################################################
 # Swig custom type test
 ########################################################################
