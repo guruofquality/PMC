@@ -54,9 +54,7 @@ try:
         return pointer_to_ndarray(addr, dtype, size, readonly, p)
 
     def numpy_array_ ## type ## _to_pmc(a):
-        try: return a._pmc
-        except AttributeError:
-            return pmc_make_array_of_ ## type(a.ctypes.data, len(a))
+        return pmc_make_array_of_ ## type(a.ctypes.data, len(a))
 
     RegisterPy2PMC(
         is_py = lambda x: isinstance(x, numpy.ndarray) and (x.dtype == numpy.type),
@@ -81,9 +79,8 @@ def pointer_to_ndarray(addr, dtype, nitems, readonly=False, container=None):
             'descr' : dtype.base.descr,
             'shape' : (nitems,) + dtype.shape,
             'strides' : None,
-            'version' : 3
+            'version' : 3,
         }
-        def __init__(self): self._pmc = container
     return numpy.asarray(array_like()).view(dtype.base)
 %}
 
