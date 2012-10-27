@@ -127,3 +127,10 @@ To support built-in python container types: set, tuple, list, dict.
 These types have typedef'd C++ equivalents in <PMC/Containers.hpp>.
 The PMC module comes with conversions for all these container types.
 These types are recommended for C++ users interfacing with python.
+
+Tuple Note:
+The C++ representation for the python tuple requires
+that a type be exported for every possible tuple length.
+However, it is not practical to export types from 0 to infinity.
+Therefore, only tuples up to lengths of 11 elements are supported.
+If this is an issue, its recommended to use the list type instead.
