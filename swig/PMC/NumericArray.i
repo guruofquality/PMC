@@ -20,11 +20,12 @@ typedef std::complex<double> complex128_t;
 
 %define DECL_PMC_SWIG_NUMERIC_ARRAY(type)
 
-%template (vector_of_ ## type) std::vector<type ## _t>;
-
-DECL_PMC_SWIG_TYPE(std::vector<type ## _t>, array_of_ ## type)
-
 %inline %{
+
+bool pmc_is_array_of_ ## type(const PMCC &p)
+{
+    return p.is_type<std::vector<type ## _t> >();
+}
 
 std::pair<ptrdiff_t, size_t> info_of_array_of_ ## type(const PMCC &p)
 {
