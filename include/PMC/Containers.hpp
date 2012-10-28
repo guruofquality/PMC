@@ -52,4 +52,16 @@ typedef std::set<PMCC> PMCSet;
 #include <map>
 typedef std::map<PMCC, PMCC> PMCDict;
 
+/***********************************************************************
+ * The PMC pair may be used when iterating through a PMCDIct
+ * Example:
+ * const PMCDict &m = p.as<PMCDict>();
+ * BOOST_FOREACH(const PMCPair &pr, m)
+ * {
+ *     //do something with pr
+ * }
+ **********************************************************************/
+#include <utility>
+typedef std::pair<PMCC, PMCC> PMCPair;
+
 #endif /*INCLUDED_PMC_CONTAINERS_HPP*/
