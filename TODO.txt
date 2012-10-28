@@ -1,0 +1,30 @@
+########################################################################
+## The PMC TODO list
+########################################################################
+
+------------------------------------------------------------------------
+-- Numpy array issue
+------------------------------------------------------------------------
+We would like to be able to store a PMC reference into the numpy array.
+This way the numpy array holds a reference to the actual memory holder.
+This may actually be done by accident with 'container' : container.
+So this should be confirmed... and if this is the case,
+we would like to extract the PMC container for the py2pmc.
+Since it would not be necessary to create a new PMC in this case.
+
+------------------------------------------------------------------------
+-- Serialization support
+------------------------------------------------------------------------
+PMC types should support serialization and deserialization.
+The Boost serialization library is the current candidate.
+It has support STL and primitives, and is easily extensible.
+
+In order to make serialization work for PMC,
+the library needs a type factory + registry for deserialization.
+This factory would produce a new PMC container holding an object
+of a specific type given only a type descriptor of some sort.
+
+The type descriptor will probably be the RTTI string,
+or a string for the complete name of a type with namespace.
+The second option will likely be more portable across systems
+if serialized data is deserialized on a different machine.
