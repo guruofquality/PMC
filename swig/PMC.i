@@ -41,12 +41,12 @@ struct PMC : PMCC
 
 bool pmc_is_ ## name(const PMCC &p)
 {
-    return p.is_type<type >();
+    return p.is<type >();
 }
 
 const type &pmc_to_ ## name(const PMCC &p)
 {
-    return p.cast<type >();
+    return p.as<type >();
 }
 
 PMC name ## _to_pmc(const type &p)

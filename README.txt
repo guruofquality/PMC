@@ -42,14 +42,14 @@ the user knowing anything about the contained objects.
 PMC p = PMC::make(FooBar());
 
 //get a reference to foo bar
-FooBar &fb = p.cast<FooBar>();
+FooBar &fb = p.as<FooBar>();
 fb.foo = 12345; //modify object
 
 //read-only conatiner holding object
 PMCC p_const = p;
 
 //get a const-reference to foo bar
-const FooBar &fb = p_const.cast<FooBar>();
+const FooBar &fb = p_const.as<FooBar>();
 std::cout << fb.foo << std::endl; //read object
 
 //create another FooBar, init first

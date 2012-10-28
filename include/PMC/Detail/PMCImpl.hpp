@@ -134,7 +134,7 @@ PMC_INLINE const std::type_info &PMCC::type(void) const
 }
 
 template <typename ValueType>
-PMC_INLINE bool PMCC::is_type(void) const
+PMC_INLINE bool PMCC::is(void) const
 {
     if (not *this) return false;
     return this->type() == typeid(ValueType);
@@ -146,7 +146,7 @@ PMC_INLINE PMCC::PMCC(void)
 }
 
 template <typename ValueType>
-PMC_INLINE const ValueType &PMCC::cast(void) const
+PMC_INLINE const ValueType &PMCC::as(void) const
 {
     PMC_impl_assert_not_null(this);
     return (*this)->cast<ValueType>();
@@ -171,7 +171,7 @@ PMC_INLINE PMC PMC::make(const ValueType &value)
 }
 
 template <typename ValueType>
-PMC_INLINE ValueType &PMC::cast(void) const
+PMC_INLINE ValueType &PMC::as(void) const
 {
     PMC_impl_assert_not_null(this);
     return (*this)->cast<ValueType>();

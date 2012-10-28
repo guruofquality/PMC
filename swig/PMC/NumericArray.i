@@ -24,12 +24,12 @@ typedef std::complex<double> complex128_t;
 
 bool pmc_is_array_of_ ## type(const PMCC &p)
 {
-    return p.is_type<std::vector<type ## _t> >();
+    return p.is<std::vector<type ## _t> >();
 }
 
 std::pair<ptrdiff_t, size_t> info_of_array_of_ ## type(const PMCC &p)
 {
-    const std::vector<type ## _t> &v = p.cast<std::vector<type ## _t> >();
+    const std::vector<type ## _t> &v = p.as<std::vector<type ## _t> >();
     return std::pair<ptrdiff_t, size_t>(ptrdiff_t(&v[0]), v.size());
 }
 

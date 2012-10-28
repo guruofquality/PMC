@@ -49,7 +49,7 @@ struct PMCC : boost::intrusive_ptr<PMCImpl>
 
     //! Check if the container type matches
     template <typename ValueType>
-    bool is_type(void) const;
+    bool is(void) const;
 
     /*!
      * Cast the item held by this object to an arbitrary type.
@@ -57,7 +57,7 @@ struct PMCC : boost::intrusive_ptr<PMCImpl>
      * Only call if this object is not empty.
      */
     template <typename ValueType>
-    const ValueType &cast(void) const;
+    const ValueType &as(void) const;
 };
 
 /*!
@@ -81,7 +81,7 @@ struct PMC : PMCC
      * Only call if this object is not empty.
      */
     template <typename ValueType>
-    ValueType &cast(void) const;
+    ValueType &as(void) const;
 };
 
 /*!
