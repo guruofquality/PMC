@@ -5,8 +5,6 @@
 #ifndef INCLUDED_PMC_I
 #define INCLUDED_PMC_I
 
-%module PMC
-
 %{
 
 #include <PMC/PMC.hpp>
@@ -19,6 +17,7 @@ struct PMCC
     {
         const char *__str__(void)
         {
+            if (not ($self)) return "NULL PMC";
             return $self->type().name();
         }
 
