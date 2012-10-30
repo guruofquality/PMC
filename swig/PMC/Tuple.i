@@ -2,7 +2,7 @@
  * Support for the Python tuple type
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 %{
 #include <PMC/Containers.hpp>

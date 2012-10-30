@@ -2,7 +2,7 @@
  * Support for arrays of fixed-width numbers
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 %{
 #include <complex>
@@ -15,6 +15,7 @@ typedef std::complex<double> complex128_t;
 %include <stdint.i>
 %include <std_complex.i>
 %include <std_vector.i>
+%include <std_pair.i>
 
 %template (pair_ptr_size) std::pair<ptrdiff_t, size_t>;
 

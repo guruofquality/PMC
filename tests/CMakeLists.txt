@@ -33,8 +33,11 @@ endforeach(test_source)
 # Python unit tests
 ########################################################################
 include(GrPython)
+set(PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B})
 
-set(GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
+list(APPEND GR_TEST_PYTHON_DIRS ${PMC_SOURCE_DIR}/swig)
+list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/swig)
+list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/swig/PMC)
 GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
 GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
 GR_ADD_TEST(operator_overloads_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/operator_overloads_test.py)
@@ -55,14 +58,12 @@ endif()
 include(GrSwig)
 include(GrPython)
 
-list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
-list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../swig)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/swig)
 list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 
 GR_SWIG_MAKE(foo_bar foo_bar.i)
 
-unset(GR_TEST_PYTHON_DIRS)
-list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/../swig)
 list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR})
 list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 GR_ADD_TEST(custom_type_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_type_test.py)

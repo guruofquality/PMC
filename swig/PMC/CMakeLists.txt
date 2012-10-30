@@ -12,25 +12,45 @@ include(GrPython)
 ########################################################################
 # setup SWIG build
 ########################################################################
-list(APPEND GR_SWIG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
-list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
-set(GR_SWIG_FLAGS -DPMC_SWIG_EXPORTS) #build vs runtime rules
-file(GLOB GR_SWIG_SOURCE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/PMC/*.i")
-list(APPEND GR_SWIG_SOURCE_DEPS PMC.i)
+set(pmc_swig_modules
+    None
+    Bool
+    Integers
+    Floats
+    Complex
+    String
+    Tuple
+    Set
+    List
+    Dict
+    NumericArray
+)
 
-GR_SWIG_MAKE(PMC PMCSwig.i)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/swig)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+
+foreach(pmc_swig_module ${pmc_swig_modules})
+    GR_SWIG_MAKE(PMC${pmc_swig_module} ${pmc_swig_module}.i)
+    GR_SWIG_INSTALL(
+        TARGETS PMC${pmc_swig_module}
+        DESTINATION ${GR_PYTHON_DIR}/PMC
+        COMPONENT ${PMC_COMP_PYTHON}
+    )
+endforeach(pmc_swig_module)
 
 ########################################################################
 # Install rules
 ########################################################################
-GR_SWIG_INSTALL(
-    TARGETS PMC
-    DESTINATION ${GR_PYTHON_DIR}
+GR_PYTHON_INSTALL(
+    FILES __init__.py
+    DESTINATION ${GR_PYTHON_DIR}/PMC
     COMPONENT ${PMC_COMP_PYTHON}
 )
 
 install(
     FILES PMC.i
-    DESTINATION include/PMC/swig
+    DESTINATION include/PMC/swig/PMC
     COMPONENT ${PMC_COMP_PYTHON}
 )
+

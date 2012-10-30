@@ -2,7 +2,7 @@
  * Support for the string type
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 %include <std_string.i>
 

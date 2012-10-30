@@ -2,7 +2,7 @@
  * Support for the Python set type
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 %{
 #include <PMC/Containers.hpp>

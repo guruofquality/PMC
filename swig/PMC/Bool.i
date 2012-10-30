@@ -2,7 +2,7 @@
  * Support for the boolean type
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 DECL_PMC_SWIG_TYPE(bool, bool)
 

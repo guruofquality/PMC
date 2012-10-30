@@ -57,12 +57,8 @@ PMC name ## _to_pmc(const type &p)
 
 %enddef
 
-#ifdef PMC_SWIG_EXPORTS
-%include <PMC/Index.i>
-#else
 %pythoncode %{
 from PMC import *
 %}
-#endif
 
 #endif /*INCLUDED_PMC_I*/

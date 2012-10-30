@@ -2,7 +2,7 @@
  * Support for various floating point types
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 DECL_PMC_SWIG_TYPE(double, float64)
 

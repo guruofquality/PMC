@@ -2,7 +2,7 @@
  * Support for the complex floating point types
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 %include <std_complex.i>
 

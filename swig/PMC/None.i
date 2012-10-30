@@ -2,7 +2,7 @@
  * Support for the Python None / null PMC type
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 %inline %{
  

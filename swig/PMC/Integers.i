@@ -2,7 +2,7 @@
  * Support for various integers types
  **********************************************************************/
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 /***********************************************************************
  * Treatment for python long and int native types

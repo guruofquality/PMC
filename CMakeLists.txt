@@ -12,7 +12,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+set(PMC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(PMC_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
+
+list(APPEND CMAKE_MODULE_PATH ${PMC_SOURCE_DIR}/cmake/Modules)
 
 ########################################################################
 # Component names for install rules
@@ -51,5 +54,5 @@ find_package(Boost COMPONENTS)
 include_directories(include)
 add_subdirectory(include/PMC)
 #add_subdirectory(lib)
-add_subdirectory(swig)
+add_subdirectory(swig/PMC)
 add_subdirectory(tests)
