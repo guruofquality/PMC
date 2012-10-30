@@ -197,4 +197,14 @@ PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
     return PMCCompare(lhs, rhs);
 }
 
+/***********************************************************************
+ * PMC stream stuff
+ **********************************************************************/
+PMC_INLINE std::ostream& operator <<(std::ostream &os, const PMCC &obj)
+{
+    if (not obj) os << "PMC<NULL>";
+    else os << "PMC<" << obj.type().name() << ">";
+    return os;
+}
+
 #endif /*INCLUDED_PMC_DETAIL_PMC_IMPL_HPP*/

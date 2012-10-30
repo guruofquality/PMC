@@ -11,6 +11,7 @@
 #include <boost/intrusive_ptr.hpp>
 #include <stdexcept>
 #include <typeinfo>
+#include <ostream>
 
 /*!
  * PMC: Just another polymorphic container for C++.
@@ -91,6 +92,9 @@ struct PMC : PMCC
  * Otherwise true if they have the same contents.
  */
 bool PMCCompare(const PMCC &lhs, const PMCC &rhs);
+
+//! PMCC stream operator for iostream printing
+std::ostream& operator <<(std::ostream &os, const PMCC &obj);
 
 #include <PMC/Detail/PMCImpl.hpp>
 

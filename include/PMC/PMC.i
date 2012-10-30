@@ -12,19 +12,21 @@
 #define INCLUDED_PMC_PMC_I
 
 %{
-
 #include <PMC/PMC.hpp>
-
+#include <sstream>
 %}
+
+%include "std_string.i"
 
 struct PMCC
 {
     %extend
     {
-        const char *__str__(void)
+        std::string __str__(void)
         {
-            if (not ($self)) return "NULL PMC";
-            return $self->type().name();
+            std::ostringstream oss;
+            oss << *($self);
+            return oss.str();
         }
 
         bool __eq__(const PMCC &rhs)
