@@ -27,7 +27,6 @@ set(pmc_swig_modules
 )
 
 list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
-list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/swig)
 list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 
 foreach(pmc_swig_module ${pmc_swig_modules})
@@ -47,10 +46,3 @@ GR_PYTHON_INSTALL(
     DESTINATION ${GR_PYTHON_DIR}/PMC
     COMPONENT ${PMC_COMP_PYTHON}
 )
-
-install(
-    FILES PMC.i
-    DESTINATION include/PMC/swig/PMC
-    COMPONENT ${PMC_COMP_PYTHON}
-)
-

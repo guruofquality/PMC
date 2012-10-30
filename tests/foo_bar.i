@@ -35,6 +35,8 @@ struct FooBar
     float bar(void);
 };
 
-%include <PMC.i>
+%include <PMC/PMC.i>
 
 DECL_PMC_SWIG_TYPE(FooBar, swig_foo_bar)
+
+//registration is in the test code, but it could be here..
