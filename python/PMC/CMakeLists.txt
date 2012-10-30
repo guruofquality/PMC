@@ -13,26 +13,26 @@ include(GrPython)
 # setup SWIG build
 ########################################################################
 set(pmc_swig_modules
-    None
-    Bool
-    Integers
-    Floats
-    Complex
-    String
-    Tuple
-    Set
-    List
-    Dict
-    NumericArray
+    PMCNone
+    PMCBool
+    PMCIntegers
+    PMCFloats
+    PMCComplex
+    PMCString
+    PMCTuple
+    PMCSet
+    PMCList
+    PMCDict
+    PMCNumericArray
 )
 
 list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
 list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 
 foreach(pmc_swig_module ${pmc_swig_modules})
-    GR_SWIG_MAKE(PMC${pmc_swig_module} ${pmc_swig_module}.i)
+    GR_SWIG_MAKE(${pmc_swig_module} ${pmc_swig_module}.i)
     GR_SWIG_INSTALL(
-        TARGETS PMC${pmc_swig_module}
+        TARGETS ${pmc_swig_module}
         DESTINATION ${GR_PYTHON_DIR}/PMC
         COMPONENT ${PMC_COMP_PYTHON}
     )

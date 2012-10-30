@@ -53,6 +53,6 @@ find_package(Boost COMPONENTS)
 ########################################################################
 include_directories(include)
 add_subdirectory(include/PMC)
-#add_subdirectory(lib)
+add_subdirectory(lib)
 add_subdirectory(python/PMC)
 add_subdirectory(tests)
