@@ -14,6 +14,7 @@
 #include <boost/format.hpp>
 #include <new> //in-place new
 #include <cstddef> //null
+#include <stdexcept>
 
 struct PMCImpl
 {

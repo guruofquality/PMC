@@ -28,3 +28,9 @@ The type descriptor will probably be the RTTI string,
 or a string for the complete name of a type with namespace.
 The second option will likely be more portable across systems
 if serialized data is deserialized on a different machine.
+
+------------------------------------------------------------------------
+-- Pre-allocated pool
+------------------------------------------------------------------------
+Making a new PMC always incurs an allocation overhead.
+We could have a pool of pre-allocated PMCImpl objects.

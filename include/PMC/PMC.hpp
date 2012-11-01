@@ -8,8 +8,6 @@
 #define INCLUDED_PMC_PMC_HPP
 
 #include <PMC/Config.hpp>
-#include <boost/intrusive_ptr.hpp>
-#include <stdexcept>
 #include <typeinfo>
 #include <ostream>
 
@@ -22,13 +20,12 @@
  * PMC is a reference counted object. Once created with a value, the value will not be copied.
  * This makes copying PMCs very cheap, and light-weight on the allocation overhead.
  * Also, the contained object will not be deleted until all references are deleted.
- * TODO: create fixed size allocation pool for PMCImpl allocations/frees.
  *
  * A PMC can contain any primitive or STL object. For small objects/most objects,
  * PMC uses a fixed size buffer of PMC_FIXED_BUFF_SIZE bytes to hold the object.
  * A type contained in a PMC must have an overload for the equals comparable operator.
  */
-struct PMCC : boost::intrusive_ptr<PMCImpl>
+struct PMCC : PMCBase
 {
     //! Create a null or empty PMCC
     PMCC(void);
