@@ -10,6 +10,11 @@ include(GrSwig)
 include(GrPython)
 
 ########################################################################
+# Setup Finding Boost headers
+########################################################################
+find_package(Boost)
+
+########################################################################
 # setup SWIG build
 ########################################################################
 set(pmc_swig_modules
@@ -30,6 +35,7 @@ list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
 list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 
 foreach(pmc_swig_module ${pmc_swig_modules})
+    message(STATUS "Configuring swig module ${pmc_swig_module}...")
     GR_SWIG_MAKE(${pmc_swig_module} ${pmc_swig_module}.i)
     GR_SWIG_INSTALL(
         TARGETS ${pmc_swig_module}
