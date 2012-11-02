@@ -33,6 +33,8 @@ set(__INCLUDED_GR_TEST_CMAKE TRUE)
 ########################################################################
 function(GR_ADD_TEST test_name)
 
+        list(APPEND GR_TEST_PYTHON_DIRS ${GR_TEST_EXTRA_PYTHON_DIRS})
+
         #Ensure that the build exe also appears in the PATH.
         list(APPEND GR_TEST_TARGET_DEPS ${ARGN})
 
