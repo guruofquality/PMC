@@ -32,7 +32,10 @@ try:
 
     RegisterPy2PMC(
         is_py = lambda x: isinstance(x, numpy.complex64),
-        py2pmc = lambda x: complex64_to_pmc(complex(x)),
+        #workaround for old numpy.complex64 bug,
+        #where complex(numpy.complex64(x)).imag == 0
+        #py2pmc = lambda x: complex64_to_pmc(complex(x)),
+        py2pmc = lambda x: complex64_to_pmc(complex(x.real, x.imag)),
     )
 
     RegisterPMC2Py(
