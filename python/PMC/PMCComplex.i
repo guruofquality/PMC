@@ -1,3 +1,5 @@
+// Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
+
 /***********************************************************************
  * Support for the complex floating point types
  **********************************************************************/

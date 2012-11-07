@@ -1,3 +1,5 @@
+# Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
+
 import unittest
 from PMC import *
 from foo_bar import *

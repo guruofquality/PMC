@@ -1,3 +1,5 @@
+// Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
+
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
