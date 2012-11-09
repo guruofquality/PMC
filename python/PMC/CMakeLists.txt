@@ -18,6 +18,7 @@ find_package(Boost)
 # setup SWIG build
 ########################################################################
 set(pmc_swig_modules
+    PMCIndex
     PMCNone
     PMCBool
     PMCIntegers

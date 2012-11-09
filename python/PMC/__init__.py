@@ -1,5 +1,7 @@
 # Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
 
+from PMCIndex import PMCC, PMC
+
 _py_to_pmc_registry = list()
 _pmc_to_py_registry = list()
 
@@ -20,7 +22,7 @@ def PMC2Py(p):
         if is_pmc(p): return pmc2py(p)
     return p
 
-__all__ = ["RegisterPy2PMC", "RegisterPMC2Py", "Py2PMC", "PMC2Py"]
+__all__ = ["RegisterPy2PMC", "RegisterPMC2Py", "Py2PMC", "PMC2Py", "PMCC", "PMC"]
 
 import PMCNone
 import PMCBool
