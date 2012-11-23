@@ -17,6 +17,10 @@ class TestBasicTypes(unittest.TestCase):
     def test_none(self):
         self.loopback(None)
 
+    def test_nonzero(self):
+        self.assertTrue(Py2PMC(1))
+        self.assertFalse(Py2PMC(None))
+
     def test_bool(self):
         self.loopback(True)
         self.loopback(False)

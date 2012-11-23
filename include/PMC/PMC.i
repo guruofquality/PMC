@@ -30,6 +30,11 @@ struct PMCC
             return *($self) == rhs;
         }
 
+        bool __nonzero__(void)
+        {
+            return bool(*($self));
+        }
+
     }
 };
 
