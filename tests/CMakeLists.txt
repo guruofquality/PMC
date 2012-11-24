@@ -42,6 +42,7 @@ list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python/PMC/${CMAKE_BUILD_TYPE}
 GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
 GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
 GR_ADD_TEST(operator_overloads_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/operator_overloads_test.py)
+GR_ADD_TEST(pool_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pool_test.py)
 
 GR_PYTHON_CHECK_MODULE("numpy support" numpy None HAVE_NUMPY)
 if (HAVE_NUMPY)

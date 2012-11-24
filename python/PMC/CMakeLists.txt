@@ -19,6 +19,7 @@ find_package(Boost)
 ########################################################################
 set(pmc_swig_modules
     PMCIndex
+    PMCPool
     PMCNone
     PMCBool
     PMCIntegers
