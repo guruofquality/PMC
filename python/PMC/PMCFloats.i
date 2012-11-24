@@ -4,13 +4,19 @@
  * Support for various floating point types
  **********************************************************************/
 
-%include <PMC/PMC.i>
+%{
+#include <PMC/PMC.hpp>
+%}
+
+%import <PMC/PMC.i>
 
 DECL_PMC_SWIG_TYPE(double, float64)
 
 DECL_PMC_SWIG_TYPE(float, float32)
 
 %pythoncode %{
+
+from PMC import *
 
 ########################################################################
 ## python float is a float64

@@ -7,5 +7,5 @@
 %include <std_vector.i>
 %template (std_vector_PMC) std::vector<PMC>;
 
-%include <PMC/PMC.i>
+%import <PMC/PMC.i>
 %include <PMC/Pool.hpp>

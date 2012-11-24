@@ -14,33 +14,28 @@
 
 %include "std_string.i"
 
-struct PMCC
+struct PMCBase{};
+
+%include <PMC/PMC.hpp>
+
+%extend PMCC
 {
-    %extend
+    std::string __str__(void)
     {
-        std::string __str__(void)
-        {
-            std::ostringstream oss;
-            oss << *($self);
-            return oss.str();
-        }
-
-        bool __eq__(const PMCC &rhs)
-        {
-            return *($self) == rhs;
-        }
-
-        bool __nonzero__(void)
-        {
-            return bool(*($self));
-        }
-
+        std::ostringstream oss;
+        oss << *($self);
+        return oss.str();
     }
-};
 
-struct PMC : PMCC
-{
+    bool __eq__(const PMCC &rhs)
+    {
+        return *($self) == rhs;
+    }
 
+    bool __nonzero__(void)
+    {
+        return bool(*($self));
+    }
 };
 
 
@@ -71,12 +66,5 @@ PMC cname ## _to_pmc(const type &p)
 %}
 
 %enddef
-
-/***********************************************************************
- * pull PMC module routines into namespace for adding custom types
- **********************************************************************/
-%pythoncode %{
-from PMC import *
-%}
 
 #endif /*INCLUDED_PMC_PMC_I*/

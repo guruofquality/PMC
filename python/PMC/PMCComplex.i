@@ -4,7 +4,11 @@
  * Support for the complex floating point types
  **********************************************************************/
 
-%include <PMC/PMC.i>
+%{
+#include <PMC/PMC.hpp>
+%}
+
+%import <PMC/PMC.i>
 
 %include <std_complex.i>
 
@@ -12,6 +16,8 @@ DECL_PMC_SWIG_TYPE(std::complex<float>, complex64)
 DECL_PMC_SWIG_TYPE(std::complex<double>, complex128)
 
 %pythoncode %{
+
+from PMC import *
 
 ########################################################################
 ## python complex is a complex128

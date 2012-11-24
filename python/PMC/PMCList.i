@@ -4,7 +4,11 @@
  * Support for the Python list type
  **********************************************************************/
 
-%include <PMC/PMC.i>
+%{
+#include <PMC/PMC.hpp>
+%}
+
+%import <PMC/PMC.i>
 
 %{
 #include <PMC/Containers.hpp>
@@ -17,6 +21,8 @@
 DECL_PMC_SWIG_TYPE(std::vector<PMC>, swig_list)
 
 %pythoncode %{
+
+from PMC import *
 
 def py_set_to_swig_list(py_list):
     t = PMCList()

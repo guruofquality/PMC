@@ -21,6 +21,11 @@ class TestBasicTypes(unittest.TestCase):
         self.assertTrue(Py2PMC(1))
         self.assertFalse(Py2PMC(None))
 
+    def test_py2pmc_already_pmc(self):
+        p0 = Py2PMC(123)
+        p1 = Py2PMC(p0)
+        self.assertEqual(p0, p1)
+
     def test_bool(self):
         self.loopback(True)
         self.loopback(False)

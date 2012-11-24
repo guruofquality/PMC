@@ -3,17 +3,17 @@
 #ifndef INCLUDED_PMC_DETAIL_POOL_IMPL_HPP
 #define INCLUDED_PMC_DETAIL_POOL_IMPL_HPP
 
-PMCPool::PMCPool(void)
+PMC_INLINE PMCPool::PMCPool(void)
 {
     _next_i = 0;
 }
 
-PMCPool::~PMCPool(void)
+PMC_INLINE PMCPool::~PMCPool(void)
 {
     this->clear();
 }
 
-PMC PMCPool::get(void)
+PMC_INLINE PMC PMCPool::get(void)
 {
     //minor optimization, look at the last index + 1
     if (_next_i < this->size() and this->at(_next_i).unique())

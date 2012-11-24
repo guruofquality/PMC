@@ -4,11 +4,17 @@
  * Support for the boolean type
  **********************************************************************/
 
-%include <PMC/PMC.i>
+%{
+#include <PMC/PMC.hpp>
+%}
+
+%import <PMC/PMC.i>
 
 DECL_PMC_SWIG_TYPE(bool, bool)
 
 %pythoncode %{
+
+from PMC import *
 
 RegisterPy2PMC(
     is_py = lambda x: isinstance(x, bool),
