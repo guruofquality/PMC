@@ -25,7 +25,7 @@ struct PMCImpl
     ~PMCImpl(void)
     {
         if (item) item->reset();
-        if (buff != buff_fixed) delete buff;
+        if (buff != buff_fixed) delete [] buff;
     }
 
     boost::detail::atomic_count count;
