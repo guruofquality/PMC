@@ -5,6 +5,7 @@ install(FILES
     Config.hpp
     PMC.hpp
     PMC.i
+    Registry.i
     Containers.hpp
     Pool.hpp
     DESTINATION include/PMC

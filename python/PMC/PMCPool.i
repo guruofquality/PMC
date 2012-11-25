@@ -4,6 +4,8 @@
 #include <PMC/Pool.hpp>
 %}
 
+%include <PMC/Registry.i> //imports exception handling
+
 %include <std_vector.i>
 %template (std_vector_PMC) std::vector<PMC>;
 

@@ -18,6 +18,7 @@
 #define SWIG_INTRUSIVE_PTR_NAMESPACE boost
 %include <intrusive_ptr.i>
 %template (boost_intrusive_ptr_pmc_impl) boost::intrusive_ptr<PMCImpl>;
+%ignore operator <<(std::ostream &os, const PMCC &obj); //ignore warnings about %rename
 
 ////////////////////////////////////////////////////////////////////////
 // comprehend PMC types
@@ -48,34 +49,5 @@
         return bool(*($self));
     }
 };
-
-
-/***********************************************************************
- * DECL_PMC_SWIG_TYPE helper macro declares:
- *  - pmc_is_<typename> - tests if a PMC is typename
- *  - pmc_to_<typename> - converts PMC to swig object
- *  - <typename>_to_pmc - converts swig object to PMC
- **********************************************************************/
-%define DECL_PMC_SWIG_TYPE(type, cname)
-%inline %{
-
-bool pmc_is_ ## cname(const PMCC &p)
-{
-    return p.is<type >();
-}
-
-const type &pmc_to_ ## cname(const PMCC &p)
-{
-    return p.as<type >();
-}
-
-PMC cname ## _to_pmc(const type &p)
-{
-    return PMC::make(p);
-}
-
-%}
-
-%enddef
 
 #endif /*INCLUDED_PMC_PMC_I*/

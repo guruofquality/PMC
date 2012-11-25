@@ -4,11 +4,7 @@
  * Support for the Python None / null PMC type
  **********************************************************************/
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 %inline %{
  
@@ -25,8 +21,6 @@ static PMCC pmc_make_none(void)
 %}
  
 %pythoncode %{
-
-from PMC import *
 
 RegisterPy2PMC(
     is_py = lambda x: x is None,

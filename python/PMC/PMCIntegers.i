@@ -4,11 +4,7 @@
  * Support for various integers types
  **********************************************************************/
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 /***********************************************************************
  * Treatment for python long and int native types
@@ -19,8 +15,6 @@
 DECL_PMC_SWIG_TYPE(name, name)
 
 %pythoncode %{
-
-from PMC import *
 
 RegisterPy2PMC(
     is_py = lambda x: isinstance(x, name),
@@ -50,8 +44,6 @@ DECL_PMC_SWIG_BUILTIN_INTEGER_TYPE(long)
 DECL_PMC_SWIG_TYPE(name ## _t, name)
 
 %pythoncode %{
-
-from PMC import *
 
 try:
     import numpy

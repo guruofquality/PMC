@@ -37,11 +37,7 @@ struct FooBar
     float bar(void);
 };
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 DECL_PMC_SWIG_TYPE(FooBar, swig_foo_bar)
 

@@ -4,19 +4,13 @@
  * Support for the string type
  **********************************************************************/
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 %include <std_string.i>
 
 DECL_PMC_SWIG_TYPE(std::string, string)
 
 %pythoncode %{
-
-from PMC import *
 
 RegisterPy2PMC(
     is_py = lambda x: isinstance(x, str),

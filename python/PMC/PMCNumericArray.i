@@ -4,11 +4,7 @@
  * Support for arrays of fixed-width numbers
  **********************************************************************/
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 %{
 #include <complex>
@@ -51,8 +47,6 @@ PMC pmc_make_array_of_ ## type(const ptrdiff_t addr, const size_t size)
 %}
 
 %pythoncode %{
-
-from PMC import *
 
 try:
     import numpy

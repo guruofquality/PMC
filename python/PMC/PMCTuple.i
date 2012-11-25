@@ -4,11 +4,7 @@
  * Support for the Python tuple type
  **********************************************************************/
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 %{
 #include <PMC/Containers.hpp>
@@ -41,8 +37,6 @@ PMC pmc_make_tuple ## n(void)
 %}
 
 %pythoncode %{
-
-from PMC import *
 
 def pmc_make_swig_tuple ## n(elems):
     t = pmc_make_tuple ## n()

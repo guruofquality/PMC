@@ -4,11 +4,7 @@
  * Support for the Python dict type
  **********************************************************************/
 
-%{
-#include <PMC/PMC.hpp>
-%}
-
-%import <PMC/PMC.i>
+%include <PMC/Registry.i>
 
 %{
 #include <PMC/Containers.hpp>
@@ -22,8 +18,6 @@
 DECL_PMC_SWIG_TYPE(STD_MAP(PMCC), swig_dict)
 
 %pythoncode %{
-
-from PMC import *
 
 def swig_dict_to_py_dict(swig_dict):
     return dict([(PMC2Py(key), PMC2Py(value)) for key, value in swig_dict.iteritems()])
