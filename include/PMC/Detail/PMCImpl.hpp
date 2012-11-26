@@ -11,6 +11,7 @@
 #include <new> //in-place new
 #include <cstddef> //null
 #include <stdexcept>
+#include <string>
 
 struct PMCImpl
 {
@@ -158,6 +159,16 @@ PMC_INLINE PMC::PMC(void)
 }
 
 template <typename ValueType>
+PMC_INLINE ValueType &PMC::as(void) const
+{
+    PMC_impl_assert_not_null(this);
+    return (*this)->cast<ValueType>();
+}
+
+/***********************************************************************
+ * PMC Factory function
+ **********************************************************************/
+template <typename ValueType>
 PMC_INLINE PMC PMC::make(const ValueType &value)
 {
     PMC p;
@@ -167,11 +178,15 @@ PMC_INLINE PMC PMC::make(const ValueType &value)
     return p;
 }
 
-template <typename ValueType>
-PMC_INLINE ValueType &PMC::as(void) const
+PMC_INLINE PMC PMC::make(const char *s)
 {
-    PMC_impl_assert_not_null(this);
-    return (*this)->cast<ValueType>();
+    return PMC::make(std::string(s));
+}
+
+template <typename ValueType>
+PMC_INLINE PMC PMC_(const ValueType &value)
+{
+    return PMC::make(value);
 }
 
 /***********************************************************************

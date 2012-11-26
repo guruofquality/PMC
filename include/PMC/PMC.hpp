@@ -68,6 +68,9 @@ struct PMC : PMCC
     template <typename ValueType>
     static PMC make(const ValueType &value);
 
+    //! Special make overload to create std::string from char *
+    static PMC make(const char *);
+
     /*!
      * Cast the item held by this object to an arbitrary type.
      * This method will return a reference to the object.
@@ -77,6 +80,10 @@ struct PMC : PMCC
     template <typename ValueType>
     ValueType &as(void) const;
 };
+
+//! Convenience function for PMC::make
+template <typename ValueType>
+PMC PMC_(const ValueType &value);
 
 /*!
  * Compare two PMC objects.
