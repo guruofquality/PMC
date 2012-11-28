@@ -194,19 +194,14 @@ PMC_INLINE PMC PMC_(const ValueType &value)
  **********************************************************************/
 PMC_INLINE bool PMCCompare(const PMCC &lhs, const PMCC &rhs)
 {
-    //both null so its the same
-    if (not lhs and not rhs) return true;
+    //equal pointers mean same obj or both null
+    if (lhs.get() == rhs.get()) return true;
     //both non-null so perform equals compare
     if (lhs and rhs and lhs.type() == rhs.type())
     {
         return lhs->item->equal(rhs->item);
     }
     return false;
-}
-
-PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
-{
-    return PMCCompare(lhs, rhs);
 }
 
 /***********************************************************************

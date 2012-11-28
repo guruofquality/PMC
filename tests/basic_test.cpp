@@ -5,6 +5,11 @@
 
 #include <PMC/PMC.hpp>
 
+PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
+{
+    return PMCCompare(lhs, rhs);
+}
+
 BOOST_AUTO_TEST_CASE(test_null)
 {
     PMC null_pmc;

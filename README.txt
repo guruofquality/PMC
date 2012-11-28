@@ -58,7 +58,7 @@ fb2.foo = 12345;
 PMC p2 = PMC::make(fb2); //p2 now has a copy of fb2
 
 //compare two PMCs:
-std::cout << "should be true: " << (p == p2) << std::endl;
+std::cout << "should be true: " << PMCCompare(p, p2) << std::endl;
 
 ------------------------------------------------------------------------
 -- Python support

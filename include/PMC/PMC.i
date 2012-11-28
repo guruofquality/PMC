@@ -41,7 +41,7 @@
 
     bool __eq__(const PMCC &rhs)
     {
-        return *($self) == rhs;
+        return PMCCompare(*($self), rhs);
     }
 
     bool __nonzero__(void)
