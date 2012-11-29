@@ -77,6 +77,15 @@ struct PMC_API PMCC : PMCBase
      * \return an object from the intern pool
      */
     const PMCC &intern(void) const;
+
+    /*!
+     * Compare two PMC objects for equivalency.
+     * The operator==() checks if the containers are idential.
+     * The eq() method checks if the contents are identical.
+     * If both objects are null, the result is also true.
+     * \return true if they have the same contents
+     */
+    bool eq(const PMCC &rhs) const;
 };
 
 /*!
@@ -107,14 +116,6 @@ PMC PMC_M(const ValueType &value);
 
 //! Special make overload to create std::string from char *
 const PMCC &PMC_M(const char *);
-
-/*!
- * Compare two PMC objects.
- *
- * True if they are both null.
- * Otherwise true if they have the same contents.
- */
-bool PMCCompare(const PMCC &lhs, const PMCC &rhs);
 
 //! PMCC stream operator for iostream printing
 std::ostream& operator <<(std::ostream &os, const PMCC &obj);

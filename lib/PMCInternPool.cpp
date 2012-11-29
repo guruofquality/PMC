@@ -13,7 +13,7 @@ const PMCC &PMCC::intern(void) const
     pool_lock.lock();
     BOOST_FOREACH(const PMCC &p, intern_pool)
     {
-        if (PMCCompare(p, *this))
+        if (this->eq(p))
         {
             pool_lock.unlock();
             return p;

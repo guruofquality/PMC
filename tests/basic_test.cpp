@@ -5,11 +5,6 @@
 
 #include <PMC/PMC.hpp>
 
-PMC_INLINE bool operator==(const PMCC &lhs, const PMCC &rhs)
-{
-    return PMCCompare(lhs, rhs);
-}
-
 BOOST_AUTO_TEST_CASE(test_null)
 {
     PMC null_pmc;
@@ -44,7 +39,7 @@ BOOST_AUTO_TEST_CASE(test_equals)
 {
     PMC x0 = PMC_M(int(42));
     PMC x1 = PMC_M(int(42));
-    BOOST_CHECK_EQUAL(x0, x1);
+    BOOST_CHECK(x0.eq(x1));
 
     PMC v0 = PMC_M(std::vector<int>());
     v0.as<std::vector<int> >().push_back(4);
@@ -53,7 +48,7 @@ BOOST_AUTO_TEST_CASE(test_equals)
     PMC v1 = PMC_M(std::vector<int>());
     v1.as<std::vector<int> >().push_back(4);
     v1.as<std::vector<int> >().push_back(2);
-    BOOST_CHECK_EQUAL(v0, v1);
+    BOOST_CHECK(v0.eq(v1));
 }
 
 BOOST_AUTO_TEST_CASE(test_constness_builds)
@@ -82,7 +77,7 @@ BOOST_AUTO_TEST_CASE(test_constness)
     PMCC x1 = PMC_M(int(42));
     BOOST_CHECK_EQUAL(x0.as<int>(), 42);
     BOOST_CHECK_EQUAL(x1.as<int>(), 42);
-    BOOST_CHECK_EQUAL(x0, x1);
+    BOOST_CHECK(x1.eq(x1));
 }
 
 BOOST_AUTO_TEST_CASE(test_floats)

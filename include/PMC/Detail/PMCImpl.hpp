@@ -186,8 +186,9 @@ PMC_INLINE const PMCC &PMC_M(const char *s)
 /***********************************************************************
  * PMC Comparable stuff
  **********************************************************************/
-PMC_INLINE bool PMCCompare(const PMCC &lhs, const PMCC &rhs)
+PMC_INLINE bool PMCC::eq(const PMCC &rhs) const
 {
+    const PMCC &lhs = *this;
     //equal pointers mean same obj or both null
     if (lhs.get() == rhs.get()) return true;
     //both non-null so perform equals compare
