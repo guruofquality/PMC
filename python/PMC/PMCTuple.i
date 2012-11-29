@@ -31,7 +31,7 @@ void pmc_tuple ## n ## _set(const PMC &p, const size_t i, const PMCC &x)
 
 PMC pmc_make_tuple ## n(void)
 {
-    return PMC::make(PMCTuple<n>());
+    return PMC_M(PMCTuple<n>());
 }
 
 %}

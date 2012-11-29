@@ -46,7 +46,7 @@ const type &pmc_to_ ## cname(const PMCC &p)
 
 PMC cname ## _to_pmc(const type &p)
 {
-    return PMC::make(p);
+    return PMC_M(p);
 }
 
 %}

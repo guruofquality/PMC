@@ -91,13 +91,6 @@ struct PMC : PMCC
 
     //PMC(const PMCC &) //this is a *copy* constructor
 
-    //! Make a new container holding a copy of the given value
-    template <typename ValueType>
-    static PMC make(const ValueType &value);
-
-    //! Special make overload to create std::string from char *
-    static PMCC make(const char *);
-
     /*!
      * Cast the item held by this object to an arbitrary type.
      * This method will return a reference to the object.
@@ -108,9 +101,12 @@ struct PMC : PMCC
     ValueType &as(void) const;
 };
 
-//! Convenience function for PMC::make
+//! Make a new container holding a copy of the given value
 template <typename ValueType>
-PMC PMC_(const ValueType &value);
+PMC PMC_M(const ValueType &value);
+
+//! Special make overload to create std::string from char *
+const PMCC &PMC_M(const char *);
 
 /*!
  * Compare two PMC objects.

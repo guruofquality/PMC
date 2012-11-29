@@ -39,7 +39,7 @@ the user knowing anything about the contained objects.
 #include <PMC/PMC.hpp>
 
 //make a container with an empty FooBar
-PMC p = PMC::make(FooBar());
+PMC p = PMC_M(FooBar());
 
 //get a reference to foo bar
 FooBar &fb = p.as<FooBar>();
@@ -55,7 +55,7 @@ std::cout << fb.foo << std::endl; //read object
 //create another FooBar, init first
 FooBar fb2;
 fb2.foo = 12345;
-PMC p2 = PMC::make(fb2); //p2 now has a copy of fb2
+PMC p2 = PMC_M(fb2); //p2 now has a copy of fb2
 
 //compare two PMCs:
 std::cout << "should be true: " << PMCCompare(p, p2) << std::endl;

@@ -41,7 +41,7 @@ PMC pmc_make_array_of_ ## type(const ptrdiff_t addr, const size_t size)
     std::vector<type ## _t> v(size);
     type ## _t *item_ptr = (type ## _t *) addr;
     v.assign(item_ptr, item_ptr+size);
-    return PMC::make(v);
+    return PMC_M(v);
 }
 
 %}

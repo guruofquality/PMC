@@ -169,7 +169,7 @@ PMC_INLINE ValueType &PMC::as(void) const
  * PMC Factory function
  **********************************************************************/
 template <typename ValueType>
-PMC_INLINE PMC PMC::make(const ValueType &value)
+PMC_INLINE PMC PMC_M(const ValueType &value)
 {
     PMC p;
     p.reset(new PMCImpl());
@@ -178,15 +178,9 @@ PMC_INLINE PMC PMC::make(const ValueType &value)
     return p;
 }
 
-PMC_INLINE PMCC PMC::make(const char *s)
+PMC_INLINE const PMCC &PMC_M(const char *s)
 {
-    return PMC::make(std::string(s)).intern();
-}
-
-template <typename ValueType>
-PMC_INLINE PMC PMC_(const ValueType &value)
-{
-    return PMC::make(value);
+    return PMC_M(std::string(s)).intern();
 }
 
 /***********************************************************************

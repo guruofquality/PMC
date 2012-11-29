@@ -14,7 +14,7 @@ DECL_PMC_SWIG_TYPE(std::string, string)
 
 PMCC string_to_pmc_intern(const char *s)
 {
-    return PMC::make(s);
+    return PMC_M(s);
 }
 
 %}
