@@ -37,12 +37,12 @@ install(TARGETS pmc
 # Build pkg config file
 ########################################################################
 configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/PMC.pc.in
-    ${CMAKE_CURRENT_BINARY_DIR}/PMC.pc
+    ${CMAKE_CURRENT_SOURCE_DIR}/pmc.pc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/pmc.pc
 @ONLY)
 
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/PMC.pc
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/pmc.pc
     DESTINATION lib${LIB_SUFFIX}/pkgconfig
     COMPONENT ${PMC_COMP_DEVEL}
 )

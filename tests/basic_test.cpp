@@ -90,3 +90,19 @@ BOOST_AUTO_TEST_CASE(test_floats)
     BOOST_CHECK(not f64.is<float>());
     BOOST_CHECK(f64.is<double>());
 }
+
+BOOST_AUTO_TEST_CASE(test_interns)
+{
+    //interned integers:
+    PMCC x0 = PMC_M(int(42));
+    PMCC x1 = PMC_M(int(42));
+    BOOST_CHECK(x0 != x1);
+    x0 = x0.intern();
+    x1 = x1.intern();
+    BOOST_CHECK_EQUAL(x0, x1);
+
+    //const char * is auto interned
+    PMCC s0 = PMC_M("hello");
+    PMCC s1 = PMC_M("hello");
+    BOOST_CHECK_EQUAL(s0, s1);
+}
