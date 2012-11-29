@@ -178,9 +178,9 @@ PMC_INLINE PMC PMC::make(const ValueType &value)
     return p;
 }
 
-PMC_INLINE PMC PMC::make(const char *s)
+PMC_INLINE PMCC PMC::make(const char *s)
 {
-    return PMC::make(std::string(s));
+    return PMC::make(std::string(s)).intern();
 }
 
 template <typename ValueType>

@@ -21,7 +21,7 @@
  * PMC uses a fixed size buffer of PMC_FIXED_BUFF_SIZE bytes to hold the object.
  * A type contained in a PMC must have an overload for the equals comparable operator.
  */
-struct PMCC : PMCBase
+struct PMC_API PMCC : PMCBase
 {
     //! Create a null or empty PMCC
     PMCC(void);
@@ -52,6 +52,31 @@ struct PMCC : PMCBase
      */
     template <typename ValueType>
     const ValueType &as(void) const;
+
+    /*!
+     * Create an interned PMC object.
+     *
+     * Object interning ensures that there is only one unique
+     * memory allocation for each unique object that is interned.
+     * https://en.wikipedia.org/wiki/String_interning
+     *
+     * Interning a PMC has a high overhead cost due to lookup;
+     * the advantage is that comparison of interned objects
+     * has the equivalent overhead of comparing pointers.
+     *
+     * The implementation details:
+     * Search for a duplicate object in the intern pool.
+     * If found, return the entry already in the pool.
+     * Otherwise, create a new entry in the intern pool.
+     *
+     * This method will return a PMC from the intern pool.
+     * The PMC involved in the call will not be changed!
+     * Interned objects are intentionally immutable.
+     * To ensure immutability, the intern() returns PMCC.
+     *
+     * \return an object from the intern pool
+     */
+    const PMCC &intern(void) const;
 };
 
 /*!
@@ -64,12 +89,14 @@ struct PMC : PMCC
     //! Make an empty container
     PMC(void);
 
+    //PMC(const PMCC &) //this is a *copy* constructor
+
     //! Make a new container holding a copy of the given value
     template <typename ValueType>
     static PMC make(const ValueType &value);
 
     //! Special make overload to create std::string from char *
-    static PMC make(const char *);
+    static PMCC make(const char *);
 
     /*!
      * Cast the item held by this object to an arbitrary type.

@@ -1,5 +1,6 @@
 
 include(GrTest)
+set(GR_TEST_TARGET_DEPS ${PMC_LIBRARIES})
 
 ########################################################################
 # unit test suite
@@ -24,7 +25,7 @@ add_definitions(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
 foreach(test_source ${test_sources})
     get_filename_component(test_name ${test_source} NAME_WE)
     add_executable(${test_name} ${test_source})
-    target_link_libraries(${test_name} ${Boost_LIBRARIES})
+    target_link_libraries(${test_name} ${Boost_LIBRARIES} ${PMC_LIBRARIES})
     set(GR_TEST_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
     GR_ADD_TEST(${test_name} ${test_name})
 endforeach(test_source)
@@ -60,7 +61,7 @@ endif()
 include(GrSwig)
 include(GrPython)
 
-list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
+list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_INCLUDE_DIRS})
 list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 
 GR_SWIG_MAKE(foo_bar foo_bar.i)

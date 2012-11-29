@@ -35,6 +35,7 @@ set(pmc_swig_modules
 
 list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_SOURCE_DIR}/include)
 list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+list(APPEND GR_SWIG_LIBRARIES ${PMC_LIBRARIES})
 
 foreach(pmc_swig_module ${pmc_swig_modules})
     message(STATUS "Configuring swig module ${pmc_swig_module}...")

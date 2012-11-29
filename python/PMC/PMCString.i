@@ -10,11 +10,20 @@
 
 DECL_PMC_SWIG_TYPE(std::string, string)
 
+%inline %{
+
+PMCC string_to_pmc_intern(const char *s)
+{
+    return PMC::make(s);
+}
+
+%}
+
 %pythoncode %{
 
 RegisterPy2PMC(
     is_py = lambda x: isinstance(x, str),
-    py2pmc = string_to_pmc,
+    py2pmc = string_to_pmc_intern,
 )
 
 RegisterPMC2Py(

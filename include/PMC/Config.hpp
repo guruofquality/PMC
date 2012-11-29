@@ -25,6 +25,8 @@
 // PMC_API is used for the public API symbols. It either DLL imports or DLL exports (or does nothing for static build)
 // PMC_LOCAL is used for non-api symbols.
 
+#define PMC_DLL //always building a DLL
+
 #ifdef PMC_DLL // defined if PMC is compiled as a DLL
   #ifdef PMC_DLL_EXPORTS // defined if we are building the PMC DLL (instead of using it)
     #define PMC_API PMC_HELPER_DLL_EXPORT
