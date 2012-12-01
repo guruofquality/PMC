@@ -6,6 +6,7 @@
 #include <PMC/Config.hpp>
 #include <typeinfo>
 #include <ostream>
+#include <boost/serialization/split_member.hpp>
 
 /*!
  * PMC: Just another polymorphic container for C++.
@@ -86,6 +87,12 @@ struct PMC_API PMCC : PMCBase
      * \return true if they have the same contents
      */
     bool eq(const PMCC &rhs) const;
+
+    template<class Archive>
+    void save(Archive &ar, const unsigned int) const;
+    template<class Archive>
+    void load(Archive &ar, const unsigned int);
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 /*!

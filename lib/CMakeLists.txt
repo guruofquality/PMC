@@ -6,7 +6,7 @@ include_directories(${PMC_INCLUDE_DIRS})
 ########################################################################
 # Setup Boost
 ########################################################################
-find_package(Boost)
+find_package(Boost COMPONENTS serialization)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND PMC_LIBRARIES ${Boost_LIBRARIES})
@@ -15,8 +15,8 @@ list(APPEND PMC_LIBRARIES ${Boost_LIBRARIES})
 # Append PMC library sources
 ########################################################################
 list(APPEND PMC_SOURCES
-    PMCImplPool.cpp
-    PMCInternPool.cpp
+    InternPool.cpp
+    Serialize.cpp
 )
 
 ########################################################################

@@ -34,6 +34,7 @@ struct PMCImpl
     struct Item
     {
         virtual void reset(void) = 0;
+        virtual void clone(PMCImpl *) const = 0;
         virtual const std::type_info &type(void) const = 0;
         virtual bool equal(const Item *item) const = 0;
     } *item;
@@ -52,6 +53,12 @@ struct PMCImpl
             value = ValueType();
         }
 
+        void clone(PMCImpl *impl) const
+        {
+            void *buff = impl->alloc(sizeof(ValueType));
+            impl->item = new (buff) Container<ValueType>(value);
+        }
+
         const std::type_info &type(void) const
         {
             return typeid(ValueType);
@@ -63,6 +70,12 @@ struct PMCImpl
         }
 
         ValueType value;
+
+        template<class Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & value;
+        }
     };
 
     template <typename CastType>
