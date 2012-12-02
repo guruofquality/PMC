@@ -34,6 +34,8 @@ struct PMCImpl
 template <typename ValueType>
 struct PMCImplContainer : PMCImpl
 {
+    PMCImplContainer(void){}
+
     PMCImplContainer(const ValueType &value):
         value(value)
     {
@@ -51,6 +53,9 @@ struct PMCImplContainer : PMCImpl
     }
 
     ValueType value;
+
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int);
 };
 
 /***********************************************************************

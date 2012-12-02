@@ -3,3 +3,6 @@
 #include <PMC/Serialize.hpp>
 
 //wat?
+
+//BOOST_CLASS_EXPORT_KEY2(PMCImplContainer<int>, "PMCImplContainer<int>")
+//BOOST_CLASS_EXPORT_IMPLEMENT(PMCImplContainer<int>)
