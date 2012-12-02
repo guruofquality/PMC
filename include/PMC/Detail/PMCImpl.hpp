@@ -34,7 +34,10 @@ struct PMCImpl
 template <typename ValueType>
 struct PMCImplContainer : PMCImpl
 {
-    PMCImplContainer(void){}
+    PMCImplContainer(void)
+    {
+        //NOP
+    }
 
     PMCImplContainer(const ValueType &value):
         value(value)

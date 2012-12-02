@@ -3,46 +3,15 @@
 #ifndef INCLUDED_PMC_SERIALIZE_HPP
 #define INCLUDED_PMC_SERIALIZE_HPP
 
-#include <PMC/Config.hpp>
-#include <PMC/PMC.hpp>
-#include <string>
-#include <iostream>
-
-#include <boost/serialization/split_free.hpp>
-
-
-#include <iostream>
-
 #include <boost/serialization/export.hpp>
-#include <boost/serialization/base_object.hpp>
 
-template <typename ValueType> template <class Archive>
-void PMCImplContainer<ValueType>::serialize(Archive &ar, const unsigned int)
-{
-    boost::serialization::base_object<PMCImpl>(*this);
-    ar & value;
-}
+#define PMC_SERIALIZE_EXPORT_HELP(type) \
+    BOOST_CLASS_EXPORT_KEY2(type, #type) \
+    BOOST_CLASS_EXPORT_IMPLEMENT(type)
 
-template<class Archive>
-void serialize(Archive &, PMCImpl &, const unsigned int){}
+#define PMC_SERIALIZE_EXPORT(type) \
+    PMC_SERIALIZE_EXPORT_HELP(PMCImplContainer< type >)
 
-namespace boost { namespace serialization {
-template<class Archive>
-void save(Archive & ar, const PMCC &t, unsigned int version)
-{
-    const PMCImpl *base = t.get();
-    ar & base;
-}
-template<class Archive>
-void load(Archive & ar, PMCC &t, unsigned int version)
-{
-    PMCImpl *base = t.get();
-    ar & base;
-    t.reset(base);
-}
-}}
-
-BOOST_SERIALIZATION_SPLIT_FREE(PMCC)
-
+#include <PMC/Detail/Serialize.hpp>
 
 #endif /*INCLUDED_PMC_SERIALIZE_HPP*/

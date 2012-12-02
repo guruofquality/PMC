@@ -16,7 +16,6 @@ list(APPEND PMC_LIBRARIES ${Boost_LIBRARIES})
 ########################################################################
 list(APPEND PMC_SOURCES
     InternPool.cpp
-    Serialize.cpp
 )
 
 ########################################################################

@@ -14,13 +14,32 @@
 
 //BOOST_CLASS_EXPORT_GUID(PMCImplContainer<int>, "PMCImplContainer<int>")
 
-BOOST_CLASS_EXPORT_KEY2(PMCImplContainer<int>, "PMCImplContainer<int>")
-BOOST_CLASS_EXPORT_IMPLEMENT(PMCImplContainer<int>)
+//BOOST_CLASS_EXPORT_KEY2(PMCImplContainer<int>, "PMCImplContainer<int>")
+//BOOST_CLASS_EXPORT_IMPLEMENT(PMCImplContainer<int>)
+
+BOOST_AUTO_TEST_CASE(test_null)
+{
+    std::stringstream ss;
+    boost::archive::text_oarchive oa(ss);
+
+    PMCC p0;
+    oa << p0;
+
+    boost::archive::text_iarchive ia(ss);
+    PMCC p1;
+    ia >> p1;
+
+    BOOST_CHECK(not p0);
+    BOOST_CHECK(not p1);
+}
 
 BOOST_AUTO_TEST_CASE(test_foo)
 {
     std::stringstream ss;
     boost::archive::text_oarchive oa(ss);
+
+    //PMCC p0;
+    //oa << p0;
 
     PMCC p = PMC_M(int(1234));
 

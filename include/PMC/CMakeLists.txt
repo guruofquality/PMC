@@ -16,6 +16,7 @@ install(FILES
 install(FILES
     Detail/PMCImpl.hpp
     Detail/PoolImpl.hpp
+    Detail/Serialize.hpp
     DESTINATION include/PMC/Detail
     COMPONENT ${PMC_COMP_DEVEL}
 )
