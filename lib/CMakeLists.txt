@@ -15,8 +15,7 @@ list(APPEND PMC_LIBRARIES ${Boost_LIBRARIES})
 # Append PMC library sources
 ########################################################################
 list(APPEND PMC_SOURCES
-    PMCImplPool.cpp
-    PMCInternPool.cpp
+    InternPool.cpp
 )
 
 ########################################################################
