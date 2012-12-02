@@ -87,14 +87,11 @@ struct PMC_API PMCC : PMCBase
 /*!
  * The read/write version of the PMC container.
  * Non-const references can be retrieved.
- * Use PMC::make(object) to create new PMCs.
  */
 struct PMC : PMCC
 {
     //! Make an empty container
     PMC(void);
-
-    //PMC(const PMCC &) //this is a *copy* constructor
 
     /*!
      * Cast the item held by this object to an arbitrary type.
