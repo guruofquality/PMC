@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include <PMC/PMC.hpp>
-#include <PMC/Serialize.hpp>
+#include <PMC/SerializeTypes.hpp>
 
 // include headers that implement a archive in simple text format
 #include <boost/archive/text_oarchive.hpp>

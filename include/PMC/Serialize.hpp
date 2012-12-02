@@ -4,6 +4,7 @@
 #define INCLUDED_PMC_SERIALIZE_HPP
 
 #include <boost/serialization/export.hpp>
+#include <PMC/Detail/Serialize.hpp>
 
 #define PMC_SERIALIZE_EXPORT_HELP(type) \
     BOOST_CLASS_EXPORT_KEY2(type, #type) \
@@ -11,7 +12,5 @@
 
 #define PMC_SERIALIZE_EXPORT(type) \
     PMC_SERIALIZE_EXPORT_HELP(PMCImplContainer< type >)
-
-#include <PMC/Detail/Serialize.hpp>
 
 #endif /*INCLUDED_PMC_SERIALIZE_HPP*/

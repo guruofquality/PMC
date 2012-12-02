@@ -9,6 +9,7 @@ install(FILES
     Containers.hpp
     Pool.hpp
     Serialize.hpp
+    SerializeTypes.hpp
     DESTINATION include/PMC
     COMPONENT ${PMC_COMP_DEVEL}
 )

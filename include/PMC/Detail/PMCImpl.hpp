@@ -56,9 +56,6 @@ struct PMCImplContainer : PMCImpl
     }
 
     ValueType value;
-
-    template<class Archive>
-    void serialize(Archive &ar, const unsigned int);
 };
 
 /***********************************************************************
