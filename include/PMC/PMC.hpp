@@ -6,7 +6,6 @@
 #include <PMC/Config.hpp>
 #include <typeinfo>
 #include <ostream>
-#include <boost/serialization/split_member.hpp>
 
 /*!
  * PMC: Just another polymorphic container for C++.
@@ -17,10 +16,6 @@
  * PMC is a reference counted object. Once created with a value, the value will not be copied.
  * This makes copying PMCs very cheap, and light-weight on the allocation overhead.
  * Also, the contained object will not be deleted until all references are deleted.
- *
- * A PMC can contain any primitive or STL object. For small objects/most objects,
- * PMC uses a fixed size buffer of PMC_FIXED_BUFF_SIZE bytes to hold the object.
- * A type contained in a PMC must have an overload for the equals comparable operator.
  */
 struct PMC_API PMCC : PMCBase
 {
@@ -87,12 +82,6 @@ struct PMC_API PMCC : PMCBase
      * \return true if they have the same contents
      */
     bool eq(const PMCC &rhs) const;
-
-    template<class Archive>
-    void save(Archive &ar, const unsigned int) const;
-    template<class Archive>
-    void load(Archive &ar, const unsigned int);
-    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 /*!

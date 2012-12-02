@@ -39,7 +39,6 @@
   #define PMC_LOCAL
 #endif // PMC_DLL
 
-#define PMC_FIXED_BUFF_SIZE 64 //bytes
 #define PMC_INLINE inline
 
 #include <boost/intrusive_ptr.hpp>

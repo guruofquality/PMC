@@ -8,10 +8,29 @@
 #include <string>
 #include <iostream>
 
+#include <boost/serialization/split_free.hpp>
+
+namespace boost { namespace serialization {
+template<class Archive>
+void save(Archive & ar, const PMCC & t, unsigned int version)
+{
+    
+}
+template<class Archive>
+void load(Archive & ar, PMCC & t, unsigned int version)
+{
+    
+}
+}}
+
+BOOST_SERIALIZATION_SPLIT_FREE(PMCC)
+
 //TODO have to serialize/deserialize null ones
 
 
 //TODO check if its an intern and load/save that info
+
+/*
 
 PMC_API void PMCSerializeRegister(const std::string &type_id, const PMCC &p);
 
@@ -39,6 +58,7 @@ void PMCC::load(Archive &ar, const unsigned int)
     cloner->item->clone(this->get());
     ar & (*((*this)->item));
 }
+*/
 
 
 #endif /*INCLUDED_PMC_SERIALIZE_HPP*/

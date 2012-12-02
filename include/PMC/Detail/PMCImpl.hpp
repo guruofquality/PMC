@@ -18,15 +18,15 @@ struct PMCImpl
     PMCImpl(void):
         count(0),
         item(NULL),
-        buff(buff_fixed)
+        buff(NULL)
     {
         //NOP
     }
 
-    ~PMCImpl(void)
+    void reset(void)
     {
         if (item) item->reset();
-        if (buff != buff_fixed) delete [] buff;
+        if (buff) delete [] buff;
     }
 
     boost::detail::atomic_count count;
@@ -34,7 +34,6 @@ struct PMCImpl
     struct Item
     {
         virtual void reset(void) = 0;
-        virtual void clone(PMCImpl *) const = 0;
         virtual const std::type_info &type(void) const = 0;
         virtual bool equal(const Item *item) const = 0;
     } *item;
@@ -53,12 +52,6 @@ struct PMCImpl
             value = ValueType();
         }
 
-        void clone(PMCImpl *impl) const
-        {
-            void *buff = impl->alloc(sizeof(ValueType));
-            impl->item = new (buff) Container<ValueType>(value);
-        }
-
         const std::type_info &type(void) const
         {
             return typeid(ValueType);
@@ -70,12 +63,6 @@ struct PMCImpl
         }
 
         ValueType value;
-
-        template<class Archive>
-        void serialize(Archive &ar, const unsigned int version)
-        {
-            ar & value;
-        }
     };
 
     template <typename CastType>
@@ -91,15 +78,7 @@ struct PMCImpl
         return static_cast<Container<CastType> *>(item)->value;
     }
 
-    //! The fixed size storage buffer
-    char buff_fixed[PMC_FIXED_BUFF_SIZE];
     char *buff;
-
-    void *alloc(const size_t bytes)
-    {
-        if (bytes > PMC_FIXED_BUFF_SIZE) buff = new char[bytes];
-        return buff;
-    }
 };
 
 /***********************************************************************
@@ -119,7 +98,7 @@ PMC_INLINE void intrusive_ptr_release(PMCImpl *impl)
 {
     if (--impl->count == 0)
     {
-        delete impl;
+        impl->reset();
     }
 }
 
@@ -184,10 +163,18 @@ PMC_INLINE ValueType &PMC::as(void) const
 template <typename ValueType>
 PMC_INLINE PMC PMC_M(const ValueType &value)
 {
-    PMC p;
-    p.reset(new PMCImpl());
-    void *buff = p->alloc(sizeof(ValueType));
-    p->item = new (buff) PMCImpl::Container<ValueType>(value);
+    //create a buffer that can hold a PMCImpl + container
+    char *buff = new char[sizeof(PMCImpl)+sizeof(PMCImpl::Container<ValueType>)];
+
+    //create a new impl object at the start of this buffer
+    PMC p; p.reset(new (buff) PMCImpl());
+
+    //store a pointer to this buffer so it can clean up later
+    p->buff = buff;
+
+    //create a container in the came buffer + offset
+    p->item = new (buff + sizeof(PMCImpl)) PMCImpl::Container<ValueType>(value);
+
     return p;
 }
 
