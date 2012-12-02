@@ -8,78 +8,66 @@
  **********************************************************************/
 #include <boost/detail/atomic_count.hpp>
 #include <boost/format.hpp>
-#include <new> //in-place new
-#include <cstddef> //null
 #include <stdexcept>
 #include <string>
 
+/***********************************************************************
+ * Implementation base class, holds ref count
+ **********************************************************************/
 struct PMCImpl
 {
     PMCImpl(void):
-        count(0),
-        item(NULL),
-        buff(NULL)
+        count(0)
     {
         //NOP
     }
 
-    void reset(void)
-    {
-        if (item) item->reset();
-        if (buff) delete [] buff;
-    }
+    virtual const std::type_info &type(void) const = 0;
+    virtual bool equal(const PMCImpl *item) const = 0;
 
     boost::detail::atomic_count count;
+};
 
-    struct Item
+/***********************************************************************
+ * Templated container for holding the object
+ **********************************************************************/
+template <typename ValueType>
+struct PMCImplContainer : PMCImpl
+{
+    PMCImplContainer(const ValueType &value):
+        value(value)
     {
-        virtual void reset(void) = 0;
-        virtual const std::type_info &type(void) const = 0;
-        virtual bool equal(const Item *item) const = 0;
-    } *item;
-
-    template <typename ValueType>
-    struct Container : Item
-    {
-        Container(const ValueType &value):
-            value(value)
-        {
-            //NOP
-        }
-
-        void reset(void)
-        {
-            value = ValueType();
-        }
-
-        const std::type_info &type(void) const
-        {
-            return typeid(ValueType);
-        }
-
-        bool equal(const Item *item) const
-        {
-            return value == static_cast<const Container<ValueType> *>(item)->value;
-        }
-
-        ValueType value;
-    };
-
-    template <typename CastType>
-    CastType &cast(void) const
-    {
-        const std::type_info &result_type = typeid(CastType);
-        if (item->type() != result_type)
-        {
-            throw std::invalid_argument(str(boost::format(
-                "Cannot cast object of type %s to result type %s!"
-            ) % item->type().name() % result_type.name()));
-        }
-        return static_cast<Container<CastType> *>(item)->value;
+        //NOP
     }
 
-    char *buff;
+    const std::type_info &type(void) const
+    {
+        return typeid(ValueType);
+    }
+
+    bool equal(const PMCImpl *item) const
+    {
+        return value == static_cast<const PMCImplContainer<ValueType> *>(item)->value;
+    }
+
+    ValueType value;
 };
+
+/***********************************************************************
+ * The cast implementation
+ **********************************************************************/
+template <typename CastType>
+PMC_INLINE CastType &PMCImplCast(PMCImpl *item)
+{
+    const std::type_info &result_type = typeid(CastType);
+    if (item->type() != result_type)
+    {
+        throw std::invalid_argument(str(boost::format(
+            "Cannot cast object of type %s to result type %s!"
+        ) % item->type().name() % result_type.name()));
+    }
+    return static_cast<PMCImplContainer<CastType> *>(item)->value;
+}
 
 /***********************************************************************
  * Implementation details of PMC constructors and methods
@@ -98,7 +86,7 @@ PMC_INLINE void intrusive_ptr_release(PMCImpl *impl)
 {
     if (--impl->count == 0)
     {
-        impl->reset();
+        delete impl;
     }
 }
 
@@ -120,7 +108,7 @@ PMC_INLINE size_t PMCC::use_count(void) const
 PMC_INLINE const std::type_info &PMCC::type(void) const
 {
     PMC_impl_assert_not_null(this);
-    return (*this)->item->type();
+    return (*this)->type();
 }
 
 template <typename ValueType>
@@ -139,7 +127,7 @@ template <typename ValueType>
 PMC_INLINE const ValueType &PMCC::as(void) const
 {
     PMC_impl_assert_not_null(this);
-    return (*this)->cast<ValueType>();
+    return PMCImplCast<ValueType>(this->get());
 }
 
 /***********************************************************************
@@ -154,7 +142,7 @@ template <typename ValueType>
 PMC_INLINE ValueType &PMC::as(void) const
 {
     PMC_impl_assert_not_null(this);
-    return (*this)->cast<ValueType>();
+    return PMCImplCast<ValueType>(this->get());
 }
 
 /***********************************************************************
@@ -163,18 +151,8 @@ PMC_INLINE ValueType &PMC::as(void) const
 template <typename ValueType>
 PMC_INLINE PMC PMC_M(const ValueType &value)
 {
-    //create a buffer that can hold a PMCImpl + container
-    char *buff = new char[sizeof(PMCImpl)+sizeof(PMCImpl::Container<ValueType>)];
-
-    //create a new impl object at the start of this buffer
-    PMC p; p.reset(new (buff) PMCImpl());
-
-    //store a pointer to this buffer so it can clean up later
-    p->buff = buff;
-
-    //create a container in the came buffer + offset
-    p->item = new (buff + sizeof(PMCImpl)) PMCImpl::Container<ValueType>(value);
-
+    PMC p;
+    p.reset(new PMCImplContainer<ValueType>(value));
     return p;
 }
 
@@ -194,7 +172,7 @@ PMC_INLINE bool PMCC::eq(const PMCC &rhs) const
     //both non-null so perform equals compare
     if (lhs and rhs and lhs.type() == rhs.type())
     {
-        return lhs->item->equal(rhs->item);
+        return lhs->equal(rhs.get());
     }
     return false;
 }
