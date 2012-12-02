@@ -8,8 +8,6 @@
  **********************************************************************/
 #include <boost/detail/atomic_count.hpp>
 #include <boost/format.hpp>
-#include <new> //in-place new
-#include <cstddef> //null
 #include <stdexcept>
 #include <string>
 
