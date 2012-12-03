@@ -79,15 +79,15 @@ PMC_SERIALIZE_EXPORT(PMCSet, "PMC<Set>")
  **********************************************************************/
 #include <boost/serialization/array.hpp>
 
-template <size_t size> template <class Archive>
-void PMCTuple<size>::serialize(Archive &ar, const unsigned int)
+template <class Archive, size_t size>
+void serialize(Archive &ar, PMCTuple<size> &t, const unsigned int)
 {
-    boost::array<PMCC, size> &p = *this;
+    boost::array<PMCC, size> &p = t;
     ar & p;
 }
 
-template <> template <class Archive>
-void PMCTuple<0>::serialize(Archive &ar, const unsigned int)
+template <class Archive>
+void serialize(Archive &ar, PMCTuple<0> &t, const unsigned int)
 {
     //NOP - size 0 tuple
 }

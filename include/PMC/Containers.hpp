@@ -33,8 +33,7 @@ typedef std::vector<PMCC> PMCList;
 template <size_t size>
 struct PMCTuple : boost::array<PMCC, size>
 {
-    template<class Archive>
-    void serialize(Archive &ar, const unsigned int);
+    //empty
 };
 
 /***********************************************************************
