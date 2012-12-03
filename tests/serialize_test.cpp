@@ -33,6 +33,8 @@ BOOST_AUTO_TEST_CASE(test_simple_loopbacks)
     loopback_test(PMC()); //null
     loopback_test(PMC_M(true));
     loopback_test(PMC_M(false));
+    loopback_test(PMC_M(char(12)));
+    loopback_test(PMC_M(short(34)));
     loopback_test(PMC_M(int(1234)));
     loopback_test(PMC_M(long(6789)));
     loopback_test(PMC_M("hello"));

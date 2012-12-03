@@ -17,7 +17,7 @@
  * This makes copying PMCs very cheap, and light-weight on the allocation overhead.
  * Also, the contained object will not be deleted until all references are deleted.
  */
-struct PMC_API PMCC : PMCBase
+struct PMCC : PMCBase
 {
     //! Create a null or empty PMCC
     PMCC(void);
@@ -72,7 +72,7 @@ struct PMC_API PMCC : PMCBase
      *
      * \return an object from the intern pool
      */
-    const PMCC &intern(void) const;
+    PMC_API const PMCC &intern(void) const;
 
     /*!
      * Compare two PMC objects for equivalency.
