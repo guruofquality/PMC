@@ -6,6 +6,7 @@
 
 #include <PMC/PMC.hpp>
 #include <PMC/SerializeTypes.hpp>
+#include <boost/cstdint.hpp>
 
 // include headers that implement a archive in simple text format
 #include <boost/archive/text_oarchive.hpp>
@@ -14,7 +15,7 @@
 
 static void loopback_test(PMCC p0)
 {
-    std::cout << "doing loopback test on " << p0 << std::endl;
+    std::cout << "\ndoing loopback test on " << p0 << std::endl;
     std::stringstream ss;
     boost::archive::text_oarchive oa(ss);
 
@@ -28,13 +29,42 @@ static void loopback_test(PMCC p0)
     BOOST_CHECK(p0.eq(p1));
 }
 
+BOOST_AUTO_TEST_CASE(test_integer_types)
+{
+    loopback_test(PMC_M(char(0)));
+    loopback_test(PMC_M(short(0)));
+    loopback_test(PMC_M(int(0)));
+    loopback_test(PMC_M(long(0)));
+    loopback_test(PMC_M((long long)(0)));
+
+    loopback_test(PMC_M((signed char)(0)));
+    loopback_test(PMC_M((signed short)(0)));
+    loopback_test(PMC_M((signed int)(0)));
+    loopback_test(PMC_M((signed long)(0)));
+    loopback_test(PMC_M((signed long long)(0)));
+
+    loopback_test(PMC_M((unsigned char)(0)));
+    loopback_test(PMC_M((unsigned short)(0)));
+    loopback_test(PMC_M((unsigned int)(0)));
+    loopback_test(PMC_M((unsigned long)(0)));
+    loopback_test(PMC_M((unsigned long long)(0)));
+
+    loopback_test(PMC_M(boost::int8_t(0)));
+    loopback_test(PMC_M(boost::int16_t(0)));
+    loopback_test(PMC_M(boost::int32_t(0)));
+    loopback_test(PMC_M(boost::int64_t(0)));
+
+    loopback_test(PMC_M(boost::uint8_t(0)));
+    loopback_test(PMC_M(boost::uint16_t(0)));
+    loopback_test(PMC_M(boost::uint32_t(0)));
+    loopback_test(PMC_M(boost::uint64_t(0)));
+}
+
 BOOST_AUTO_TEST_CASE(test_simple_loopbacks)
 {
     loopback_test(PMC()); //null
     loopback_test(PMC_M(true));
     loopback_test(PMC_M(false));
-    loopback_test(PMC_M(char(12)));
-    loopback_test(PMC_M(short(34)));
     loopback_test(PMC_M(int(1234)));
     loopback_test(PMC_M(long(6789)));
     loopback_test(PMC_M("hello"));

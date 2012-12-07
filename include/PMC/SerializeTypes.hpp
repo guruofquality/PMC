@@ -14,33 +14,34 @@ PMC_SERIALIZE_EXPORT(bool, "PMC<bool>")
 /***********************************************************************
  * integer types
  **********************************************************************/
-#ifndef _MSC_VER
-#include <stdint.h>
+#include <boost/cstdint.hpp>
 
-PMC_SERIALIZE_EXPORT(int8_t, "PMC<int8>")
-PMC_SERIALIZE_EXPORT(int16_t, "PMC<int16>")
-PMC_SERIALIZE_EXPORT(int32_t, "PMC<int32>")
-PMC_SERIALIZE_EXPORT(int64_t, "PMC<int64>")
-PMC_SERIALIZE_EXPORT(uint8_t, "PMC<uint8>")
-PMC_SERIALIZE_EXPORT(uint16_t, "PMC<uint16>")
-PMC_SERIALIZE_EXPORT(uint32_t, "PMC<uint32>")
-PMC_SERIALIZE_EXPORT(uint64_t, "PMC<uint64>")
+PMC_SERIALIZE_EXPORT(char, "PMC<char>") //char != signed char != unsigned char
+
+#if ULONG_MAX == 0xffffffff
+
+//this long is only serializable on 32 bit machines
+//use fixed-width typedefs if this sucks
+PMC_SERIALIZE_EXPORT(signed long, "PMC<l32>")
+PMC_SERIALIZE_EXPORT(unsigned long, "PMC<ul32>")
 
 #else
 
-PMC_SERIALIZE_EXPORT(char, "PMC<char>")
-PMC_SERIALIZE_EXPORT(short, "PMC<short>")
-PMC_SERIALIZE_EXPORT(int, "PMC<int>")
-PMC_SERIALIZE_EXPORT(long, "PMC<long>")
-PMC_SERIALIZE_EXPORT(long long, "PMC<long long>")
-
-PMC_SERIALIZE_EXPORT(unsigned char, "PMC<unsigned char>")
-PMC_SERIALIZE_EXPORT(unsigned short, "PMC<unsigned short>")
-PMC_SERIALIZE_EXPORT(unsigned int, "PMC<unsigned int>")
-PMC_SERIALIZE_EXPORT(unsigned long, "PMC<unsigned long>")
-PMC_SERIALIZE_EXPORT(unsigned long long, "PMC<unsigned long long>")
+//this long long is only serializable on 64 bit machines
+//use fixed-width typedefs if this sucks
+PMC_SERIALIZE_EXPORT(signed long long, "PMC<ll64>")
+PMC_SERIALIZE_EXPORT(unsigned long long, "PMC<ull64>")
 
 #endif
+
+PMC_SERIALIZE_EXPORT(boost::int8_t, "PMC<int8>")
+PMC_SERIALIZE_EXPORT(boost::int16_t, "PMC<int16>")
+PMC_SERIALIZE_EXPORT(boost::int32_t, "PMC<int32>")
+PMC_SERIALIZE_EXPORT(boost::int64_t, "PMC<int64>")
+PMC_SERIALIZE_EXPORT(boost::uint8_t, "PMC<uint8>")
+PMC_SERIALIZE_EXPORT(boost::uint16_t, "PMC<uint16>")
+PMC_SERIALIZE_EXPORT(boost::uint32_t, "PMC<uint32>")
+PMC_SERIALIZE_EXPORT(boost::uint64_t, "PMC<uint64>")
 
 /***********************************************************************
  * float types
