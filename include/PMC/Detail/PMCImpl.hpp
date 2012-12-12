@@ -22,6 +22,8 @@ struct PMCImpl
         //NOP
     }
 
+    virtual ~PMCImpl(void){}
+
     virtual const std::type_info &type(void) const = 0;
     virtual bool equal(const PMCImpl *item) const = 0;
 
