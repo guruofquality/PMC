@@ -158,7 +158,7 @@ PMC_INLINE PMC PMC_M(const ValueType &value)
     return p;
 }
 
-PMC_INLINE const PMCC &PMC_M(const char *s)
+PMC_INLINE PMCC PMC_M(const char *s)
 {
     return PMC_M(std::string(s)).intern();
 }

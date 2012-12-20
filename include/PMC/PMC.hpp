@@ -108,7 +108,7 @@ template <typename ValueType>
 PMC PMC_M(const ValueType &value);
 
 //! Special make overload to create std::string from char *
-const PMCC &PMC_M(const char *);
+PMCC PMC_M(const char *);
 
 //! PMCC stream operator for iostream printing
 std::ostream& operator <<(std::ostream &os, const PMCC &obj);
