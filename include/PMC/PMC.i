@@ -41,15 +41,26 @@
         return oss.str();
     }
 
-    bool __eq__(const PMCC &rhs)
-    {
-        return ($self)->eq(rhs);
-    }
-
     bool __nonzero__(void)
     {
         return bool(*($self));
     }
+
+    bool _equal(const PMCC &rhs)
+    {
+        return ($self)->eq(rhs);
+    }
+
+    %insert("python")
+    %{
+        def __eq__(self, rhs):
+            if not isinstance(rhs, PMCC): return False
+            return self._equal(rhs)
+
+        def __call__(self):
+            import PMC
+            return PMC.PMC2Py(self)
+    %}
 };
 
 #endif /*INCLUDED_PMC_PMC_I*/

@@ -6,12 +6,16 @@
 #include <list>
 
 static boost::detail::spinlock pool_lock;
-static std::list<PMCC> intern_pool;
+static std::list<PMCC> &get_intern_pool(void)
+{
+    static std::list<PMCC> intern_pool;
+    return intern_pool;
+}
 
 const PMCC &PMCC::intern(void) const
 {
     pool_lock.lock();
-    BOOST_FOREACH(const PMCC &p, intern_pool)
+    BOOST_FOREACH(const PMCC &p, get_intern_pool())
     {
         if (this->eq(p))
         {
@@ -19,7 +23,7 @@ const PMCC &PMCC::intern(void) const
             return p;
         }
     }
-    intern_pool.push_back(*this);
+    get_intern_pool().push_back(*this);
     pool_lock.unlock();
     return *this;
 }

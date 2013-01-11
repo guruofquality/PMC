@@ -37,4 +37,6 @@ import PMCNumericArray
 
 from PMCPool import PMCPool
 
-__all__ = ["RegisterPy2PMC", "RegisterPMC2Py", "Py2PMC", "PMC2Py", "PMCC", "PMC", "PMCPool"]
+PMC_M = Py2PMC
+
+__all__ = ["RegisterPy2PMC", "RegisterPMC2Py", "Py2PMC", "PMC2Py", "PMCC", "PMC", "PMCPool", "PMC_M"]
