@@ -8,6 +8,8 @@ install(FILES
     Registry.i
     Containers.hpp
     Pool.hpp
+    Serialize.hpp
+    SerializeTypes.hpp
     DESTINATION include/PMC
     COMPONENT ${PMC_COMP_DEVEL}
 )
@@ -15,6 +17,7 @@ install(FILES
 install(FILES
     Detail/PMCImpl.hpp
     Detail/PoolImpl.hpp
+    Detail/Serialize.hpp
     DESTINATION include/PMC/Detail
     COMPONENT ${PMC_COMP_DEVEL}
 )

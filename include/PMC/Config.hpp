@@ -30,13 +30,16 @@
 #ifdef PMC_DLL // defined if PMC is compiled as a DLL
   #ifdef PMC_DLL_EXPORTS // defined if we are building the PMC DLL (instead of using it)
     #define PMC_API PMC_HELPER_DLL_EXPORT
+    #define PMC_EXTERN
   #else
     #define PMC_API PMC_HELPER_DLL_IMPORT
+    #define PMC_EXTERN extern
   #endif // PMC_DLL_EXPORTS
   #define PMC_LOCAL PMC_HELPER_DLL_LOCAL
 #else // PMC_DLL is not defined: this means PMC is a static lib.
   #define PMC_API
   #define PMC_LOCAL
+  #define PMC_EXTERN
 #endif // PMC_DLL
 
 #define PMC_INLINE inline

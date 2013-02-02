@@ -6,6 +6,7 @@ include_directories(${PMC_INCLUDE_DIRS})
 ########################################################################
 # Setup Boost
 ########################################################################
+#find_package(Boost COMPONENTS serialization)
 find_package(Boost)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})

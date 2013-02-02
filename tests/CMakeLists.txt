@@ -5,7 +5,7 @@ set(GR_TEST_TARGET_DEPS ${PMC_LIBRARIES})
 ########################################################################
 # unit test suite
 ########################################################################
-find_package(Boost COMPONENTS unit_test_framework)
+find_package(Boost COMPONENTS unit_test_framework serialization)
 
 if (NOT Boost_FOUND)
     return()
@@ -13,6 +13,7 @@ endif()
 
 set(test_sources
     basic_test.cpp
+    serialize_test.cpp
 )
 
 include_directories(${Boost_INCLUDE_DIRS})
