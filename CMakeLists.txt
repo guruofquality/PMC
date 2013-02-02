@@ -21,6 +21,10 @@ if(CMAKE_COMPILER_IS_GNUCXX AND ${SIZEOF_CPU} EQUAL 64)
     add_definitions(-fPIC)
 endif()
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+    #add_definitions(-fvisibility=hidden)
+endif()
+
 ########################################################################
 # Component names for install rules
 ########################################################################
