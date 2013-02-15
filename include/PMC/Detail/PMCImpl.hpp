@@ -28,6 +28,9 @@ struct PMCImpl
     virtual const std::type_info &type(void) const = 0;
     virtual bool equal(const PMCImpl *item) const = 0;
 
+    PMC_API void *operator new(const size_t size);
+    PMC_API void operator delete(void *mem, const size_t size);
+
     boost::detail::atomic_count count;
     bool intern;
 };
