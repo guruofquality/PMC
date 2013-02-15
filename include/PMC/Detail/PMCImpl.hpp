@@ -17,7 +17,8 @@
 struct PMCImpl
 {
     PMCImpl(void):
-        count(0)
+        count(0),
+        intern(false)
     {
         //NOP
     }
@@ -28,6 +29,7 @@ struct PMCImpl
     virtual bool equal(const PMCImpl *item) const = 0;
 
     boost::detail::atomic_count count;
+    bool intern;
 };
 
 /***********************************************************************
@@ -135,6 +137,11 @@ PMC_INLINE const ValueType &PMCC::as(void) const
 {
     PMC_impl_assert_not_null(this);
     return PMCImplCast<ValueType>(this->get());
+}
+
+PMC_INLINE bool PMCC::is_intern(void) const
+{
+    return (*this)->intern;
 }
 
 /***********************************************************************

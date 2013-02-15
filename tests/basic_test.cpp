@@ -97,12 +97,15 @@ BOOST_AUTO_TEST_CASE(test_interns)
     PMCC x0 = PMC_M(int(42));
     PMCC x1 = PMC_M(int(42));
     BOOST_CHECK(x0 != x1);
+    BOOST_CHECK(not x0.is_intern());
     x0 = x0.intern();
     x1 = x1.intern();
+    BOOST_CHECK(x0.is_intern());
     BOOST_CHECK_EQUAL(x0, x1);
 
     //const char * is auto interned
     PMCC s0 = PMC_M("hello");
     PMCC s1 = PMC_M("hello");
+    BOOST_CHECK(s0.is_intern());
     BOOST_CHECK_EQUAL(s0, s1);
 }

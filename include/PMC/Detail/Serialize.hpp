@@ -40,7 +40,7 @@ void save(Archive & ar, const PMCC &t, unsigned int version)
     const PMCImpl *base = t.get();
     ar & base;
 
-    //TODO save is intern
+    ar & t->intern;
 }
 template<class Archive>
 void load(Archive & ar, PMCC &t, unsigned int version)
@@ -53,7 +53,9 @@ void load(Archive & ar, PMCC &t, unsigned int version)
     ar & base;
     t.reset(base);
 
-    //TODO restore is intern and intern()
+    bool intern = true;
+    ar & intern;
+    if (intern) t = t.intern();
 }
 }}
 

@@ -13,7 +13,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <sstream>
 
-static void loopback_test(PMCC p0)
+static PMCC loopback_test(PMCC p0)
 {
     std::cout << "\ndoing loopback test on " << p0 << std::endl;
     std::stringstream ss;
@@ -27,6 +27,8 @@ static void loopback_test(PMCC p0)
     ia >> p1;
 
     BOOST_CHECK(p0.eq(p1));
+
+    return p1;
 }
 
 BOOST_AUTO_TEST_CASE(test_integer_types)
@@ -126,4 +128,11 @@ BOOST_AUTO_TEST_CASE(test_pmc_list_loopback)
     l4[2] = PMC_M(7);
     l4[3] = PMC_M(8);
     loopback_test_container(l4);
+}
+
+BOOST_AUTO_TEST_CASE(test_serialize_and_intern)
+{
+    PMCC p0 = PMC_M(int(0)).intern();
+    PMCC p1 = loopback_test(p0);
+    BOOST_CHECK(p1.is_intern());
 }

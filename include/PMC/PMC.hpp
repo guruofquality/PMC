@@ -74,6 +74,9 @@ struct PMCC : PMCBase
      */
     PMC_API const PMCC &intern(void) const;
 
+    //! True if this PMC object has been interned
+    bool is_intern(void) const;
+
     /*!
      * Compare two PMC objects for equivalency.
      * The operator==() checks if the containers are idential.

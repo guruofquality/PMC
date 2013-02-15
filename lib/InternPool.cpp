@@ -24,6 +24,7 @@ const PMCC &PMCC::intern(void) const
         }
     }
     get_intern_pool().push_back(*this);
+    (*this)->intern = true;
     pool_lock.unlock();
     return *this;
 }
