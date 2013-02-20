@@ -18,7 +18,7 @@ PMC_SERIALIZE_EXPORT(bool, "PMC<bool>")
 
 PMC_SERIALIZE_EXPORT(char, "PMC<char>") //char != signed char != unsigned char
 
-#if ULONG_MAX == 0xffffffff
+#if (ULONG_MAX == 0xffffffff) || defined(__APPLE__)
 
 //this long is only serializable on 32 bit machines
 //use fixed-width typedefs if this sucks
