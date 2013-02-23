@@ -129,6 +129,9 @@ endfunction(GR_LIBTOOL)
 # Also handle gnuradio custom naming conventions w/ extras mode.
 ########################################################################
 function(GR_LIBRARY_FOO target)
+
+    target_link_libraries(${target} ${GR_MOAR_LIBRARIES})
+
     #parse the arguments for component names
     include(CMakeParseArgumentsCopy)
     CMAKE_PARSE_ARGUMENTS(GR_LIBRARY "" "RUNTIME_COMPONENT;DEVEL_COMPONENT" "" ${ARGN})
