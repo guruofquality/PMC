@@ -20,7 +20,11 @@ DECL_PMC_SWIG_TYPE(STD_MAP(PMCC), swig_dict)
 %pythoncode %{
 
 def swig_dict_to_py_dict(swig_dict):
-    return dict([(PMC2Py(key), PMC2Py(value)) for key, value in swig_dict.iteritems()])
+    d = dict()
+    for key in swig_dict.keys():
+        value = swig_dict[key]
+        d[PMC2Py(key)] = PMC2Py(value)
+    return d
 
 def py_dict_to_swig_dict(py_dict):
     d = PMCDict()
