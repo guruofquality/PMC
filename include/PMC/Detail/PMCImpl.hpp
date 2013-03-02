@@ -14,22 +14,17 @@
 /***********************************************************************
  * Implementation base class, holds ref count
  **********************************************************************/
-struct PMCImpl
+struct PMC_API PMCImpl
 {
-    PMCImpl(void):
-        count(0),
-        intern(false)
-    {
-        //NOP
-    }
+    PMCImpl(void);
 
-    virtual ~PMCImpl(void){}
+    virtual ~PMCImpl(void);
 
     virtual const std::type_info &type(void) const = 0;
     virtual bool equal(const PMCImpl *item) const = 0;
 
-    PMC_API void *operator new(const size_t size);
-    PMC_API void operator delete(void *mem, const size_t size);
+    void *operator new(const size_t size);
+    void operator delete(void *mem, const size_t size);
 
     boost::detail::atomic_count count;
     bool intern;
@@ -48,6 +43,11 @@ struct PMCImplContainer : PMCImpl
 
     PMCImplContainer(const ValueType &value):
         value(value)
+    {
+        //NOP
+    }
+
+    ~PMCImplContainer(void)
     {
         //NOP
     }
