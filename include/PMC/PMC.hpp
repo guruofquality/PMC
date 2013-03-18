@@ -17,13 +17,12 @@
  * This makes copying PMCs very cheap, and light-weight on the allocation overhead.
  * Also, the contained object will not be deleted until all references are deleted.
  */
-struct PMCC : PMCBase
+struct PMC_API PMCC : PMCBase
 {
     //! Create a null or empty PMCC
     PMCC(void);
 
-    //! empty virtual deconstructor
-    virtual ~PMCC(void){}
+    virtual ~PMCC(void);
 
     //! Unique if caller holds the only reference count
     bool unique(void) const;
@@ -72,7 +71,7 @@ struct PMCC : PMCBase
      *
      * \return an object from the intern pool
      */
-    PMC_API const PMCC &intern(void) const;
+    const PMCC &intern(void) const;
 
     //! True if this PMC object has been interned
     bool is_intern(void) const;
@@ -91,10 +90,12 @@ struct PMCC : PMCBase
  * The read/write version of the PMC container.
  * Non-const references can be retrieved.
  */
-struct PMC : PMCC
+struct PMC_API PMC : PMCC
 {
     //! Make an empty container
     PMC(void);
+
+    virtual ~PMC(void);
 
     /*!
      * Cast the item held by this object to an arbitrary type.

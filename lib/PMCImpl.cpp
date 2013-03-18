@@ -2,6 +2,26 @@
 
 #include <PMC/PMC.hpp>
 
+PMCC::PMCC(void)
+{
+    //NOP
+}
+
+PMCC::~PMCC(void)
+{
+    //NOP
+}
+
+PMC::PMC(void)
+{
+    //NOP
+}
+
+PMC::~PMC(void)
+{
+    //NOP
+}
+
 PMCImpl::PMCImpl(void):
     count(0),
     intern(false)

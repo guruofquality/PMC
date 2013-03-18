@@ -3,6 +3,11 @@
 #ifndef INCLUDED_PMC_DETAIL_PMC_IMPL_HPP
 #define INCLUDED_PMC_DETAIL_PMC_IMPL_HPP
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning (disable:4251)  // needs to have dll interface
+#endif //_MSC_VER
+
 /***********************************************************************
  * Implementation details of the underlying PMCImpl structure
  **********************************************************************/
@@ -130,11 +135,6 @@ PMC_INLINE bool PMCC::is(void) const
     return this->type() == typeid(ValueType);
 }
 
-PMC_INLINE PMCC::PMCC(void)
-{
-    //NOP
-}
-
 template <typename ValueType>
 PMC_INLINE const ValueType &PMCC::as(void) const
 {
@@ -150,11 +150,6 @@ PMC_INLINE bool PMCC::is_intern(void) const
 /***********************************************************************
  * PMC read/write type
  **********************************************************************/
-PMC_INLINE PMC::PMC(void)
-{
-    //NOP
-}
-
 template <typename ValueType>
 PMC_INLINE ValueType &PMC::as(void) const
 {
@@ -203,5 +198,9 @@ PMC_INLINE std::ostream& operator <<(std::ostream &os, const PMCC &obj)
     else os << "PMC<" << obj.type().name() << ">";
     return os;
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif //_MSC_VER
 
 #endif /*INCLUDED_PMC_DETAIL_PMC_IMPL_HPP*/
