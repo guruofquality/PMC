@@ -117,6 +117,18 @@ PMCC PMC_M(const char *);
 //! PMCC stream operator for iostream printing
 std::ostream& operator <<(std::ostream &os, const PMCC &obj);
 
+/*!
+ * Simple macro to declare an equality operator for a given type.
+ * The equality operator will always return false for this type.
+ * Since PMC requires that types have an equality operator
+ * to implement its .eq() method, its necessary to have
+ * said equality operator defined for the given type.
+ * When using its macro, its understood that the user expects
+ * the .eq() method to return false for the given type.
+ */
+#define PMC_DECL_FALSE_EQUALITY(Type) \
+    inline bool operator==(const Type &, const Type &){return false;}
+
 #include <PMC/Detail/PMCImpl.hpp>
 
 #endif /*INCLUDED_PMC_PMC_HPP*/
