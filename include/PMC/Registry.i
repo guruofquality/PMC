@@ -53,6 +53,27 @@ PMC cname ## _to_pmc(const type &p)
 
 %enddef
 
+/***********************************************************************
+ * REG_PMC_SWIG_TYPE helper macro:
+ *  - registers the conversion in the simple no-brainer case
+ **********************************************************************/
+%define REG_PMC_SWIG_TYPE(cname, pytype)
+%pythoncode %{
+
+RegisterPy2PMC(
+    is_py = lambda x: isinstance(x, pytype),
+    py2pmc = cname ## _to_pmc,
+)
+
+RegisterPMC2Py(
+    is_pmc = pmc_is_ ## cname,
+    pmc2py = pmc_to_ ## cname,
+)
+
+%}
+
+%enddef
+
 ////////////////////////////////////////////////////////////////////////
 // Convenience import for python registry code
 ////////////////////////////////////////////////////////////////////////

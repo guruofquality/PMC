@@ -4,16 +4,6 @@ import unittest
 from PMC import *
 from foo_bar import *
 
-RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, FooBar),
-    py2pmc = swig_foo_bar_to_pmc,
-)
-
-RegisterPMC2Py(
-    is_pmc = pmc_is_swig_foo_bar,
-    pmc2py = pmc_to_swig_foo_bar,
-)
-
 class TestBasicTypes(unittest.TestCase):
 
     def test_make_a_foo_bar(self):
