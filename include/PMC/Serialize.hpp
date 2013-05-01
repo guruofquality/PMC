@@ -4,6 +4,7 @@
 #define INCLUDED_PMC_SERIALIZE_HPP
 
 #include <boost/serialization/export.hpp>
+#include <boost/serialization/extended_type_info.hpp>
 #include <PMC/Detail/Serialize.hpp>
 
 #if defined(PMC_SERIALIZE_DECLARE)
