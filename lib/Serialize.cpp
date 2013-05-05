@@ -1,8 +1,5 @@
 // Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
 
-#ifndef INCLUDED_PMC_SERIALIZE_TYPES_HPP
-#define INCLUDED_PMC_SERIALIZE_TYPES_HPP
-
 #include <PMC/Serialize.hpp>
 #include <PMC/Containers.hpp>
 
@@ -122,5 +119,3 @@ PMC_SERIALIZE_EXPORT(PMCTuple<8>, "PMC<Tuple8>")
 PMC_SERIALIZE_EXPORT(PMCTuple<9>, "PMC<Tuple9>")
 PMC_SERIALIZE_EXPORT(PMCTuple<10>, "PMC<Tuple10>")
 PMC_SERIALIZE_EXPORT(PMCTuple<11>, "PMC<Tuple11>")
-
-#endif /*INCLUDED_PMC_SERIALIZE_TYPES_HPP*/

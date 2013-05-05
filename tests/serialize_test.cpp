@@ -5,24 +5,25 @@
 #include <iostream>
 
 #include <PMC/PMC.hpp>
-#include <PMC/SerializeTypes.hpp>
+#include <PMC/Containers.hpp>
+#include <PMC/Serialize.hpp>
 #include <boost/cstdint.hpp>
 
 // include headers that implement a archive in simple text format
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/polymorphic_text_oarchive.hpp>
+#include <boost/archive/polymorphic_text_iarchive.hpp>
 #include <sstream>
 
 static PMCC loopback_test(PMCC p0)
 {
     std::cout << "\ndoing loopback test on " << p0 << std::endl;
     std::stringstream ss;
-    boost::archive::text_oarchive oa(ss);
+    boost::archive::polymorphic_text_oarchive oa(ss);
 
     oa << p0;
     std::cout << "stringstream holds " << ss.str() << std::endl;
 
-    boost::archive::text_iarchive ia(ss);
+    boost::archive::polymorphic_text_iarchive ia(ss);
     PMCC p1;
     ia >> p1;
 
@@ -84,12 +85,12 @@ static void loopback_test_container(const T &t0)
 
     std::cout << "doing loopback test on " << p0 << std::endl;
     std::stringstream ss;
-    boost::archive::text_oarchive oa(ss);
+    boost::archive::polymorphic_text_oarchive oa(ss);
 
     oa << p0;
     std::cout << "stringstream holds " << ss.str() << std::endl;
 
-    boost::archive::text_iarchive ia(ss);
+    boost::archive::polymorphic_text_iarchive ia(ss);
     PMCC p1;
     ia >> p1;
 

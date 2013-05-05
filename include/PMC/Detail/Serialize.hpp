@@ -3,9 +3,6 @@
 #ifndef INCLUDED_PMC_DETAIL_SERIALIZE_HPP
 #define INCLUDED_PMC_DETAIL_SERIALIZE_HPP
 
-#include <PMC/Config.hpp>
-#include <PMC/PMC.hpp>
-
 /***********************************************************************
  * Need empty serialize for impl super-class
  **********************************************************************/

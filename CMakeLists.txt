@@ -22,7 +22,7 @@ if(CMAKE_COMPILER_IS_GNUCXX AND ${SIZEOF_CPU} EQUAL 64)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    #add_definitions(-fvisibility=hidden)
+    add_definitions(-fvisibility=hidden)
 endif()
 
 ########################################################################
