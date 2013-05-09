@@ -63,4 +63,19 @@
 };
 #endif //SWIGPYTHON
 
+////////////////////////////////////////////////////////////////////////
+// add csharp extensions
+////////////////////////////////////////////////////////////////////////
+#ifdef SWIGCSHARP
+%extend PMCC
+{
+    std::string ToString(void)
+    {
+        std::ostringstream oss;
+        oss << *($self);
+        return oss.str();
+    }
+};
+#endif //SWIGCSHARP
+
 #endif /*INCLUDED_PMC_PMC_I*/

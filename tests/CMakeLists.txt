@@ -7,67 +7,94 @@ set(GR_TEST_TARGET_DEPS ${PMC_LIBRARIES})
 ########################################################################
 find_package(Boost COMPONENTS unit_test_framework serialization)
 
-if (NOT Boost_FOUND)
-    return()
-endif()
+if (Boost_FOUND)
 
-set(test_sources
-    basic_test.cpp
-    serialize_test.cpp
-)
+    set(test_sources
+        basic_test.cpp
+        serialize_test.cpp
+    )
 
-include_directories(${Boost_INCLUDE_DIRS})
-link_directories(${Boost_LIBRARY_DIRS})
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_directories(${Boost_LIBRARY_DIRS})
 
-#turn each test cpp file into an executable with an int main() function
-add_definitions(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
+    #turn each test cpp file into an executable with an int main() function
+    add_definitions(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
+    list(APPEND GR_TEST_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
 
-#for each source: build an executable, register it as a test
-foreach(test_source ${test_sources})
-    get_filename_component(test_name ${test_source} NAME_WE)
-    add_executable(${test_name} ${test_source})
-    target_link_libraries(${test_name} ${Boost_LIBRARIES} ${PMC_LIBRARIES})
-    set(GR_TEST_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
-    GR_ADD_TEST(${test_name} ${test_name})
+    #for each source: build an executable, register it as a test
+    foreach(test_source ${test_sources})
+        get_filename_component(test_name ${test_source} NAME_WE)
+        add_executable(${test_name} ${test_source})
+        target_link_libraries(${test_name} ${Boost_LIBRARIES} ${PMC_LIBRARIES})
+        GR_ADD_TEST(${test_name} ${test_name})
 endforeach(test_source)
+
+endif(Boost_FOUND)
+
+########################################################################
+# test csharp
+########################################################################
+find_package(CSharp)
+if(CSHARP_FOUND)
+
+    list(APPEND GR_TEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/csharp)
+
+    set(my_test_exe ${CMAKE_CURRENT_BINARY_DIR}/basic_test_cs.exe)
+    add_custom_command(
+        OUTPUT ${my_test_exe}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/basic_test.cs
+        COMMAND ${CSHARP_COMPILER} -target:exe -out:${my_test_exe}
+            -r:${CMAKE_BINARY_DIR}/csharp/pmcmono.dll
+            ${CMAKE_CURRENT_SOURCE_DIR}/basic_test.cs
+    )
+    add_custom_target(make_basic_test_cs ALL DEPENDS ${my_test_exe})
+    GR_ADD_TEST(basic_test_cs mono ${my_test_exe})
+
+endif(CSHARP_FOUND)
 
 ########################################################################
 # Python unit tests
 ########################################################################
 include(GrPython)
-set(PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B})
+if(PYTHONINTERP_FOUND)
 
-list(APPEND GR_TEST_PYTHON_DIRS ${PMC_SOURCE_DIR}/python)
-list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python)
-list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python/PMC)
-list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python/PMC/${CMAKE_BUILD_TYPE})
-GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
-GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
-GR_ADD_TEST(operator_overloads_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/operator_overloads_test.py)
-GR_ADD_TEST(pool_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pool_test.py)
+    set(PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} ${PYTHON_DASH_B})
 
-GR_PYTHON_CHECK_MODULE("numpy support" numpy None HAVE_NUMPY)
-if (HAVE_NUMPY)
-    GR_ADD_TEST(numeric_array_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/numeric_array_test.py)
-endif()
+    list(APPEND GR_TEST_PYTHON_DIRS ${PMC_SOURCE_DIR}/python)
+    list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python)
+    list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python/PMC)
+    list(APPEND GR_TEST_PYTHON_DIRS ${PMC_BINARY_DIR}/python/PMC/${CMAKE_BUILD_TYPE})
+    GR_ADD_TEST(basic_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/basic_types_test.py)
+    GR_ADD_TEST(container_types_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/container_types_test.py)
+    GR_ADD_TEST(operator_overloads_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/operator_overloads_test.py)
+    GR_ADD_TEST(pool_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pool_test.py)
+
+    GR_PYTHON_CHECK_MODULE("numpy support" numpy None HAVE_NUMPY)
+    if (HAVE_NUMPY)
+        GR_ADD_TEST(numeric_array_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/numeric_array_test.py)
+    endif()
+
+endif(PYTHONINTERP_FOUND)
 
 ########################################################################
 # Swig custom type test
 ########################################################################
 find_package(SWIG)
 find_package(PythonLibs)
-if(NOT SWIG_FOUND OR NOT PYTHONLIBS_FOUND)
-    return()
+
+if(SWIG_FOUND AND PYTHONLIBS_FOUND)
+
+    include(GrSwig)
+    include(GrPython)
+
+    list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_INCLUDE_DIRS})
+    list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+    list(APPEND GR_SWIG_LIBRARIES ${PMC_LIBRARIES})
+
+    GR_SWIG_MAKE(foo_bar foo_bar.i)
+
+    list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR})
+    list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+    GR_ADD_TEST(custom_type_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_type_test.py)
+
 endif()
-include(GrSwig)
-include(GrPython)
-
-list(APPEND GR_SWIG_INCLUDE_DIRS ${PMC_INCLUDE_DIRS})
-list(APPEND GR_SWIG_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
-list(APPEND GR_SWIG_LIBRARIES ${PMC_LIBRARIES})
-
-GR_SWIG_MAKE(foo_bar foo_bar.i)
-
-list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR})
-list(APPEND GR_TEST_PYTHON_DIRS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
-GR_ADD_TEST(custom_type_test ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_type_test.py)
