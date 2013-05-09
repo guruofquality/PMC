@@ -30,6 +30,7 @@
 ////////////////////////////////////////////////////////////////////////
 // add pythonic extensions
 ////////////////////////////////////////////////////////////////////////
+#ifdef SWIGPYTHON
 %extend PMCC
 {
     std::string __str__(void)
@@ -60,5 +61,6 @@
             return PMC.PMC2Py(self)
     %}
 };
+#endif //SWIGPYTHON
 
 #endif /*INCLUDED_PMC_PMC_I*/
