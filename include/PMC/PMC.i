@@ -9,7 +9,6 @@
 
 %{
 #include <PMC/PMC.hpp>
-#include <sstream>
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -26,56 +25,5 @@
 %include <std_string.i>
 %include <PMC/Config.hpp>
 %include <PMC/PMC.hpp>
-
-////////////////////////////////////////////////////////////////////////
-// add pythonic extensions
-////////////////////////////////////////////////////////////////////////
-#ifdef SWIGPYTHON
-%extend PMCC
-{
-    std::string __str__(void)
-    {
-        std::ostringstream oss;
-        oss << *($self);
-        return oss.str();
-    }
-
-    bool __nonzero__(void)
-    {
-        return bool(*($self));
-    }
-
-    bool _equal(const PMCC &rhs)
-    {
-        return ($self)->eq(rhs);
-    }
-
-    %insert("python")
-    %{
-        def __eq__(self, rhs):
-            if not isinstance(rhs, PMCC): return False
-            return self._equal(rhs)
-
-        def __call__(self):
-            import PMC
-            return PMC.PMC2Py(self)
-    %}
-};
-#endif //SWIGPYTHON
-
-////////////////////////////////////////////////////////////////////////
-// add csharp extensions
-////////////////////////////////////////////////////////////////////////
-#ifdef SWIGCSHARP
-%extend PMCC
-{
-    std::string ToString(void)
-    {
-        std::ostringstream oss;
-        oss << *($self);
-        return oss.str();
-    }
-};
-#endif //SWIGCSHARP
 
 #endif /*INCLUDED_PMC_PMC_I*/
