@@ -39,16 +39,19 @@ if(CSHARP_FOUND)
 
     list(APPEND GR_TEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/csharp)
 
+    set(MONO_GAC_PREFIX ${CMAKE_BINARY_DIR}/csharp)
     set(my_test_exe ${CMAKE_CURRENT_BINARY_DIR}/basic_test_cs.exe)
     add_custom_command(
         OUTPUT ${my_test_exe}
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/basic_test.cs
-        COMMAND ${CSHARP_COMPILER} -target:exe -out:${my_test_exe}
-            -r:${CMAKE_BINARY_DIR}/csharp/pmcmono.dll
+        COMMAND ${CSHARP_COMPILER}
+            -target:exe
+            -out:${my_test_exe}
+            -reference:${CMAKE_BINARY_DIR}/csharp/pmcmono.dll
             ${CMAKE_CURRENT_SOURCE_DIR}/basic_test.cs
     )
     add_custom_target(make_basic_test_cs ALL DEPENDS ${my_test_exe})
-    GR_ADD_TEST(basic_test_cs mono ${my_test_exe})
+    GR_ADD_TEST(basic_test_cs ${CSHARP_INTERPRETER} ${my_test_exe})
 
 endif(CSHARP_FOUND)
 

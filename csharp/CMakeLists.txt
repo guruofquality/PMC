@@ -53,13 +53,23 @@ endforeach(pmc_swig_module)
 ########################################################################
 # assembly library creation
 ########################################################################
+
+find_program(GACUTIL_EXE gacutil)
+
 set(pmc_mono_assembly ${CMAKE_CURRENT_BINARY_DIR}/pmcmono.dll)
 
 add_custom_command(
     OUTPUT ${pmc_mono_assembly}
     DEPENDS ${generated_swig_modules}
-    COMMAND ${CSHARP_COMPILER} -target:library -out:${pmc_mono_assembly} ${CMAKE_CURRENT_BINARY_DIR}/*.cs
-    #COMMAND gacutil -i ${pmc_mono_assembly} -package PMC -gacdir ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${CSHARP_COMPILER}
+        -target:library
+        -out:${pmc_mono_assembly}
+        -keyfile:${CMAKE_CURRENT_SOURCE_DIR}/pmc.snk
+        ${CMAKE_CURRENT_BINARY_DIR}/*.cs
+    COMMAND ${GACUTIL_EXE}
+        -i ${pmc_mono_assembly}
+        -package PMC
+        -gacdir ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 add_custom_target(make_pmc_mono_assembly ALL DEPENDS ${pmc_mono_assembly})

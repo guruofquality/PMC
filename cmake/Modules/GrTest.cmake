@@ -65,7 +65,7 @@ function(GR_ADD_TEST test_name)
     file(TO_NATIVE_PATH "${GR_TEST_LIBRARY_DIRS}" libpath) #ok to use on dir list?
     file(TO_NATIVE_PATH "${GR_TEST_PYTHON_DIRS}" pypath) #ok to use on dir list?
 
-    set(environs "GR_DONT_LOAD_PREFS=1" "srcdir=${srcdir}")
+    set(environs "GR_DONT_LOAD_PREFS=1" "srcdir=${srcdir} MONO_GAC_PREFIX=${MONO_GAC_PREFIX}")
 
     #http://www.cmake.org/pipermail/cmake/2009-May/029464.html
     #Replaced this add test + set environs code with the shell script generation.
