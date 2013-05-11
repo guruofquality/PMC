@@ -16,6 +16,8 @@
 #include <sstream>
 %}
 
+%typemap(csclassmodifiers) PMCC "public partial class"
+
 %include <PMC/PMC.i>
 
 %include <PMC/Registry.i> //imports exception handling
@@ -25,7 +27,7 @@
 ////////////////////////////////////////////////////////////////////////
 %extend PMCC
 {
-    std::string ToString(void)
+    std::string __str__(void)
     {
         std::ostringstream oss;
         oss << *($self);
