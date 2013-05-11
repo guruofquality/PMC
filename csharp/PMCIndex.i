@@ -56,15 +56,20 @@ public partial class PMCC
         return PMCRegistry.CS2PMC(obj);
     }
 
+    public T cast<T>()
+    {
+        return (T)PMCRegistry.PMC2CS(this);
+    }
+
     public override string ToString()
     {
         return __to_string();
     }
 
-    public static explicit operator bool(PMCC x) 
-    {
-        return x.__operator_bool();
-    }
+    //public static explicit operator bool(PMCC x) 
+    //{
+    //    return x.__operator_bool();
+    //}
 
     public override bool Equals(System.Object obj)
     {

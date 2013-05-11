@@ -15,7 +15,7 @@ namespace HelloWorld
             PMCC bar = new PMCC();
             System.Console.WriteLine("what?"+ foo.ToString());
 
-            PMCC foo2 = PMC.M(true);
+            PMCC foo2 = PMC.M(false);
             System.Console.WriteLine("what?"+ foo2.ToString());
 
             if (foo.Equals(bar))
@@ -23,7 +23,7 @@ namespace HelloWorld
                 System.Console.WriteLine("its equal");
             }
 
-            if (!(bool)foo)
+            if (!(bool)foo2)
             {
                 System.Console.WriteLine("its false");
             }
