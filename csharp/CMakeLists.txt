@@ -35,7 +35,7 @@ include_directories(${PMC_SOURCE_DIR}/include)
 ########################################################################
 set(pmc_swig_modules
     PMCIndex
-    PMCBool
+    PMCBasicTypes
 )
 
 foreach(pmc_swig_module ${pmc_swig_modules})

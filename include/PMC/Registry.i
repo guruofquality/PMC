@@ -57,6 +57,7 @@ PMC cname ## _to_pmc(const type &p)
  * REG_PMC_SWIG_TYPE helper macro:
  *  - registers the conversion in the simple no-brainer case
  **********************************************************************/
+#ifdef SWIGPYTHON
 %define REG_PMC_SWIG_TYPE(cname, pytype)
 %pythoncode %{
 
@@ -73,6 +74,43 @@ RegisterPMC2Py(
 %}
 
 %enddef
+#endif //SWIGPYTHON
+
+/***********************************************************************
+ * REG_PMC_SWIG_TYPE helper macro:
+ *  - registers the conversion in the simple no-brainer case
+ **********************************************************************/
+#ifdef SWIGCSHARP
+%define REG_PMC_SWIG_TYPE(cname, cstype, parent)
+
+%pragma(csharp) moduleimports=%{
+
+class cname ## Register : PMCConverter
+{
+
+    static PMCC cname ## _to_pmc_helper(System.Object obj)
+    {
+        return parent.cname ## _to_pmc((cstype)obj);
+    }
+
+    static cname ## Register()
+    {
+        PMCRegistry.Register(typeof(cstype), cname ## _to_pmc_helper);
+    }
+}
+
+public partial class PMCC
+{
+    public static implicit operator cstype(PMCC p)
+    {
+        return parent.pmc_to_ ## cname(p);
+    }
+}
+
+%}
+
+%enddef
+#endif //SWIGCSHARP
 
 ////////////////////////////////////////////////////////////////////////
 // Convenience import for python registry code

@@ -14,10 +14,6 @@ public class PMCRegistry
     public delegate PMCC CS2PMCDelagate(Object obj);
     private static Dictionary<Type, CS2PMCDelagate> CS2PMC_map = new Dictionary<Type, CS2PMCDelagate>();
 
-    public delegate bool PMCisDelagate(PMCC p);
-    public delegate Object PMC2CSDelagate(PMCC p);
-    private static List<Tuple<PMCisDelagate, PMC2CSDelagate>> PMC2CS_map = new List<Tuple<PMCisDelagate, PMC2CSDelagate>>();
-
     static PMCRegistry()
     {
         foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
@@ -37,16 +33,6 @@ public class PMCRegistry
                 "Cannot convert obj to PMC, nothing is known about type: " + obj.GetType().ToString());
         }
         return CS2PMC_map[obj.GetType()](obj);
-    }
-
-    public static Object PMC2CS(PMCC p)
-    {
-        foreach (Tuple<PMCisDelagate, PMC2CSDelagate> pair in PMC2CS_map)
-        {
-            if (pair.Item1(p)) return pair.Item2(p);
-        }
-        throw new System.ArgumentException(
-            "Cannot convert PMC to obj, nothing is known about: " + p.ToString());
     }
 
     public static void Register(Type t, CS2PMCDelagate d)
