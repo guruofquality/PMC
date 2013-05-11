@@ -35,6 +35,7 @@ include_directories(${PMC_SOURCE_DIR}/include)
 ########################################################################
 set(pmc_swig_modules
     PMCIndex
+    PMCBool
 )
 
 foreach(pmc_swig_module ${pmc_swig_modules})
@@ -45,14 +46,17 @@ foreach(pmc_swig_module ${pmc_swig_modules})
 
     set(CMAKE_SWIG_FLAGS -fvirtual -module ${pmc_swig_module} ${CMAKE_SWIG_INC_FLAGS})
     list(APPEND SWIG_MODULE_${pmc_swig_module}_EXTRA_DEPS ${PMC_SOURCE_DIR}/include/PMC/PMC.i)
-    SWIG_ADD_MODULE(PMCIndex csharp ${pmc_swig_module}.i)
+    SWIG_ADD_MODULE(${pmc_swig_module} csharp ${pmc_swig_module}.i)
     SWIG_LINK_LIBRARIES(${pmc_swig_module} ${PMC_LIBRARIES})
 
-    install(
-        TARGETS ${SWIG_MODULE_${pmc_swig_module}_REAL_NAME}
-        DESTINATION what
-        COMPONENT ${PMC_COMP_PYTHON}
-    )
+    list(APPEND generated_swig_modules ${SWIG_MODULE_${pmc_swig_module}_REAL_NAME})
+
+    #can the gac do this?
+    #install(
+    #    TARGETS ${SWIG_MODULE_${pmc_swig_module}_REAL_NAME}
+    #    DESTINATION what
+    #    COMPONENT ${PMC_COMP_PYTHON}
+    #)
 endforeach(pmc_swig_module)
 
 ########################################################################
@@ -60,7 +64,7 @@ endforeach(pmc_swig_module)
 ########################################################################
 set(pmc_mono_assembly ${CMAKE_CURRENT_BINARY_DIR}/pmcmono.dll)
 
-set(pmc_cs_sources ${CMAKE_CURRENT_SOURCE_DIR}/pmc_utils.cs)
+set(pmc_cs_sources ${CMAKE_CURRENT_SOURCE_DIR}/PMCRegistry.cs)
 
 add_custom_command(
     OUTPUT ${pmc_mono_assembly}
