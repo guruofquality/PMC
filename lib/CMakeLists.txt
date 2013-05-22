@@ -20,6 +20,7 @@ list(APPEND PMC_SOURCES
     InternPool.cpp
     PMCImpl.cpp
     Serialize.cpp
+    BasicTypes.cpp
 )
 
 ########################################################################

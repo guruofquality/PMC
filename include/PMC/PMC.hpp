@@ -6,6 +6,7 @@
 #include <PMC/Config.hpp>
 #include <typeinfo>
 #include <ostream>
+#include <string>
 
 /*!
  * PMC: Just another polymorphic container for C++.
@@ -84,6 +85,26 @@ struct PMC_API PMCC : PMCBase
      * \return true if they have the same contents
      */
     bool eq(const PMCC &rhs) const;
+
+    /*!
+     * Serialize a PMC object into a string.
+     * The object can be serialized into several different forms:
+     *  - BINARY - platform dependent, but most compact form
+     *  - TEXT - ascii displayable text, portable, less compact
+     *  - XML - xml representation of the data, least compact
+     * \param object the PMC object to serialize
+     * \param format string format "BINARY", "TEXT", "XML"
+     * \return a string representing the object
+     */
+    static std::string serialize(const PMCC &object, const std::string &format);
+
+    /*!
+     * Deserialize a string into a PMC object.
+     * \param data the serialized string data
+     * \param format string format "BINARY", "TEXT", "XML"
+     * \return a new PMC object representing data
+     */
+    static PMCC deserialize(const std::string &data, const std::string &format);
 };
 
 /*!
