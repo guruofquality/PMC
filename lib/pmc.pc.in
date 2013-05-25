@@ -11,5 +11,5 @@ Requires:
 Requires.private:
 Conflicts:
 Cflags: -I${includedir}
-Libs: -L${libdir} -lPMC
+Libs: -L${libdir} -lpmc
 Libs.private:

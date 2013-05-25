@@ -1,121 +1,64 @@
 // Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
 
 #include <PMC/Serialize.hpp>
-#include <PMC/Containers.hpp>
 
-/***********************************************************************
- * bool
- **********************************************************************/
-PMC_SERIALIZE_EXPORT(bool, "PMC<bool>")
+#include <boost/archive/polymorphic_binary_oarchive.hpp>
+#include <boost/archive/polymorphic_binary_iarchive.hpp>
 
-/***********************************************************************
- * integer types
- **********************************************************************/
-#include <boost/cstdint.hpp>
+#include <boost/archive/polymorphic_text_oarchive.hpp>
+#include <boost/archive/polymorphic_text_iarchive.hpp>
 
-PMC_SERIALIZE_EXPORT(char, "PMC<char>") //char != signed char != unsigned char
+#include <boost/archive/polymorphic_xml_oarchive.hpp>
+#include <boost/archive/polymorphic_xml_iarchive.hpp>
 
-#if (ULONG_MAX == 0xffffffff) || defined(__APPLE__)
+#include <sstream>
+#include <stdexcept>
 
-//this long is only serializable on 32 bit machines
-//use fixed-width typedefs if this sucks
-PMC_SERIALIZE_EXPORT(signed long, "PMC<l32>")
-PMC_SERIALIZE_EXPORT(unsigned long, "PMC<ul32>")
-
-#else
-
-//this long long is only serializable on 64 bit machines
-//use fixed-width typedefs if this sucks
-PMC_SERIALIZE_EXPORT(signed long long, "PMC<ll64>")
-PMC_SERIALIZE_EXPORT(unsigned long long, "PMC<ull64>")
-
-#endif
-
-PMC_SERIALIZE_EXPORT(boost::int8_t, "PMC<int8>")
-PMC_SERIALIZE_EXPORT(boost::int16_t, "PMC<int16>")
-PMC_SERIALIZE_EXPORT(boost::int32_t, "PMC<int32>")
-PMC_SERIALIZE_EXPORT(boost::int64_t, "PMC<int64>")
-PMC_SERIALIZE_EXPORT(boost::uint8_t, "PMC<uint8>")
-PMC_SERIALIZE_EXPORT(boost::uint16_t, "PMC<uint16>")
-PMC_SERIALIZE_EXPORT(boost::uint32_t, "PMC<uint32>")
-PMC_SERIALIZE_EXPORT(boost::uint64_t, "PMC<uint64>")
-
-/***********************************************************************
- * float types
- **********************************************************************/
-PMC_SERIALIZE_EXPORT(float, "PMC<float32>")
-PMC_SERIALIZE_EXPORT(double, "PMC<float64>")
-
-/***********************************************************************
- * complex float types
- **********************************************************************/
-#include <boost/serialization/complex.hpp>
-
-PMC_SERIALIZE_EXPORT(std::complex<float>, "PMC<complex64>")
-PMC_SERIALIZE_EXPORT(std::complex<double>, "PMC<complex128>")
-
-/***********************************************************************
- * string
- **********************************************************************/
-#include <boost/serialization/string.hpp>
-
-PMC_SERIALIZE_EXPORT(std::string, "PMC<string>")
-
-/***********************************************************************
- * pair
- **********************************************************************/
-#include <boost/serialization/utility.hpp>
-
-PMC_SERIALIZE_EXPORT(PMCPair, "PMC<Pair>")
-
-/***********************************************************************
- * dict
- **********************************************************************/
-#include <boost/serialization/map.hpp>
-
-PMC_SERIALIZE_EXPORT(PMCDict, "PMC<Dict>")
-
-/***********************************************************************
- * list
- **********************************************************************/
-#include <boost/serialization/vector.hpp>
-
-PMC_SERIALIZE_EXPORT(PMCList, "PMC<List>")
-
-/***********************************************************************
- * set
- **********************************************************************/
-#include <boost/serialization/set.hpp>
-
-PMC_SERIALIZE_EXPORT(PMCSet, "PMC<Set>")
-
-/***********************************************************************
- * tuple
- **********************************************************************/
-#include <boost/serialization/array.hpp>
-
-template <class Archive, size_t size>
-void serialize(Archive &ar, PMCTuple<size> &t, const unsigned int)
+std::string PMCC::serialize(const PMCC &object, const std::string &format)
 {
-    boost::array<PMCC, size> &p = t;
-    ar & p;
+    std::stringstream ss;
+
+    if (format == "BINARY")
+    {
+        boost::archive::polymorphic_binary_oarchive oa(ss);
+        oa << object;
+    }
+    else if (format == "TEXT")
+    {
+        boost::archive::polymorphic_text_oarchive oa(ss);
+        oa << object;
+    }
+    else if (format == "XML")
+    {
+        boost::archive::polymorphic_xml_oarchive oa(ss);
+        oa << object;
+    }
+    else throw std::invalid_argument("PMCC::serialize unknown format: " + format);
+
+    return ss.str();
 }
 
-template <class Archive>
-void serialize(Archive &ar, PMCTuple<0> &t, const unsigned int)
+PMCC PMCC::deserialize(const std::string &data, const std::string &format)
 {
-    //NOP - size 0 tuple
-}
+    std::stringstream ss(data);
+    PMCC object;
 
-PMC_SERIALIZE_EXPORT(PMCTuple<0>, "PMC<Tuple0>")
-PMC_SERIALIZE_EXPORT(PMCTuple<1>, "PMC<Tuple1>")
-PMC_SERIALIZE_EXPORT(PMCTuple<2>, "PMC<Tuple2>")
-PMC_SERIALIZE_EXPORT(PMCTuple<3>, "PMC<Tuple3>")
-PMC_SERIALIZE_EXPORT(PMCTuple<4>, "PMC<Tuple4>")
-PMC_SERIALIZE_EXPORT(PMCTuple<5>, "PMC<Tuple5>")
-PMC_SERIALIZE_EXPORT(PMCTuple<6>, "PMC<Tuple6>")
-PMC_SERIALIZE_EXPORT(PMCTuple<7>, "PMC<Tuple7>")
-PMC_SERIALIZE_EXPORT(PMCTuple<8>, "PMC<Tuple8>")
-PMC_SERIALIZE_EXPORT(PMCTuple<9>, "PMC<Tuple9>")
-PMC_SERIALIZE_EXPORT(PMCTuple<10>, "PMC<Tuple10>")
-PMC_SERIALIZE_EXPORT(PMCTuple<11>, "PMC<Tuple11>")
+    if (format == "BINARY")
+    {
+        boost::archive::polymorphic_binary_iarchive ia(ss);
+        ia >> object;
+    }
+    else if (format == "TEXT")
+    {
+        boost::archive::polymorphic_text_iarchive ia(ss);
+        ia >> object;
+    }
+    else if (format == "XML")
+    {
+        boost::archive::polymorphic_xml_iarchive ia(ss);
+        ia >> object;
+    }
+    else throw std::invalid_argument("PMCC::serialize unknown format: " + format);
+
+    return object;
+}

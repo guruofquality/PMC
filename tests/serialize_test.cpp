@@ -9,23 +9,13 @@
 #include <PMC/Serialize.hpp>
 #include <boost/cstdint.hpp>
 
-// include headers that implement a archive in simple text format
-#include <boost/archive/polymorphic_text_oarchive.hpp>
-#include <boost/archive/polymorphic_text_iarchive.hpp>
-#include <sstream>
-
 static PMCC loopback_test(PMCC p0)
 {
     std::cout << "\ndoing loopback test on " << p0 << std::endl;
-    std::stringstream ss;
-    boost::archive::polymorphic_text_oarchive oa(ss);
+    const std::string data = PMC::serialize(p0, "TEXT");
 
-    oa << p0;
-    std::cout << "stringstream holds " << ss.str() << std::endl;
-
-    boost::archive::polymorphic_text_iarchive ia(ss);
-    PMCC p1;
-    ia >> p1;
+    std::cout << "serialized object " << data << std::endl;
+    PMCC p1 = PMC::deserialize(data, "TEXT");
 
     BOOST_CHECK(p0.eq(p1));
 
@@ -83,16 +73,11 @@ static void loopback_test_container(const T &t0)
 {
     PMCC p0 = PMC_M(t0);
 
-    std::cout << "doing loopback test on " << p0 << std::endl;
-    std::stringstream ss;
-    boost::archive::polymorphic_text_oarchive oa(ss);
+    std::cout << "\ndoing loopback test on " << p0 << std::endl;
+    const std::string data = PMC::serialize(p0, "TEXT");
 
-    oa << p0;
-    std::cout << "stringstream holds " << ss.str() << std::endl;
-
-    boost::archive::polymorphic_text_iarchive ia(ss);
-    PMCC p1;
-    ia >> p1;
+    std::cout << "serialized object " << data << std::endl;
+    PMCC p1 = PMC::deserialize(data, "TEXT");
 
     BOOST_CHECK(std::equal(t0.begin(), t0.end(), p1.as<T>().begin(), myeq));
 }

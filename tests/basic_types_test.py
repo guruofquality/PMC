@@ -67,5 +67,12 @@ class TestBasicTypes(unittest.TestCase):
     def test_string(self):
         self.loopback("hello world")
 
+    def test_serialize(self):
+        target_object = [42, "hello world"]
+        data = PMC.serialize(PMC_M(target_object), "TEXT")
+        print target_object, "->", data
+        result_object = PMC.deserialize(data, "TEXT")()
+        self.assertEqual(target_object, result_object)
+
 if __name__ == '__main__':
     unittest.main()
