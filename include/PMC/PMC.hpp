@@ -133,10 +133,10 @@ template <typename ValueType>
 PMC PMC_M(const ValueType &value);
 
 //! Special make overload to create std::string from char *
-PMCC PMC_M(const char *);
+extern PMC_API PMCC PMC_M(const char *);
 
 //! PMCC stream operator for iostream printing
-std::ostream& operator <<(std::ostream &os, const PMCC &obj);
+extern PMC_API std::ostream& operator <<(std::ostream &os, const PMCC &obj);
 
 /*!
  * Simple macro to declare an equality operator for a given type.

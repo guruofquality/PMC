@@ -12,9 +12,6 @@
  * Implementation details of the underlying PMCImpl structure
  **********************************************************************/
 #include <boost/detail/atomic_count.hpp>
-#include <boost/format.hpp>
-#include <stdexcept>
-#include <string>
 
 /***********************************************************************
  * Implementation base class, holds ref count
@@ -71,63 +68,29 @@ struct PMCImplContainer : PMCImpl
 };
 
 /***********************************************************************
+ * Helper functions for templated implementations
+ **********************************************************************/
+extern PMC_API void PMC_impl_assert_not_null(const PMCC *p);
+
+extern PMC_API void intrusive_ptr_add_ref(PMCImpl *impl);
+
+extern PMC_API void intrusive_ptr_release(PMCImpl *impl);
+
+extern PMC_API void PMC_impl_check_types(const PMCC *p, const std::type_info &t);
+
+/***********************************************************************
  * The cast implementation
  **********************************************************************/
 template <typename CastType>
-PMC_INLINE CastType &PMCImplCast(PMCImpl *item)
+PMC_INLINE CastType &PMCImplCast(const PMCC *p)
 {
-    const std::type_info &result_type = typeid(CastType);
-    if (item->type() != result_type)
-    {
-        throw std::invalid_argument(str(boost::format(
-            "Cannot cast object of type %s to result type %s!"
-        ) % item->type().name() % result_type.name()));
-    }
-    return static_cast<PMCImplContainer<CastType> *>(item)->value;
-}
-
-/***********************************************************************
- * Implementation details of PMC constructors and methods
- **********************************************************************/
-PMC_INLINE void PMC_impl_assert_not_null(const PMCC *p)
-{
-    if (not *p) throw std::invalid_argument("Calling method on a null PMC object!");
-}
-
-PMC_INLINE void intrusive_ptr_add_ref(PMCImpl *impl)
-{
-    ++impl->count;
-}
-
-PMC_INLINE void intrusive_ptr_release(PMCImpl *impl)
-{
-    if (--impl->count == 0)
-    {
-        delete impl;
-    }
+    PMCImpl *item = p->get();
+    return reinterpret_cast<PMCImplContainer<CastType> *>(item)->value;
 }
 
 /***********************************************************************
  * PMCC base type
  **********************************************************************/
-PMC_INLINE bool PMCC::unique(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->count == 1;
-}
-
-PMC_INLINE size_t PMCC::use_count(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->count;
-}
-
-PMC_INLINE const std::type_info &PMCC::type(void) const
-{
-    PMC_impl_assert_not_null(this);
-    return (*this)->type();
-}
-
 template <typename ValueType>
 PMC_INLINE bool PMCC::is(void) const
 {
@@ -139,12 +102,8 @@ template <typename ValueType>
 PMC_INLINE const ValueType &PMCC::as(void) const
 {
     PMC_impl_assert_not_null(this);
-    return PMCImplCast<ValueType>(this->get());
-}
-
-PMC_INLINE bool PMCC::is_intern(void) const
-{
-    return (*this)->intern;
+    PMC_impl_check_types(this, typeid(ValueType));
+    return PMCImplCast<ValueType>(this);
 }
 
 /***********************************************************************
@@ -154,7 +113,8 @@ template <typename ValueType>
 PMC_INLINE ValueType &PMC::as(void) const
 {
     PMC_impl_assert_not_null(this);
-    return PMCImplCast<ValueType>(this->get());
+    PMC_impl_check_types(this, typeid(ValueType));
+    return PMCImplCast<ValueType>(this);
 }
 
 /***********************************************************************
@@ -166,37 +126,6 @@ PMC_INLINE PMC PMC_M(const ValueType &value)
     PMC p;
     p.reset(new PMCImplContainer<ValueType>(value));
     return p;
-}
-
-PMC_INLINE PMCC PMC_M(const char *s)
-{
-    return PMC_M(std::string(s)).intern();
-}
-
-/***********************************************************************
- * PMC Comparable stuff
- **********************************************************************/
-PMC_INLINE bool PMCC::eq(const PMCC &rhs) const
-{
-    const PMCC &lhs = *this;
-    //equal pointers mean same obj or both null
-    if (lhs.get() == rhs.get()) return true;
-    //both non-null so perform equals compare
-    if (lhs and rhs and lhs.type() == rhs.type())
-    {
-        return lhs->equal(rhs.get());
-    }
-    return false;
-}
-
-/***********************************************************************
- * PMC stream stuff
- **********************************************************************/
-PMC_INLINE std::ostream& operator <<(std::ostream &os, const PMCC &obj)
-{
-    if (not obj) os << "PMC<NULL>";
-    else os << "PMC<" << obj.type().name() << ">";
-    return os;
 }
 
 #ifdef _MSC_VER
