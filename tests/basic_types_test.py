@@ -74,5 +74,13 @@ class TestBasicTypes(unittest.TestCase):
         result_object = PMC.deserialize(data, "TEXT")()
         self.assertEqual(target_object, result_object)
 
+    def test_isinstance(self):
+        foo = PMCC()
+        self.assertTrue(isinstance(foo, PMCC))
+        self.assertFalse(isinstance(foo, PMC))
+        bar = PMC()
+        self.assertTrue(isinstance(bar, PMCC))
+        self.assertTrue(isinstance(bar, PMC))
+
 if __name__ == '__main__':
     unittest.main()
