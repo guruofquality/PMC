@@ -110,12 +110,12 @@ DECL_PMC_SWIG_NUMERIC_ARRAY(uint32)
 DECL_PMC_SWIG_NUMERIC_ARRAY(uint64)
 
 //make sure to covert long for the x32 case
-DECL_PMC_SWIG_NUMERIC_ARRAY_2(long_t, long)
+DECL_PMC_SWIG_NUMERIC_ARRAY(long)
 DECL_PMC_SWIG_NUMERIC_ARRAY_2(ulong_t, long) //numpy has no ulong
 
 //make sure to covert long long for the x64 case
-DECL_PMC_SWIG_NUMERIC_ARRAY_2(longlong_t, longlong)
-DECL_PMC_SWIG_NUMERIC_ARRAY_2(ulonglong_t, ulonglong)
+DECL_PMC_SWIG_NUMERIC_ARRAY(longlong)
+DECL_PMC_SWIG_NUMERIC_ARRAY(ulonglong)
 
 DECL_PMC_SWIG_NUMERIC_ARRAY(float32)
 DECL_PMC_SWIG_NUMERIC_ARRAY(float64)
