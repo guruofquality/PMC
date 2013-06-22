@@ -16,7 +16,7 @@ DECL_PMC_SWIG_TYPE(float, float32)
 ## python float is a float64
 ########################################################################
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, float),
+    is_py = lambda x: type(x) is float,
     py2pmc = float64_to_pmc,
 )
 
@@ -33,7 +33,7 @@ try:
     import numpy
 
     RegisterPy2PMC(
-        is_py = lambda x: isinstance(x, numpy.float32),
+        is_py = lambda x: type(x) is numpy.float32,
         py2pmc = lambda x: float32_to_pmc(float(x)),
     )
 
@@ -43,7 +43,7 @@ try:
     )
 
     RegisterPy2PMC(
-        is_py = lambda x: isinstance(x, numpy.float64),
+        is_py = lambda x: type(x) is numpy.float64,
         py2pmc = lambda x: float64_to_pmc(float(x)),
     )
 
@@ -57,7 +57,7 @@ except ImportError: pass
 import ctypes
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, ctypes.c_float),
+    is_py = lambda x: type(x) is ctypes.c_float,
     py2pmc = lambda x: float32_to_pmc(x.value),
 )
 
@@ -67,7 +67,7 @@ RegisterPMC2Py(
 )
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, ctypes.c_double),
+    is_py = lambda x: type(x) is ctypes.c_double,
     py2pmc = lambda x: float64_to_pmc(x.value),
 )
 

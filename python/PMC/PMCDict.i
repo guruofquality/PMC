@@ -33,7 +33,7 @@ def py_dict_to_swig_dict(py_dict):
     return d
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, dict),
+    is_py = lambda x: type(x) is dict,
     py2pmc = lambda x: swig_dict_to_pmc(py_dict_to_swig_dict(x)),
 )
 

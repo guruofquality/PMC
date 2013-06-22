@@ -11,7 +11,7 @@ DECL_PMC_SWIG_TYPE(bool, bool)
 %pythoncode %{
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, bool),
+    is_py = lambda x: type(x) is bool,
     py2pmc = bool_to_pmc,
 )
 
@@ -22,7 +22,7 @@ RegisterPMC2Py(
 
 import ctypes
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, ctypes.c_bool),
+    is_py = lambda x: type(x) is ctypes.c_bool,
     py2pmc = lambda x: bool_to_pmc(x.value),
 )
 

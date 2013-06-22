@@ -25,7 +25,7 @@ def py_list_to_swig_list(py_list):
     return t
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, list),
+    is_py = lambda x: type(x) is list,
     py2pmc = lambda x: swig_list_to_pmc(py_list_to_swig_list(x)),
 )
 

@@ -45,7 +45,7 @@ def pmc_make_swig_tuple ## n(elems):
     return t
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, tuple) and len(x) == n,
+    is_py = lambda x: type(x) is tuple and len(x) == n,
     py2pmc = pmc_make_swig_tuple ## n,
 )
 

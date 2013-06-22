@@ -25,7 +25,7 @@ def py_set_to_swig_set(py_set):
     return s
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, set),
+    is_py = lambda x: type(x) is set,
     py2pmc = lambda x: swig_set_to_pmc(py_set_to_swig_set(x)),
 )
 

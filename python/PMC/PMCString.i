@@ -22,7 +22,7 @@ PMCC string_to_pmc_intern(const char *s)
 %pythoncode %{
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, str),
+    is_py = lambda x: type(x) is str,
     py2pmc = string_to_pmc_intern,
 )
 

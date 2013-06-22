@@ -17,7 +17,7 @@ DECL_PMC_SWIG_TYPE(std::complex<double>, complex128)
 ## python complex is a complex128
 ########################################################################
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, complex),
+    is_py = lambda x: type(x) is complex,
     py2pmc = complex128_to_pmc,
 )
 
@@ -33,7 +33,7 @@ try:
     import numpy
 
     RegisterPy2PMC(
-        is_py = lambda x: isinstance(x, numpy.complex64),
+        is_py = lambda x: type(x) is numpy.complex64,
         #workaround for old numpy.complex64 bug,
         #where complex(numpy.complex64(x)).imag == 0
         #py2pmc = lambda x: complex64_to_pmc(complex(x)),
@@ -46,7 +46,7 @@ try:
     )
 
     RegisterPy2PMC(
-        is_py = lambda x: isinstance(x, numpy.complex128),
+        is_py = lambda x: type(x) is numpy.complex128,
         py2pmc = lambda x: complex128_to_pmc(complex(x)),
     )
 

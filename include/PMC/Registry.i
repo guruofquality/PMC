@@ -61,7 +61,7 @@ PMC cname ## _to_pmc(const type &p)
 %pythoncode %{
 
 RegisterPy2PMC(
-    is_py = lambda x: isinstance(x, pytype),
+    is_py = lambda x: type(x) is pytype,
     py2pmc = cname ## _to_pmc,
 )
 
