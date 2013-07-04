@@ -78,6 +78,8 @@ extern PMC_API void intrusive_ptr_release(PMCImpl *impl);
 
 extern PMC_API void PMC_impl_check_types(const PMCC *p, const std::type_info &t);
 
+extern PMC_API PMCC PMC_impl_safe_convert(const PMCC *p, const std::type_info &t);
+
 /***********************************************************************
  * The cast implementation
  **********************************************************************/
@@ -104,6 +106,14 @@ PMC_INLINE const ValueType &PMCC::as(void) const
     PMC_impl_assert_not_null(this);
     PMC_impl_check_types(this, typeid(ValueType));
     return PMCImplCast<ValueType>(this);
+}
+
+template <typename ValueType>
+PMC_INLINE ValueType PMCC::safe_as(void) const
+{
+    PMC_impl_assert_not_null(this);
+    PMCC p = PMC_impl_safe_convert(this, typeid(ValueType));
+    return p.as<ValueType>();
 }
 
 /***********************************************************************

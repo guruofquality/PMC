@@ -45,9 +45,20 @@ struct PMC_API PMCC : PMCBase
      * Cast the item held by this object to an arbitrary type.
      * This method will return a const reference to the object.
      * Only call if this object is not empty.
+     * This call throws when ValueType != this->type().
      */
     template <typename ValueType>
     const ValueType &as(void) const;
+
+    /*!
+     * Cast the item held by this object to an arbitrary type.
+     * This method will return a copy of the internal object.
+     * Simple numeric type castint will be performed when
+     * ValueType != this->type() (for certain data types).
+     * Only call if this object is not empty.
+     */
+    template <typename ValueType>
+    ValueType safe_as(void) const;
 
     /*!
      * Create an interned PMC object.
@@ -123,6 +134,7 @@ struct PMC_API PMC : PMCC
      * This method will return a reference to the object.
      * Use this method to read or write the contained value.
      * Only call if this object is not empty.
+     * This call throws when ValueType != this->type().
      */
     template <typename ValueType>
     ValueType &as(void) const;

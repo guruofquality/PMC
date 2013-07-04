@@ -19,6 +19,7 @@ list(APPEND PMC_SOURCES
     AllocPool.cpp
     InternPool.cpp
     PMCImpl.cpp
+    PMCSafeConvert.cpp
     Serialize.cpp
     BasicTypes.cpp
 )
