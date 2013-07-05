@@ -49,8 +49,9 @@ struct PMCD : PMCC
 template <typename OutType>
 OutType pmc_to_x(const PMCC &p)
 {
-    #define pmc_to_x_helper(t) if (p.is<t >()) \
+    #define pmc_to_x_helper_(t) if (p.is<t >()) \
     {OutType out; convnum(p.as<t >(), out); return out;}
+    #define pmc_to_x_helper(t) pmc_to_x_helper_(t) pmc_to_x_helper_(std::complex<t >)
     pmc_to_x_helper(char)
     pmc_to_x_helper(signed char)
     pmc_to_x_helper(unsigned char)
@@ -64,8 +65,6 @@ OutType pmc_to_x(const PMCC &p)
     pmc_to_x_helper(unsigned long long)
     pmc_to_x_helper(float)
     pmc_to_x_helper(double)
-    pmc_to_x_helper(std::complex<float>)
-    pmc_to_x_helper(std::complex<double>)
     throw CantTouchThis();
 }
 
@@ -75,13 +74,14 @@ OutType pmc_to_x(const PMCC &p)
 template <typename OutType>
 std::vector<OutType> pmc_to_v(const PMCC &p)
 {
-    #define pmc_to_v_helper(t) if (p.is<std::vector<t > >()) \
+    #define pmc_to_v_helper_(t) if (p.is<std::vector<t > >()) \
     { \
         const std::vector<t > &in = p.as<std::vector<t > >(); \
         std::vector<OutType> out(in.size()); \
         for (size_t i = 0; i < in.size(); i++) convnum(in[i], out[i]); \
         return out; \
     }
+    #define pmc_to_v_helper(t) pmc_to_v_helper_(t) pmc_to_v_helper_(std::complex<t >)
     pmc_to_v_helper(char)
     pmc_to_v_helper(signed char)
     pmc_to_v_helper(unsigned char)
@@ -95,8 +95,6 @@ std::vector<OutType> pmc_to_v(const PMCC &p)
     pmc_to_v_helper(unsigned long long)
     pmc_to_v_helper(float)
     pmc_to_v_helper(double)
-    pmc_to_v_helper(std::complex<float>)
-    pmc_to_v_helper(std::complex<double>)
 
     //special case PMCList
     if (p.is<PMCList>())
@@ -120,11 +118,12 @@ PMCC PMC_impl_safe_convert(const PMCC *p, const std::type_info &type)
 {
     if (p->type() == type) return *p;
 
-    #define try_pmt_to_x(t) \
+    #define try_pmt_to_x_(t) \
     {\
         if (type == typeid(t)) return PMC_M(pmc_to_x<t >(*p)); \
         if (type == typeid(std::vector<t >)) return PMC_M(pmc_to_v<t >(*p)); \
     }
+    #define try_pmt_to_x(t) try_pmt_to_x_(t) try_pmt_to_x_(std::complex<t >)
 
     //check if each output type matches and convert
     try
@@ -147,9 +146,6 @@ PMCC PMC_impl_safe_convert(const PMCC *p, const std::type_info &type)
 
         try_pmt_to_x(float);
         try_pmt_to_x(double);
-
-        try_pmt_to_x(std::complex<float>);
-        try_pmt_to_x(std::complex<double>);
 
         //special case PMCList
         if (type == typeid(PMCList)) return PMC_M(pmc_to_v<PMCD>(*p));
