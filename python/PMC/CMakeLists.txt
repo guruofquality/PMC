@@ -15,6 +15,12 @@ include(UseSWIG)
 include(GrPython)
 
 ########################################################################
+# Local includes
+########################################################################
+list(APPEND CMAKE_SWIG_INC_FLAGS "-I${PMC_SOURCE_DIR}/include")
+include_directories(${PMC_SOURCE_DIR}/include)
+
+########################################################################
 # Python library setup
 ########################################################################
 include_directories(${PYTHON_INCLUDE_PATH})
@@ -25,12 +31,6 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 ########################################################################
 find_package(Boost)
 include_directories(${Boost_INCLUDE_DIRS})
-
-########################################################################
-# swig build constants
-########################################################################
-list(APPEND CMAKE_SWIG_INC_FLAGS "-I${PMC_SOURCE_DIR}/include")
-include_directories(${PMC_SOURCE_DIR}/include)
 
 ########################################################################
 # swig build modules
