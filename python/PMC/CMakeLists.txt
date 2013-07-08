@@ -77,7 +77,7 @@ endforeach(pmc_swig_module)
 ########################################################################
 # install other python files
 ########################################################################
-INSTALL(
+GR_PYTHON_INSTALL(
     FILES __init__.py
     DESTINATION ${GR_PYTHON_DIR}/PMC
     COMPONENT ${PMC_COMP_PYTHON}
