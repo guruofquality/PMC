@@ -85,6 +85,7 @@ DECL_PMC_SWIG_NUMERIC_ARRAY_2(type ## _t, type)
 %enddef
 
 %pythoncode %{
+
 def pointer_to_ndarray(addr, dtype, nitems, readonly=False, container=None):
     class array_like:
         __array_interface__ = {
@@ -111,7 +112,7 @@ DECL_PMC_SWIG_NUMERIC_ARRAY(uint64)
 
 //make sure to covert long for the x32 case
 DECL_PMC_SWIG_NUMERIC_ARRAY(long)
-DECL_PMC_SWIG_NUMERIC_ARRAY_2(ulong_t, long) //numpy has no ulong
+DECL_PMC_SWIG_NUMERIC_ARRAY(ulong)
 
 //make sure to covert long long for the x64 case
 DECL_PMC_SWIG_NUMERIC_ARRAY(longlong)

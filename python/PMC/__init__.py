@@ -1,5 +1,13 @@
 # Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
 
+#try to give numpy a ulong as a convenience to the type registrations that handle ulong
+try:
+    import numpy
+    if not hasattr(numpy, 'ulong'):
+        setattr(numpy, 'ulong', numpy.uint)
+except ImportError:
+    pass
+
 from PMCIndex import PMCC, PMC
 
 _py_to_pmc_registry = list()

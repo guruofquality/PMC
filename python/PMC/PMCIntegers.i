@@ -6,24 +6,31 @@
 
 %include <PMC/Registry.i>
 
+%{
+typedef signed long long_t;
+typedef unsigned long ulong_t;
+typedef signed long long longlong_t;
+typedef unsigned long long ulonglong_t;
+%}
+
 /***********************************************************************
  * Treatment for python long and int native types
  **********************************************************************/
 
 %define DECL_PMC_SWIG_BUILTIN_INTEGER_TYPE(name)
 
-DECL_PMC_SWIG_TYPE(name, name)
+DECL_PMC_SWIG_TYPE(name, name ## _builtin)
 
 %pythoncode %{
 
 RegisterPy2PMC(
     is_py = lambda x: type(x) is name,
-    py2pmc = name ## _to_pmc,
+    py2pmc = name ## _builtin ## _to_pmc,
 )
 
 RegisterPMC2Py(
-    is_pmc = pmc_is_ ## name,
-    pmc2py = lambda x: name(pmc_to_ ## name(x)),
+    is_pmc = pmc_is_ ## name ## _builtin,
+    pmc2py = lambda x: name(pmc_to_ ## name ## _builtin(x)),
 )
 
 %}
@@ -83,3 +90,9 @@ DECL_PMC_SWIG_INTEGER_TYPE(uint8)
 DECL_PMC_SWIG_INTEGER_TYPE(uint16)
 DECL_PMC_SWIG_INTEGER_TYPE(uint32)
 DECL_PMC_SWIG_INTEGER_TYPE(uint64)
+
+//handle the long types not caught by the stdint types
+DECL_PMC_SWIG_INTEGER_TYPE(long)
+DECL_PMC_SWIG_INTEGER_TYPE(ulong)
+DECL_PMC_SWIG_INTEGER_TYPE(longlong)
+DECL_PMC_SWIG_INTEGER_TYPE(ulonglong)
