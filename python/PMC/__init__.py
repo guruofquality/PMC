@@ -1,10 +1,18 @@
 # Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
 
-#try to give numpy a ulong as a convenience to the type registrations that handle ulong
+#Give numpy a long and ulong of the correct size for this system.
+#Stock numpy does not come with a numpy.ulong dtype declaration.
+#And on 32 bit systems, numpy.long aliases to a 64 bit width type.
+#The code below is also a requirement for the numeric array support.
 try:
+    import ctypes
     import numpy
-    if not hasattr(numpy, 'ulong'):
-        setattr(numpy, 'ulong', numpy.uint)
+    if ctypes.sizeof(ctypes.c_long) == 4:
+        setattr(numpy, 'long', numpy.int32)
+        setattr(numpy, 'ulong', numpy.uint32)
+    else:
+        setattr(numpy, 'long', numpy.int64)
+        setattr(numpy, 'ulong', numpy.uint64)
 except ImportError:
     pass
 
