@@ -86,18 +86,21 @@ DECL_PMC_SWIG_NUMERIC_ARRAY_2(type ## _t, type)
 
 %pythoncode %{
 
-def pointer_to_ndarray(addr, dtype, nitems, readonly=False, container=None):
-    class array_like:
-        __array_interface__ = {
+class BufferWrapper(object):
+    def __init__(self, addr, dtype, nitems, readonly=False, container=None):
+        self.container = container
+        self.__array_interface__ = {
             'data' : (addr, readonly),
             'typestr' : dtype.base.str,
             'descr' : dtype.base.descr,
             'shape' : (nitems,) + dtype.shape,
             'strides' : None,
             'version' : 3,
-            'container' : container,
         }
-    return numpy.asarray(array_like()).view(dtype.base)
+
+def pointer_to_ndarray(addr, dtype, nitems, readonly=False, container=None):
+    return numpy.asarray(BufferWrapper(addr, dtype, nitems, readonly, container)).view(dtype.base)
+
 %}
 
 DECL_PMC_SWIG_NUMERIC_ARRAY(int8)
