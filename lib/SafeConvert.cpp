@@ -1,5 +1,10 @@
 // Copyright (C) by Josh Blum. See LICENSE.txt for licensing information.
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning (disable:4244)  // conversion possible loss of data
+#endif //_MSC_VER
+
 #include <PMC/PMC.hpp>
 #include <PMC/Containers.hpp>
 #include <complex>
@@ -13,7 +18,7 @@ struct CantTouchThis{};
 template <typename InType, typename OutType>
 void convnum(const std::complex<InType> &in, std::complex<OutType> &out)
 {
-    out = std::complex<OutType>(in.real(), in.imag());
+    out = std::complex<OutType>(OutType(in.real()), OutType(in.imag()));
 }
 
 template <typename InType, typename OutType>
@@ -96,17 +101,26 @@ std::vector<OutType> pmc_to_v(const PMCC &p)
     pmc_to_v_helper(float)
     pmc_to_v_helper(double)
 
-    //special case PMCList
-    if (p.is<PMCList>())
-    {
-        const PMCList &in = p.as<PMCList>();
-        std::vector<OutType> out(in.size());
-        for (size_t i = 0; i < in.size(); i++)
-        {
-            convnum(pmc_to_x<OutType>(in[i]), out[i]);
-        }
-        return out;
+    #define pmc_container_v_helper(t) if (p.is<t >()) \
+    { \
+        const t &in = p.as<t >(); \
+        std::vector<OutType> out(in.size()); \
+        for (size_t i = 0; i < in.size(); i++) convnum(pmc_to_x<OutType>(in[i]), out[i]); \
+        return out; \
     }
+    pmc_container_v_helper(PMCList)
+    pmc_container_v_helper(PMCTuple<0>)
+    pmc_container_v_helper(PMCTuple<1>)
+    pmc_container_v_helper(PMCTuple<2>)
+    pmc_container_v_helper(PMCTuple<3>)
+    pmc_container_v_helper(PMCTuple<4>)
+    pmc_container_v_helper(PMCTuple<5>)
+    pmc_container_v_helper(PMCTuple<6>)
+    pmc_container_v_helper(PMCTuple<7>)
+    pmc_container_v_helper(PMCTuple<8>)
+    pmc_container_v_helper(PMCTuple<9>)
+    pmc_container_v_helper(PMCTuple<10>)
+    pmc_container_v_helper(PMCTuple<11>)
 
     throw CantTouchThis();
 }
@@ -118,39 +132,61 @@ PMCC PMC_impl_safe_convert(const PMCC *p, const std::type_info &type)
 {
     if (p->type() == type) return *p;
 
-    #define try_pmt_to_x_(t) \
+    #define try_pmc_to_x_(t) \
     {\
         if (type == typeid(t)) return PMC_M(pmc_to_x<t >(*p)); \
         if (type == typeid(std::vector<t >)) return PMC_M(pmc_to_v<t >(*p)); \
     }
-    #define try_pmt_to_x(t) try_pmt_to_x_(t) try_pmt_to_x_(std::complex<t >)
+    #define try_pmc_to_x(t) try_pmc_to_x_(t) try_pmc_to_x_(std::complex<t >)
 
     //check if each output type matches and convert
     try
     {
-        try_pmt_to_x(char);
-        try_pmt_to_x(signed char);
-        try_pmt_to_x(unsigned char);
+        try_pmc_to_x(char);
+        try_pmc_to_x(signed char);
+        try_pmc_to_x(unsigned char);
 
-        try_pmt_to_x(signed short);
-        try_pmt_to_x(unsigned short);
+        try_pmc_to_x(signed short);
+        try_pmc_to_x(unsigned short);
 
-        try_pmt_to_x(signed int);
-        try_pmt_to_x(unsigned int);
+        try_pmc_to_x(signed int);
+        try_pmc_to_x(unsigned int);
 
-        try_pmt_to_x(signed long);
-        try_pmt_to_x(unsigned long);
+        try_pmc_to_x(signed long);
+        try_pmc_to_x(unsigned long);
 
-        try_pmt_to_x(signed long long);
-        try_pmt_to_x(unsigned long long);
+        try_pmc_to_x(signed long long);
+        try_pmc_to_x(unsigned long long);
 
-        try_pmt_to_x(float);
-        try_pmt_to_x(double);
+        try_pmc_to_x(float);
+        try_pmc_to_x(double);
 
-        //special case PMCList
+        #define try_pmc_to_container(t) if (type == typeid(t)) \
+        { \
+            const std::vector<PMCD> vec = pmc_to_v<PMCD>(*p); \
+            t out; \
+            for (size_t i = 0; i < std::min(out.size(), vec.size()); i++) out[i] = vec[i]; \
+            return PMC_M(out); \
+        }
         if (type == typeid(PMCList)) return PMC_M(pmc_to_v<PMCD>(*p));
+        try_pmc_to_container(PMCTuple<0>)
+        try_pmc_to_container(PMCTuple<1>)
+        try_pmc_to_container(PMCTuple<2>)
+        try_pmc_to_container(PMCTuple<3>)
+        try_pmc_to_container(PMCTuple<4>)
+        try_pmc_to_container(PMCTuple<5>)
+        try_pmc_to_container(PMCTuple<6>)
+        try_pmc_to_container(PMCTuple<7>)
+        try_pmc_to_container(PMCTuple<8>)
+        try_pmc_to_container(PMCTuple<9>)
+        try_pmc_to_container(PMCTuple<10>)
+        try_pmc_to_container(PMCTuple<11>)
     }
     catch(const CantTouchThis &){}
 
     return *p;
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif //_MSC_VER
