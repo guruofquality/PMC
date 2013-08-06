@@ -108,10 +108,30 @@ PMC_INLINE const ValueType &PMCC::as(void) const
     return PMCImplCast<ValueType>(this);
 }
 
+#include <vector>
+
+template <typename ValueType>
+PMC_INLINE PMCC PMC_impl_safe_convert_list(const PMCC *p, const std::vector<ValueType> &)
+{
+    if (not p->is<std::vector<PMCC> >()) return PMCC();
+    const std::vector<PMCC> &l = p->as<std::vector<PMCC> >();
+    std::vector<ValueType> v(l.size());
+    for (size_t i = 0; i < v.size(); i++) v[i] = l[i].safe_as<ValueType>();
+    return PMC_M(v);
+}
+
+template <typename ValueType>
+PMC_INLINE PMCC PMC_impl_safe_convert_list(const PMCC *p, const ValueType &)
+{
+    return PMCC();
+}
+
 template <typename ValueType>
 PMC_INLINE ValueType PMCC::safe_as(void) const
 {
     PMC_impl_assert_not_null(this);
+    PMCC v = PMC_impl_safe_convert_list(this, ValueType());
+    if (v) return v.as<ValueType>();
     PMCC p = PMC_impl_safe_convert(this, typeid(ValueType));
     return p.as<ValueType>();
 }

@@ -44,7 +44,6 @@ set(pmc_swig_modules
     PMCFloats
     PMCComplex
     PMCString
-    PMCStringV
     PMCTuple
     PMCSet
     PMCList

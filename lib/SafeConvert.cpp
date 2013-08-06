@@ -186,28 +186,6 @@ PMCC PMC_impl_safe_convert(const PMCC *p, const std::type_info &type)
 
     catch(const CantTouchThis &){}
 
-    //vector of strings in
-    if (p->is<std::vector<std::string> >() and type == typeid(PMCList))
-    {
-        PMCList l;
-        BOOST_FOREACH(const std::string &e, p->as<std::vector<std::string> >())
-        {
-            l.push_back(PMC_M(e));
-        }
-        return PMC_M(l);
-    }
-
-    //vector of strings out
-    if (p->is<PMCList>() and type == typeid(std::vector<std::string>))
-    {
-        std::vector<std::string> l;
-        BOOST_FOREACH(const PMCC &e, p->as<PMCList>())
-        {
-            l.push_back(e.as<std::string>());
-        }
-        return PMC_M(l);
-    }
-
     return *p;
 }
 

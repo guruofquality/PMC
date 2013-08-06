@@ -32,3 +32,13 @@ RegisterPMC2Py(
 )
 
 %}
+
+/***********************************************************************
+ * Support for a vector of strings
+ **********************************************************************/
+%include <std_vector.i>
+
+%template (StringVector) std::vector<std::string>;
+
+DECL_PMC_SWIG_TYPE(std::vector<std::string>, string_vector)
+REG_PMC_SWIG_TYPE(string_vector, StringVector)
