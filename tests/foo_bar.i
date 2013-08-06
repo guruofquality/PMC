@@ -2,7 +2,7 @@
 
 %module foo_bar
 
-%{
+%inline %{
 
 struct FooBar
 {
@@ -20,22 +20,14 @@ struct FooBar
     }
 };
 
+%}
+
+%{
 bool operator==(const FooBar &lhs, const FooBar &rhs)
 {
     return (lhs.foo() == rhs.foo()) && (lhs.bar() == rhs.bar());
 }
-
 %}
-
-struct FooBar
-{
-    int _foo;
-    float _bar;
-
-    int foo(void);
-
-    float bar(void);
-};
 
 ////////////////////////////////////////////////////////////////////////
 // This is what a typical registry looks like
