@@ -121,7 +121,7 @@ PMC_INLINE PMCC PMC_impl_safe_convert_list(const PMCC *p, const std::vector<Valu
 }
 
 template <typename ValueType>
-PMC_INLINE PMCC PMC_impl_safe_convert_list(const PMCC *p, const ValueType &)
+PMC_INLINE PMCC PMC_impl_safe_convert_list(const PMCC *, const ValueType &)
 {
     return PMCC();
 }
