@@ -44,7 +44,6 @@ import PMCIntegers
 import PMCFloats
 import PMCComplex
 import PMCString
-import PMCStringV
 import PMCTuple
 import PMCSet
 import PMCList
