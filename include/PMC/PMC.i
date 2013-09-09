@@ -14,8 +14,10 @@
 ////////////////////////////////////////////////////////////////////////
 // comprehend base class
 ////////////////////////////////////////////////////////////////////////
+#ifndef SWIG_INTRUSIVE_PTR_NAMESPACE
 #define SWIG_INTRUSIVE_PTR_NAMESPACE boost
 %include <intrusive_ptr.i>
+#endif
 %template (boost_intrusive_ptr_pmc_impl) boost::intrusive_ptr<PMCImpl>;
 %ignore operator <<(std::ostream &os, const PMCC &obj); //ignore warnings about %rename
 
