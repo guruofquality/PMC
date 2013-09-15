@@ -60,6 +60,7 @@ endif(PYTHONINTERP_FOUND)
 ########################################################################
 find_package(SWIG)
 find_package(PythonLibs)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 if(SWIG_FOUND AND PYTHONLIBS_FOUND)
 
